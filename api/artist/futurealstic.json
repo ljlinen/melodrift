@@ -1,0 +1,14 @@
+{
+    "name": "futurealstic",
+    "location": "South Africa, MP",
+    "about": "An upcoming artist based in Mpumalanga, I'm into audio production, videography and graphic designing.",
+
+    "likes": "15K",
+    "plays": "2K",
+    "Image": "link",
+
+    "music": {
+      "pinned": "link",
+      "all": ["links"]
+    }
+}
