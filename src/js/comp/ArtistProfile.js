@@ -3,7 +3,6 @@ import './css/artistprofile.css'
 import varified from '../../asset/img/icon/verified.svg'
 import plays from '../../asset/img/icon/play.svg'
 import followers from '../../asset/img/icon/followers.svg'
-import cover from '../../asset/cover.jpg'
 import { useParams } from 'react-router-dom'
 import MusicList from './MusicList'
 
@@ -55,7 +54,7 @@ export default function ArtistProfile() {
   return (
     <div className="profile-div-main-artist">
         <div className="profile-image">
-            <img src={ cover } alt='profile' />
+            <img src={ artistProfileData.cover } alt='profile' />
         </div>
         
     <div className='wrap-info-about'>
