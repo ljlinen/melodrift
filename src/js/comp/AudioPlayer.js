@@ -9,8 +9,11 @@ export default function AudioPlayer( { SongData }) {
    const audioRef = useRef(null);
    const [isPlaying, setIsPlaying] = useState(false);
    const [progress, setProgress] = useState(0);
-  //const [currentTime, setCurrentTime] = useState(0);
+   const [currentTime, setCurrentTime] = useState(0);
    const [duration, setDuration] = useState(0);
+
+   console.log(currentTime);
+   
 
   
 
