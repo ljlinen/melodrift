@@ -6,11 +6,10 @@ import pause from '../../asset/img/icon/pause.svg'
 export default function AudioPlayer( { SongData }) {
    console.log(SongData);
    
-   const src = SongData.audio;
    const audioRef = useRef(null);
    const [isPlaying, setIsPlaying] = useState(false);
    const [progress, setProgress] = useState(0);
-   const [currentTime, setCurrentTime] = useState(0);
+  //const [currentTime, setCurrentTime] = useState(0);
    const [duration, setDuration] = useState(0);
 
   

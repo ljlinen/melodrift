@@ -5,7 +5,6 @@ import plays from '../../asset/img/icon/play.svg'
 import followers from '../../asset/img/icon/followers.svg'
 import cover from '../../asset/cover.jpg'
 import { useParams } from 'react-router-dom'
-import AudioPlayer from './AudioPlayer'
 import MusicList from './MusicList'
 
 export default function ArtistProfile() {
@@ -20,10 +19,10 @@ export default function ArtistProfile() {
     useEffect(() => {
         fetch(backendUrl + params.username)
         .then((resp) => {
-            if (resp.status == 404) {
+            if (resp.status === 404) {
                 console.log('responded with 404');
                 return resp.text()
-            } else if (resp.status == 200) {
+            } else if (resp.status === 200) {
                 console.log('responded with 200');
                 return resp.json();
             }
@@ -43,7 +42,7 @@ export default function ArtistProfile() {
             setError('Error fetching artist data: ' + err.toString());
         });
 
-    }, [])
+    })
 
     if(!artistProfileData) {
         return (
@@ -56,7 +55,7 @@ export default function ArtistProfile() {
   return (
     <div className="profile-div-main-artist">
         <div className="profile-image">
-            <img src={ cover } alt='profile image' />
+            <img src={ cover } alt='profile' />
         </div>
         
     <div className='wrap-info-about'>
@@ -64,19 +63,19 @@ export default function ArtistProfile() {
                 <div className="info">
                     <div className="wrap-name-varified">
                     <h1 className="name">{ artistProfileData.name }</h1>
-                    <img className="icon" src={varified} />
+                    <img className="icon" src={varified} alt='verified'/>
                     </div>
                     <h2 className="location">{ artistProfileData.location }</h2>
                 </div>
                 
                 <div className="stats">
                         <div>
-                            <img className="icon" src={followers} />
+                            <img className="icon" src={followers} alt='followers'/>
                             <p>{ artistProfileData.likes }</p>
                         </div>
 
                         <div>
-                            <img className='icon' src={plays} />
+                            <img className='icon' src={plays} alt='plays'/>
                             <p>{ artistProfileData.plays }</p>
                         </div>
                 </div>

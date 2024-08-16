@@ -1,5 +1,3 @@
-import ArtistProfile from './js/comp/ArtistProfile';
-
 function App() {
 
 
