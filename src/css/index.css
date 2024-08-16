@@ -1,0 +1,99 @@
+/* Defaults*/
+
+:root {
+  --clr-60: #0F0F0F;
+  --clr-40: #090909;
+  --clr-txt-500: #E0D1D1;
+  --clr-txt-900: #FFF;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+@font-face {
+  font-family: font2;
+  src: url(../asset/font2.otf);
+}
+
+* {
+  padding: 0;
+  margin: 0;
+}
+
+html {
+  font-size: 62.5%
+}
+
+/* Font Settings */
+
+h1 {
+  margin-top: calc(0.4rem * 1.618 * 1.618 * 1.618);
+  margin-left: -3px;
+  line-height: 0.9;
+  font-weight: 900;
+  font-size: clamp(calc(48.6641px - 6.540px * 1.618), 13.44vw, calc(48.6641px + 6.540px));
+  color: var(--clr-txt-900);
+}
+
+h2 {
+  /*margin-bottom: calc(0.4rem * 1.618);*/
+  margin-left: -1px;
+  line-height: 1;
+  font-weight: 700;
+  font-size: clamp(calc(25.888px / 1.618), 7.15vw, calc(25.888px));
+  color: var(--clr-txt-900);
+  opacity: .6;
+  /* delete below code after testing*/
+}
+
+h3 {
+  margin-top: calc(0.4rem * 1.618 * 1.618 * 1.618);
+  line-height: 1;
+  font-weight: 600;
+  font-size: clamp(calc(16px / 1.618), 4.42vw, calc(16px));
+  color: var(--clr-txt-500);
+}
+
+h4 {
+  line-height: 1;
+  font-weight: 600;
+  color: var(--clr-txt-500);
+}
+
+p {
+  margin-top: 0.4rem;
+  line-height: 1;
+  font-weight: 500;
+  font-size: clamp(calc(16px / 1.618), 4.42vw, calc(16px));
+  color: var(--clr-txt-500);
+  opacity: 0.7;
+}
+/* move to reset css*/
+img {
+  width: 100%;
+}
+
+/* Body Settings */
+.app {
+  width: 100%;
+}
+body {
+    border: 1px solid #fff;
+    width: 100%;
+    background-color: var(--clr-60);
+    font-size: 1.6rem;
+    font-family: 'font2';
+    /*padding: 10px 20px;*/
+}
+
+.body-2 {
+  padding: 10px 10px;
+}
+
+.body-2 .component-songs {
+  padding: 20px;
+  background-color: var(--clr-40);
+  border-radius: 6px;
+  margin-inline: -20px;
+}
