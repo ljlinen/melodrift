@@ -1,0 +1,67 @@
+/* Profile Css */
+@import url(./artistprofile.css);
+
+.profile-div-main-artist {
+  width: 100%;
+  height: 100vh;
+  background-size: cover;
+  border-radius: 9px;
+/*  background-color: #080808; */
+
+ .wrap-info-about{
+  padding-inline: clamp(20px, 5.55vw, 50px);
+ }
+  
+  .icon {
+    width: clamp(calc(24px / 1.618), 4.23vw, 24px);
+    height: clamp(calc(24px / 1.618), 4.23vw, 24px);
+  }
+  
+  .profile-image {
+    width: 100%;
+    height: 100px;
+    overflow-x: hidden;
+    mask-image: linear-gradient(to bottom, rgb(0 0 0 / 28%), transparent 90%);
+
+    img {
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+    }
+  }
+  
+  .wrap-info-stats {
+    display: flex;
+    flex-flow: row wrap;
+  }
+  
+  .wrap-info-stats .stats {
+    display: flex;
+    align-items: end;
+  }
+  
+  .wrap-info-stats .stats div {
+    display: flex;
+    height: 24px;
+    color: #fff;
+    align-items: center;
+  }
+  
+  .wrap-info-stats .stats div :nth-child(2) {
+    margin-right: 4px;
+  }
+  
+  .wrap-name-varified {
+    display: flex;
+    align-items: center;
+  }
+  
+  .wrap-name-varified img {
+    margin-top: calc(0.4rem * 1.618 * 1.618 * 1.618);
+    opacity: .7;
+  }
+
+  .about {
+    max-width: 320px;
+  }
+}
