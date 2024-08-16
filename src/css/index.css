@@ -79,7 +79,6 @@ img {
   width: 100%;
 }
 body {
-    border: 1px solid #fff;
     width: 100%;
     background-color: var(--clr-60);
     font-size: 1.6rem;

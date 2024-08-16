@@ -42,7 +42,7 @@ export default function ArtistProfile() {
             setError('Error fetching artist data: ' + err.toString());
         });
 
-    })
+    }, [params.username])
 
     if(!artistProfileData) {
         return (

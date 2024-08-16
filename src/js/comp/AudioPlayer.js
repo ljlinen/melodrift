@@ -13,9 +13,6 @@ export default function AudioPlayer( { SongData }) {
    const [duration, setDuration] = useState(0);
 
    console.log(currentTime);
-   
-
-  
 
   useEffect(() => {
     const audio = audioRef.current;
