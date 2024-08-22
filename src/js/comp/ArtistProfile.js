@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import './css/artistprofile.css'
 import varified from '../../asset/img/icon/verified.svg'
 import plays from '../../asset/img/icon/play.svg'
 import search from '../../asset/img/icon/search.svg'
 import followers from '../../asset/img/icon/followers.svg'
-import { useParams } from 'react-router-dom'
+// import { useParams } from 'react-router-dom'
 import MusicList from './MusicList'
 import { profileData } from '../..'
 
@@ -67,7 +67,7 @@ export default function ArtistProfile() {
 
         <nav>
             <p>Melodrift</p>
-            <img className='i' src={search} />
+            <img className='i' src={search} alt='search' />
         </nav>
 
         <div className="wrap-info-stats">
