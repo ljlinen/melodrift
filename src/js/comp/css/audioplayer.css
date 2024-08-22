@@ -1,20 +1,22 @@
   
-  /* Move css to component's css file in react */
+  /* root variables for specific component */
+
+  :root {
+     /* note: color format rgba() gets added later when color variable is being used */
+    --clr-main: 140, 134, 134;
+    --clr-icon: 95, 95, 95;
+  }
   
   .audioplayer-div-main-song {
-    /*margin-top: 50px;*/
-    /*delete above code when moving to react*/
+    padding: 7.33px;
     display: flex;
-    height: 70px;
+    height: 61.33px;
     width: 100%;
-    border-radius: 9px;
-    background-color: #090909;
-    border: 1px solid #9494941C;
+    border-radius: 5.83px;
+    border: 0.67px solid rgba(var(--clr-main), 0.1);
     overflow: hidden;
-    
-    /* remove below later*/
-    margin-block: 5px;
-    
+    align-items: center;
+    margin-block: 10px;
   }
   
   .ap-div-cover {
@@ -22,8 +24,9 @@
     position: relative;
     justify-content: center;
     align-items: center;
-    max-width: 70px;
-    border-radius: 9px;
+    max-width: 49.67px;
+    height: 49.67px;
+    border-radius: 3px;
     overflow: hidden;
     transition: filter .3s ease-out;
   }
@@ -35,11 +38,12 @@
     position: relative;
     filter: brightness(.5);
     object-fit: cover;
+    height: 100%;
   }
   
   .ap-div-cover .ap-img-playpauseicon {
     position: absolute;
-    width: 40px;
+    width: 27.33px;
     filter: brightness(1.5);
     transition: transform .3s ease-out;
   }
@@ -48,18 +52,75 @@
   }
   
   .ap-div-info {
-    padding: 10px 6px;
-    width: 40%;
-  }
-
-  .ap-div-info .name,
-  .ap-div-info .title {
-    max-height: 16px;
+    display: flex;
+    flex-direction: column;
+    padding-block: 16px;
+    margin-inline: 7px;
+    align-items: center;
+    width: 50%;
     overflow: hidden;
   }
 
+.ap-div-info {
+  .artist {
+    font-size: 1.4rem;
+  }
+
+  .name {
+    display: inline-block;
+    font-size: 1.267rem;
+    max-height: 12.67px;
+    overflow: hidden;
+    animation: slideRigtInfinite 10s linear infinite;
+  }
+}
+
+@keyframes slideRigtInfinite {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(-100%);
+  }
+}
+
+.ap-div-icons {
+  display: flex;
+  align-items: center;
+  flex: 1;
+  justify-content: flex-end;
+}
+
+.ap-div-icons .plays {
+  display: flex;
+  margin-right: 17px;
+  align-items: center;
+  gap: 2px;
+  
+  img {
+    height: 10.67px;
+    width: 10.67px;
+  }
+  p {
+    margin-top: unset;
+    font-size: 10.67px;
+  }
+}
+
+.ap-div-icons .like-share {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+
+  img {
+    height: 16.67px;
+    width: 16.67px;
+  }
+}
+
   
 .progress-bar {
+  display: none;
   margin-top: 6px;
   width: 100%;
   height: 5px;
@@ -71,6 +132,7 @@
 }
 
 .progress {
+  display: none;
   height: 100%;
   background-color: var(--clr-60);
 }

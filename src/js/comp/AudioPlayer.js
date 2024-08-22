@@ -2,6 +2,8 @@ import React, { useEffect, useRef, useState } from 'react'
 import './css/audioplayer.css'
 import play from '../../asset/img/icon/play.svg'
 import pause from '../../asset/img/icon/pause.svg'
+import like from '../../asset/img/icon/like.svg'
+import share from '../../asset/img/icon/share.svg'
 
 export default function AudioPlayer( { SongData }) {
    console.log(SongData);
@@ -75,10 +77,21 @@ export default function AudioPlayer( { SongData }) {
           <h4 className="artist">{ SongData.artist }</h4>
           <p className="name">{ SongData.title }</p>
           <div className="progress-bar" onClick={handleProgressClick}>
-            <div className="progress"
-               style={{ width: `${progress}%` }}>
+            <div className="progress" style={{ width: `${progress}%` }}>
             </div>
           </div>
+       </div>
+
+       <div className='ap-div-icons'>
+        <div className='plays'>
+          <img src={play} />
+          <p>{ SongData.likes }</p>
+        </div>
+
+        <div className='like-share'>
+          <img src={share} />
+          <img src={like} />
+        </div>
        </div>
     </div>
   )
