@@ -84,13 +84,13 @@ export default function AudioPlayer( { SongData }) {
 
        <div className='ap-div-icons'>
         <div className='plays'>
-          <img src={play} />
+          <img src={play} alt='play' />
           <p>{ SongData.likes }</p>
         </div>
 
         <div className='like-share'>
-          <img src={share} />
-          <img src={like} />
+          <img src={share} alt='share' />
+          <img src={like} alt='like' />
         </div>
        </div>
     </div>
