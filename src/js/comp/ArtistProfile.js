@@ -58,12 +58,7 @@ export default function ArtistProfile() {
 
   return (
     <div className="profile-div-main-artist">
-    <div className='wrap-info-about' 
-        style={{
-            background: `linear-gradient(rgba(0, 0, 0, .2), rgba(0, 0, 0, .5), rgba(0, 0, 0, .5)), url(${profileData.cover})`,
-            backgroundPosition: 'center',
-            backgroundRepeat: 'no-repeat',
-        }}>
+    <div className='wrap-info-about'>
 
         <nav>
             <p>Melodrift</p>
@@ -95,11 +90,16 @@ export default function ArtistProfile() {
             <div className="about">
                 <input type='button' value='play all' />
             </div>
+
+            <div className='background'>
+                <div className='background-color' />
+                <div className='background-color-two' />
+                <img  alt='background' src={profileData.cover} />
+            </div>
         </div>
 
         <MusicList MusicListData={[artistMusicData[0]]} listTitle={'pinned song'} />
         {/* <MusicList MusicListData={artistMusicData} listTitle={'all music'}/> */}
-
     </div>
   )
 }
