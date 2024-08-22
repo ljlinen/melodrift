@@ -55,7 +55,7 @@ h2 {
   /*margin-bottom: calc(0.4rem * 1.618);*/
   margin-left: -1px;
   line-height: 1;
-  font-family: mainfont;
+  font-family: main-light;
   font-size: 16px;
   color: rgba(var(--clr-main), 1);
   /* delete below code after testing*/
