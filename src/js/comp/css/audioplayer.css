@@ -56,8 +56,7 @@
     flex-direction: column;
     padding-block: 16px;
     margin-inline: 7px;
-    align-items: center;
-    width: 50%;
+    /* width: 50%; */
     overflow: hidden;
   }
 
@@ -71,18 +70,17 @@
     font-size: 1.267rem;
     max-height: 12.67px;
     overflow: hidden;
-    animation: slideRigtInfinite 10s linear infinite;
   }
 }
 
-@keyframes slideRigtInfinite {
+/* @keyframes slideRigtInfinite {
   from {
     transform: translateX(100%);
   }
   to {
     transform: translateX(-100%);
   }
-}
+} */
 
 .ap-div-icons {
   display: flex;
