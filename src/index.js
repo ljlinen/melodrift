@@ -6,7 +6,7 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import ArtistProfile from './js/comp/ArtistProfile';
 import LoginSignupPage from './js/comp/LoginSignupPage';
 
-export const baseUrl = 'https://melodriftbackend.siphomoloto0.workers.dev';
+export const baseUrl = 'https://melodriftbackend.linendev.workers.dev';
 
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
