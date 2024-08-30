@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { createContext, useContext, useState } from 'react';
 import ReactDOM from 'react-dom/client';
 import './css/index.css';
 import reportWebVitals from './reportWebVitals';
@@ -6,12 +6,15 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import ArtistProfile from './js/comp/ArtistProfile';
 import LoginSignupPage from './js/comp/LoginSignupPage';
 
-export const baseUrl = 'https://melodriftbackend.siphomoloto0.workers.dev';
-
+export const baseUrl = 'http://localhost:8787';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 const router = createBrowserRouter([{
   path: '/',
+  element: <LoginSignupPage />
+},
+{
+  path: '/login',
   element: <LoginSignupPage />
 },
 {
@@ -24,7 +27,9 @@ const router = createBrowserRouter([{
   element: <ArtistProfile />
 }
 ])
+
 root.render(
+
   <React.StrictMode>
     <RouterProvider router={router} />
   </React.StrictMode>

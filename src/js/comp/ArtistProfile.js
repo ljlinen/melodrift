@@ -10,6 +10,7 @@ import { useLocation } from 'react-router-dom'
 import MusicList from './MusicList'
 import ErrorPage from './ErrorPage'
 import { baseUrl } from '../..'
+import Dialog from './Dialog'
 
 export default function ArtistProfile() {
 
@@ -19,7 +20,43 @@ export default function ArtistProfile() {
     const [searching, setSearching] = useState()
     const [error, setErrorMessage] = useState();
     const location = useLocation();
-    const { loggedInData } = location.state || {}
+    // const { loggedInData } = location.state || {}
+
+    const loggedInData = {
+
+            username: undefined,
+            name: undefined,
+            email: undefined,
+            phone: undefined,
+            password: undefined,
+            cover: "https://i.pinimg.com/736x/c0/9b/3f/c09b3fcbc73790a6dc94eead8739bd7d.jpg",
+            location: "",  
+            likes: "0",
+            plays: "0",
+            Image: "link",
+
+            music: {
+                pinned: "",
+                all: [],
+        }
+    }
+
+    const [dialog, setDialog] = useState({
+  
+            heading: undefined,
+            message: undefined,
+        
+            negative: {
+            value: undefined,
+            callback: undefined
+            },
+        
+            positive: {
+            value: undefined,
+            callback: undefined,
+            }
+    })
+
     let dataAvailable = false;
 
     if(loggedInData.hasOwnProperty('username')) {
@@ -50,7 +87,14 @@ export default function ArtistProfile() {
                     }
                     
                 } else {
-                    setErrorMessage('Error getting profile')
+                    setDialog({
+                        heading: 'Error Getting Profile',
+                        message: 'profile does not found',
+                        positive: {
+                            value: 'Okay',
+                            callback: null
+                        }
+                    })
                 }
             }).catch((err) => {
                 setErrorMessage(error)
@@ -69,8 +113,13 @@ export default function ArtistProfile() {
 
   return (
     <div className="profile-div-main-artist">
+    {<Dialog 
+        heading={dialog.heading}
+        message={dialog.message}
+        negative={dialog.negative}
+        positive={dialog.positive}
+        />}
     <div className='wrap-info-about'>
-
         <nav>
             <p>Melodrift</p>
             <div className='nav-div-search'>

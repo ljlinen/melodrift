@@ -3,6 +3,7 @@ import './css/loginsignuppage.css'
 import { baseUrl } from '../..'
 import { useNavigate } from 'react-router-dom'
 import defualtBackground from '../../asset/img/defaultBackground.png'
+import Dialog from './Dialog'
 
 export default function LoginSignupPage() {
 
@@ -17,6 +18,25 @@ export default function LoginSignupPage() {
             infoCode: undefined,
             infoMessage: undefined,
         })
+
+    const defaultFunc = () => {console.log('okay')}
+
+    
+    const [dialog, setDialog] = useState({
+
+        heading: undefined,
+        message: undefined,
+    
+        negative: {
+        value: undefined,
+        func: undefined,
+        },
+    
+        positive: {
+        value: undefined,
+        func: undefined,
+        }
+    })
 
     const [loginData, setLoginData] = useState({
             username: undefined,
@@ -119,7 +139,15 @@ export default function LoginSignupPage() {
                 navigate('/artist', { state: { loggedInData: result } });
             }
             console.log(result);
+            
         }).catch((error) => {
+            setDialog({
+                heading: 'Error Logging In',
+                message: 'Check your network',
+                positive: {
+                    value: 'Okay',
+                    callback: undefined,
+            }});
             console.log(error); 
         })
     }
@@ -152,6 +180,15 @@ export default function LoginSignupPage() {
 
     return (
         <div className="loginsignup-div-main">
+        {
+            dialog.heading && <Dialog
+                heading={dialog.heading}
+                message={dialog.message}
+                negative={dialog.negative}
+                positive={dialog.positive}
+                />
+        }
+
             <div className='login-div-main'>
         
                 <nav onClick={() => {setLoginTabOpen(true)}}>
