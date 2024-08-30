@@ -1,60 +1,71 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import './css/artistprofile.css'
+
 import varified from '../../asset/img/icon/verified.svg'
 import plays from '../../asset/img/icon/play.svg'
 import search from '../../asset/img/icon/search.svg'
+import cancel from '../../asset/img/icon/cancel.svg'
 import followers from '../../asset/img/icon/followers.svg'
-// import { useParams } from 'react-router-dom'
+import { useLocation } from 'react-router-dom'
 import MusicList from './MusicList'
-import { profileData } from '../..'
+import ErrorPage from './ErrorPage'
+import { baseUrl } from '../..'
 
 export default function ArtistProfile() {
 
-    const artistProfileData = profileData
-    const artistMusicData = profileData.music.all;
-
-    // const backendUrl = 'https://a9e7282d-ca17-46e2-b218-fdc87b0bc12d-00-3iuxzll2fs6qt.kirk.replit.dev/artist/'
     // const params = useParams();
-    // const [artistProfileData, setArtistProfileData] = useState();
-    // const [artistMusicData, setArtistMusicData] = useState();
-    // const [error, setError] = useState();
-    
+    const [artistProfileData, setArtistProfileData] = useState();
+    const [artistMusicData, setArtistMusicData] = useState();
+    const [searching, setSearching] = useState()
+    const [error, setErrorMessage] = useState();
+    const location = useLocation();
+    const { loggedInData } = location.state || {}
+    let dataAvailable = false;
 
-    // useEffect(() => {
-    //     fetch(backendUrl + params.username)
-    //     .then((resp) => {
-    //         if (resp.status === 404) {
-    //             console.log('responded with 404');
-    //             return resp.text()
-    //         } else if (resp.status === 200) {
-    //             console.log('responded with 200');
-    //             return resp.json();
-    //         }
-    //     })
-    //     .then((res) => {
-    //         if(typeof res == 'string') {
-    //             console.log('parsed response: ', res);
-    //         } else {
-    //             setArtistProfileData(res);
-    //             setArtistMusicData(res.music.all);            
-    //         }
+    if(loggedInData.hasOwnProperty('username')) {
+        dataAvailable = true;
+    }
 
-    //         console.log(res);
-    //     })
-    //     .catch((err) => {
-    //         console.log(err);
-    //         setError('Error fetching artist data: ' + err.toString());
-    //     });
+    useEffect(() => {
 
-    // }, [params.username])
+        if(dataAvailable){
+            setArtistProfileData(loggedInData);
+            setArtistMusicData(loggedInData['music']['all']);   
+        } else {
+            fetch(baseUrl + '/account/signup/available', {
+                method: 'PUT',
+                body: JSON.stringify(loggedInData),
+                headers: {
+                    'Content-Type': 'application/json',
+                }    
+            }).then((response) => {
+                if(response.status === 200) {
+                    return response.json()
+                }
+            }).then((result) => {
+                if(result.hasOwnProperty('username')) {
+                    setArtistProfileData(result);
+                    if(result.hasOwnProperty('music')) {
+                        // setArtistMusicData(result.music.all);
+                    }
+                    
+                } else {
+                    setErrorMessage('Error getting profile')
+                }
+            }).catch((err) => {
+                setErrorMessage(error)
+                throw err
+            })
+        }
 
-    // if(!artistProfileData) {
-    //     return (
-    //         <div className="profile-div-main-artist">
-    //             <p> {error} </p>
-    //         </div>
-    //     )
-    // }
+
+    }, [dataAvailable, loggedInData, error])
+
+    if(!artistProfileData) {
+        return (
+            <ErrorPage errorMessage={error} />
+        )
+    }
 
   return (
     <div className="profile-div-main-artist">
@@ -62,7 +73,18 @@ export default function ArtistProfile() {
 
         <nav>
             <p>Melodrift</p>
-            <img className='i' src={search} alt='search' />
+            <div className='nav-div-search'>
+                <input style={{display: searching ? 'unset' : 'none'}} onFocus={() => setSearching(true)} className='input-search' type='text' />
+                <div className={searching ?'search-div-result-list slideDown' : 'search-div-result-list'}>
+                    {
+                    searching ?
+                    <p>searching</p>
+                    : 
+                    <p>not searching</p>
+                    }
+                </div>
+                <img  onClick={() => setSearching(!searching)} className='i nav-img-search' src={searching ? cancel : search} alt='search' />                
+            </div>
         </nav>
 
         <div className="wrap-info-stats">
@@ -94,12 +116,12 @@ export default function ArtistProfile() {
             <div className='background'>
                 <div className='background-color' />
                 <div className='background-color-two' />
-                <img  alt='background' src={profileData.cover} />
+                <img  alt='background' src={artistProfileData.cover} />
             </div>
         </div>
 
-        <MusicList MusicListData={[artistMusicData[0]]} listTitle={'pinned song'} />
-        {/* <MusicList MusicListData={artistMusicData} listTitle={'all music'}/> */}
+        {/* <MusicList MusicListData={artistMusicData} listTitle={'pinned song'} /> */}
+        <MusicList MusicListData={artistMusicData} listTitle={'all music'}/>
     </div>
   )
 }

@@ -99,14 +99,3 @@ body {
     font-family: mainfont;
     /*padding: 10px 20px;*/
 }
-
-.body-2 {
-  padding: 10px 10px;
-}
-
-.body-2 .component-songs {
-  padding: 20px;
-  background-color: var(--clr-40);
-  border-radius: 6px;
-  margin-inline: -20px;
-}

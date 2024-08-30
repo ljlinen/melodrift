@@ -1,5 +1,4 @@
 /* Profile Css */
-@import url(./artistprofile.css);
 
 .profile-div-main-artist {
   width: 100%;
@@ -29,6 +28,63 @@
     height: 29.67px;
     width: 29.67px;
   }
+
+  .nav-div-search {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    position: relative;
+  }
+
+  .input-search {
+
+    font-family: mainfont;
+    height: 28px;
+    background-color: rgba(0,0,0, .8);
+    border: 1px solid rgba(var(--clr-main), .5);
+    border-radius: 3px;
+    padding: 3px 6px;
+    color: #ffffff7a;
+  }
+
+  .input-search:focus {
+    outline: none;
+    border: 1px solid rgba(var(--clr-main), .5);
+  }
+
+  .search-div-result-list {
+    height: 0;
+    width: 100%;
+    background-color: rgba(0,0,0, .8);
+    border: 1px solid rgba(var(--clr-main), .5);
+    position: absolute;
+    z-index: 5;
+    transition: .6s;
+    top: 34px;
+    border-radius: 3px;
+    opacity: 0;
+  }
+
+  .nav-img-search {
+    position: relative;
+  }
+
+  .slideDown {
+    opacity: 1;
+    height: 180px;
+  }
+  
+  @keyframes slideDown {
+    from {
+      opacity: 0;
+      transform: translateY(-100%);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
 
   .wrap-info-about {
     display: flex;
@@ -86,7 +142,7 @@
   .wrap-info-stats .stats div {
     display: flex;
     height: 24px;
-    color: #fff;
+    color: rgba(var(--clr-main), 1);
     align-items: center;
   }
   
@@ -116,11 +172,12 @@
     min-height: 26.67px;
     width: 75.67px;
     outline: none;
-    color: rgba(var(--clr-main), 1);
+    background-color: rgba(var(--clr-main), 1);
+    color: transparent;
     font-size: 17.33px;
     text-transform: capitalize;
     border-radius: 3px;
     border: 2.57px solid rgba(var(--clr-main), 1);
-    background-color: transparent;
+    color: #000;
   }
 }

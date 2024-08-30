@@ -1,0 +1,132 @@
+/* Profile Css */
+  
+  /* root variables for specific component */
+
+  :root {
+    /* note: color format rgba() gets added later when color variable is being used */
+   --clr-main: 140, 134, 134;
+ }
+
+.loginsignup-div-main {
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+    background-color: #212121;
+   
+    nav {
+      display: flex;
+      align-items: center;
+      min-height: 10vh;
+      padding-inline: clamp(20px, 5.55vw, 50px);
+      justify-content: space-between;
+      z-index: 10;
+    }
+  
+    nav p {
+        font-size: 17.33px;
+        transition: filter .6s ease-in;
+      }
+
+    nav .logo {
+      font-family: logo;
+      font-size: 21.33px;
+    }
+    
+  
+    .login-background {
+      width: 100%;
+      height: 100%;
+      position: absolute;
+      z-index: 0;
+      pointer-events: none;
+    }
+  
+    .login-background .background-color {
+      width: 100%;
+      height: 100%;
+      position: absolute;
+      z-index: 1;
+      background: linear-gradient(to bottom, rgba(0, 0, 0, 0.2) 0%, rgba(0, 0, 0, 0.5) 60%, rgba(0, 0, 0, 1) 100%);
+      pointer-events: none;
+    }
+    .login-background .background-color-two {
+      width: 100%;
+      height: 100%;
+      position: absolute;
+      z-index: 1;
+      /* background: rgba(10, 10, 10, .3); */
+    }
+    .login-background img {
+      position: absolute;
+      background-position: center;
+      object-position: center;
+      object-fit: cover;
+      width: 100%;
+      height: 100%;
+      opacity: 0;
+      z-index: 0;
+      filter: opacity(0.4);
+      pointer-events: none;
+      transition: 9s ease;
+    }
+
+    .login-div-main,
+    .signup-div-main {
+        display: flex;
+        flex-direction: column;
+        position: relative;
+        overflow: hidden;
+        background: rgba(10, 10, 10, .3);
+    }
+
+    .login-div-inputswrapper,
+    .signup-div-inputswrapper {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        width: 100%;
+        height: 0;
+        justify-content: center;
+        overflow: hidden;
+        transition: height .9s cubic-bezier(0.22, 0.61, 0.36, 1), opacity .3s ease-out;
+    }
+
+    .div-inputwrap {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+        width: 100%;
+        max-width: 295px;
+    }
+
+    .div-inputwrap p {
+        font-size: 14px;
+        width: 100%;
+        color: rgba(var(--clr-main), .6);
+    }
+
+    .div-inputwrap input {
+        height: 40px;
+        border: 1px solid rgba(var(--clr-main), .5);
+        border-radius: 5px;
+        width: 100%;
+        background-color: transparent;
+        color: rgba(var(--clr-main), .8);
+        padding-inline: 6px;
+    }
+
+    .signup-button,
+    .login-button {
+        margin-top: 18px;
+        font-family: main-bold;
+        border-radius: 5px;
+        padding: 8px 22px;
+        background-color: #fff;
+        font-size: 14.33px;
+        color: #000;
+    }
+
+    .footer-div-main {
+        display: none;
+    }
+}
