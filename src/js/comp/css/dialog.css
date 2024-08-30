@@ -1,0 +1,51 @@
+.dialog-div-main {
+    display: none;
+    height: 100%;
+    width: 100%;
+    display: flex;
+    position: fixed;
+    backdrop-filter: brightness(.2);
+    z-index: 8;
+  }
+
+  .dialog-div-main dialog {
+    display: flex;
+    flex-direction: column;
+    height: 0;
+    position: fixed;
+    max-width: 250px;
+    border: none;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    border: none;
+    transition: opacity .6s;
+    opacity: 0;
+    background-color: #222222;
+    padding: 20px;
+    border-radius: 6px;
+    gap: 10px;
+  }
+
+  .dialog-div-main dialog h3 {
+    margin-top: unset;
+    font-size: 17.33px;
+  }
+
+  .dialog-div-main dialog h4 {
+    font-size: 14px;
+    opacity: .6;
+  }
+
+  .dialog-div-main dialog .dialog-div-buttons{
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .dialog-div-main dialog input {
+    font-size: 17.33px;
+    font-family: mainfont;
+    color: rgba(var(--clr-main), 1);
+    background-color: transparent;
+    border: none;
+  }
