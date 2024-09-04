@@ -4,19 +4,44 @@ import play from '../../asset/img/icon/play.svg'
 import pause from '../../asset/img/icon/pause.svg'
 import like from '../../asset/img/icon/like.svg'
 import share from '../../asset/img/icon/share.svg'
+import { baseUrl } from '../..'
 
-export default function AudioPlayer( { SongData }) {
-   console.log(SongData);
+export default function AudioPlayer( { SongInfo, i}) {
    
+   const [SongData, setSongData] = useState()
    const audioRef = useRef(null);
    const [isPlaying, setIsPlaying] = useState(false);
    const [progress, setProgress] = useState(0);
    const [currentTime, setCurrentTime] = useState(0);
    const [duration, setDuration] = useState(0);
 
-   console.log(currentTime);
-
   useEffect(() => {
+
+    fetch(baseUrl + '/song/' + SongInfo[i + 1])
+      .then((res) => { 
+        if(res.ok) {
+          return res.json()
+        } else {
+          throw res.json()
+        }
+      })
+      .then((res) => {
+        if(res['success'] === true && res['data']) {
+          const base64Audio = res.data.file
+          res.data['file'] = `data:audio/mp3;base64,${base64Audio}`;
+          setSongData(res.data)
+        } else {
+          throw res['message']
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      })
+
+      console.log(SongData);
+
+
+  if(audioRef.current) { 
     const audio = audioRef.current;
 
     const updateProgress = () => {
@@ -30,12 +55,17 @@ export default function AudioPlayer( { SongData }) {
 
     audio.addEventListener('timeupdate', updateProgress);
     audio.addEventListener('loadedmetadata', loadMetadata);
+  }
 
-    return () => {
-      audio.removeEventListener('timeupdate', updateProgress);
-      audio.removeEventListener('loadedmetadata', loadMetadata);
-    };
-  }, []);
+    // return () => {
+    //   if(audioRef.current) {
+    //     const audio = audioRef.current;
+    //     audio.removeEventListener('timeupdate', updateProgress)
+    //     audio.removeEventListener('loadedmetadata', loadMetadata);
+    //   }
+
+    // };
+  }, [SongInfo, SongData, i]);
 
   const togglePlayPause = () => {
     const audio = audioRef.current;
@@ -49,6 +79,8 @@ export default function AudioPlayer( { SongData }) {
   };
 
   const startSong = () => {
+  console.log(currentTime);
+  
    audioRef.current.currentTime = 0;
    setIsPlaying(true);
  };
@@ -64,9 +96,9 @@ export default function AudioPlayer( { SongData }) {
 
   return (
     //  audio player component
-    <div className="audioplayer-div-main-song">
+    SongData && <div className="audioplayer-div-main-song">
       <audio   ref={audioRef}>
-         <source src={ SongData.audio } type="audio/mpeg" />
+         <source src={ SongData.file } type="audio/mpeg" />
       </audio>
        <div onClick={togglePlayPause} className="ap-div-cover">
           <img className="ap-img-cover" src={ SongData.cover } alt="cover" />

@@ -1,25 +1,33 @@
-import React, { createContext, useContext, useState } from 'react';
-import ReactDOM from 'react-dom/client';
+import React from 'react';
 import './css/index.css';
+
+import ReactDOM from 'react-dom/client';
 import reportWebVitals from './reportWebVitals';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import ArtistProfile from './js/comp/ArtistProfile';
 import LoginSignupPage from './js/comp/LoginSignupPage';
+import AudioUploader from './js/comp/AudioUploader';
 
-export const baseUrl = 'http://localhost:8787';
+export const baseUrl = 'https://melodriftbackend.linendev.workers.dev';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 const router = createBrowserRouter([{
   path: '/',
+  // below you test elements, remove them and uncomment the comented element when done.
   element: <LoginSignupPage />
+  // element: <MusicList />
 },
 {
   path: '/login',
   element: <LoginSignupPage />
 },
 {
-  path: '/artist',
+  path: '/profile/:username',
   element: <ArtistProfile />,
+  children: [{
+    path: '/profile/:username/upload',
+    element: <AudioUploader />,
+  }],
   errorElement: <h2>Artist Not Found</h2>
 },
 {
