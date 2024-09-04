@@ -1,42 +1,37 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import './css/loginsignuppage.css'
 import { baseUrl } from '../..'
 import { useNavigate } from 'react-router-dom'
-import defualtBackground from '../../asset/img/defaultBackground.png'
-import Dialog from './Dialog'
 
 export default function LoginSignupPage() {
 
     const [loginTabOpen, setLoginTabOpen] = useState(true)
     // const [usernameAvailable, setUsernameAvailable] = useState()
     const [userProfilePhoto, setUserProfilePhoto] = useState()
-    let prevUserProfilePhoto = userProfilePhoto;
     
     const navigate = useNavigate()
-
+    const [pageActive, setPageActive] = useState(false)
     const [infoMessage, setInfoMessage] = useState({
             infoCode: undefined,
             infoMessage: undefined,
         })
 
-    const defaultFunc = () => {console.log('okay')}
+    
+    // const [dialog, setDialog] = useState({
 
+    //     heading: undefined,
+    //     message: undefined,
     
-    const [dialog, setDialog] = useState({
-
-        heading: undefined,
-        message: undefined,
+    //     negative: {
+    //     value: undefined,
+    //     func: undefined,
+    //     },
     
-        negative: {
-        value: undefined,
-        func: undefined,
-        },
-    
-        positive: {
-        value: undefined,
-        func: undefined,
-        }
-    })
+    //     positive: {
+    //     value: undefined,
+    //     func: undefined,
+    //     }
+    // })
 
     const [loginData, setLoginData] = useState({
             username: undefined,
@@ -46,20 +41,24 @@ export default function LoginSignupPage() {
     const [signupData, setSignupData] = useState({
             username: undefined,
             name: undefined,
-            email: undefined,
-            phone: undefined,
-            password: undefined,
             cover: "https://i.pinimg.com/736x/c0/9b/3f/c09b3fcbc73790a6dc94eead8739bd7d.jpg",
-            location: "",  
-            likes: "0",
-            plays: "0",
-            Image: "link",
+            location: "",
+            email: undefined,
+            password: undefined,
 
             music: {
                 pinned: "",
                 all: [],
           }
 })
+
+useEffect(() => {
+    setPageActive(true)
+
+    return () => {
+        setPageActive(false)
+    }
+}, [])
 
     const setDataObject = (setobject, key, value, minlength) => {
         
@@ -104,15 +103,14 @@ export default function LoginSignupPage() {
 
     const fetchUserProfilePhoto = () => {
         
-        fetch(baseUrl + '/artist/' + loginData.username, {
+        fetch(baseUrl + '/profile/' + loginData.username, {
             method: 'GET',
         }).then((response) => {
             if(response.status === 200) {
                 return response.json()
             }
         }).then((result) => {
-            typeof result === 'object' ? setUserProfilePhoto(result.cover) : setUserProfilePhoto(false);
-            console.log(result);
+            result['cover'] ? setUserProfilePhoto(result.cover) : setUserProfilePhoto(false);
         }).catch((error) => {
             console.log(error); 
         })
@@ -121,7 +119,7 @@ export default function LoginSignupPage() {
     const Login = () => {
         
         
-        fetch(baseUrl + '/artist', {
+        fetch(baseUrl + '/profile', {
             method: 'PUT',
             body: JSON.stringify(loginData),
             headers: {
@@ -136,18 +134,19 @@ export default function LoginSignupPage() {
             }
         }).then((result) => {
             if(result.hasOwnProperty('username')) {
-                navigate('/artist', { state: { loggedInData: result } });
+                console.log(result, 'pasing result');
+                setPageActive(false)
+                navigate('/profile/null', { state: { loggedInData: result } });
             }
-            console.log(result);
             
         }).catch((error) => {
-            setDialog({
-                heading: 'Error Logging In',
-                message: 'Check your network',
-                positive: {
-                    value: 'Okay',
-                    callback: undefined,
-            }});
+            // setDialog({
+            //     heading: 'Error Logging In',
+            //     message: 'Check your network',
+            //     positive: {
+            //         value: 'Okay',
+            //         callback: undefined,
+            // }});
             console.log(error); 
         })
     }
@@ -179,30 +178,33 @@ export default function LoginSignupPage() {
 
 
     return (
-        <div className="loginsignup-div-main">
-        {
+        <div className="loginsignup-div-main"
+            style={{opacity: pageActive ? 1 : 0}}
+        >
+        {/* {
             dialog.heading && <Dialog
                 heading={dialog.heading}
                 message={dialog.message}
                 negative={dialog.negative}
                 positive={dialog.positive}
                 />
-        }
+        } */}
 
             <div className='login-div-main'>
-        
-                <nav onClick={() => {setLoginTabOpen(true)}}>
+                <nav>
                     <div className='nav-div-heading'>
-                        <p>Login to</p>
+                        <p>{ loginTabOpen ? 'Signup To' : 'Login To'}</p>
                         <p className='logo'>Melodrift</p>
                     </div>
 
-                    <p>{ loginTabOpen ? 'skip' : 'or'}</p>
+                    <p className='p-button' onClick={() => {setLoginTabOpen(!loginTabOpen)}}>{loginTabOpen ? 'Signup' : 'Login'}</p>
                 </nav>
+
+
 
                 <div className='login-div-inputswrapper'
                         style={{
-                            height: loginTabOpen ? '80vh' : 0,
+                            minHeight: loginTabOpen ? '90vh' : 0,
                             opacity: loginTabOpen ? '1' : 0,
                         }}>
 
@@ -238,35 +240,23 @@ export default function LoginSignupPage() {
                         onClick={Login}
                     />
                 </div>
-        
+
                 <div className='login-background'>
                     <div className='background-color' />
                     <div className='background-color-two' />
-                    <img className='background-image'  alt='background' 
-                        src={userProfilePhoto ? prevUserProfilePhoto && userProfilePhoto : defualtBackground}
+                    {userProfilePhoto && <img className='background-image'  alt='background' 
+                        src={userProfilePhoto ? userProfilePhoto : undefined}
                         // onError={() => set(false)}
                         style={{opacity: userProfilePhoto ? 1 : 0}}
-                        />
+                        />}
 
                 </div>
             </div>
 
-            <div className='signup-div-main'>
-        
-        <nav onClick={() => {setLoginTabOpen(false)}}>
-            <div className='nav-div-heading'>
-                <p>Signup for</p>
-                <p className='logo'>Melodrift</p>
-            </div>
-
-            <p style={{filter: loginTabOpen ? 'contrast(.6)' : 'contrast(1)'}}>
-                { !loginTabOpen ? 'skip' : 'or'}
-            </p>
-        </nav>
-
+    <div className='signup-div-main'>
         <div className='signup-div-inputswrapper' 
                 style={{
-                    height: !loginTabOpen ? '80vh' : 0,
+                    minHeight: !loginTabOpen ? '90vh' : 0,
                     opacity: !loginTabOpen ? '1' : 0,
                     }}>
             <p className='signup-p-infomsg'>{infoMessage.infoMessage}</p>
@@ -293,18 +283,18 @@ export default function LoginSignupPage() {
             </div>
 
             <div className='div-inputwrap'>
-                <p>email</p>
-                <input type='email'
-                    onChange={(e) =>{setDataObject(setSignupData, 'email', e.target.value, 3)}}
-                    style={{border: signupData.email ? 'initial' : '1px solid red'}}
+                <p>country and province/state</p>
+                <input type='text'
+                    style={{border: signupData.location ? 'initial' : '1px solid red'}}
+                    onChange={(e) => {setDataObject(setSignupData, 'location', e.target.value, 9)}}
                 />
             </div>
 
             <div className='div-inputwrap'>
-                <p>phone</p>
-                <input type='tel'
-                    style={{border: signupData.phone ? 'initial' : '1px solid red'}}
-                    onChange={(e) => {setDataObject(setSignupData, 'phone', e.target.value, 9)}}
+                <p>email</p>
+                <input type='email'
+                    onChange={(e) =>{setDataObject(setSignupData, 'email', e.target.value, 3)}}
+                    style={{border: signupData.email ? 'initial' : '1px solid red'}}
                 />
             </div>
 
@@ -321,7 +311,7 @@ export default function LoginSignupPage() {
                         signupData.username && 
                         signupData.name &&
                         signupData.email &&
-                        signupData.phone &&
+                        signupData.location &&
                         signupData.password
                     ) ? false : true
                 }
@@ -330,14 +320,14 @@ export default function LoginSignupPage() {
                         signupData.username && 
                         signupData.name &&
                         signupData.email &&
-                        signupData.phone &&
+                        signupData.location &&
                         signupData.password
                     ) ? 'revert' : 'gray',
                     color:                     (
                         signupData.username && 
                         signupData.name &&
                         signupData.email &&
-                        signupData.phone &&
+                        signupData.location &&
                         signupData.password
                     ) ? 'black' : 'revert'
                 }}

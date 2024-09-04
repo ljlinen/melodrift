@@ -1,16 +1,16 @@
 :root {
     --clr-bg: 10, 10, 10;
 }
+
 .music-list-div-main {
     padding: clamp(20px, 5.55vw, 50px);
     background-color: rgba(var(--clr-bg), .3);
     border-radius: 6px;
+    transition: opacity .6s ease-in;
 }
 
-.component-songs {
-    
-    h3 {
-        margin-top: 0;
-        margin-bottom: 16px;
-    }
+.icon {
+    height: 24px;
+    width: 24px;
+    opacity: .5;
 }

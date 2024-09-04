@@ -1,9 +1,17 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import './css/errorpage.css'
 
 export default function ErrorPage({ heading, errorMessage }) {
+
+    const [pageActive, setPageActive] = useState();
+
+    useEffect(() => {
+        setPageActive(true)
+    }, [])
     return (
-        <div className="profile-div-main-artist">
+        <div className="profile-div-main-artist"
+            style={{opacity: pageActive ? 1 : 0}}
+        >
         <div className='wrap-info-about'>
             <nav>
                 <p>Melodrift</p>

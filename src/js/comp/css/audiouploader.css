@@ -1,0 +1,102 @@
+  
+  /* root variables for specific component */
+
+  :root {
+    /* note: color format rgba() gets added later when color variable is being used */
+   --clr-main: 140, 134, 134;
+   --clr-icon: 95, 95, 95;
+ }
+ 
+ .au-div-main-audio-uploader {
+   padding: 7.33px;
+   display: flex;
+   flex-direction: column;
+   top: 30vh;
+   min-height: 60vh;
+   width: 100%;
+   border-radius: 5.83px;
+   background-color: #1A1A1A;
+   overflow: hidden;
+   align-items: center;
+   margin-block: 10px;
+   position: absolute;
+   z-index: 10;
+   transition: opacity .6s ease-in;
+ }
+
+ .au-div-heading-and-btn {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 24px;
+ }
+
+ .au-div-upload-inputs {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    padding: 24px;
+    gap: 20px;
+ }
+
+ .div-inputwrap {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  width: 100%;
+  max-width: 295px;
+}
+
+.div-inputwrap p {
+  font-size: 14px;
+  width: 100%;
+  color: rgba(var(--clr-main), .6);
+}
+
+.div-inputwrap input {
+  height: 26px;
+  border: none;
+  outline: none;
+  border-bottom: 1px solid rgba(var(--clr-main), .5);
+  width: 100%;
+  background-color: transparent;
+  color: rgba(var(--clr-main), .8);
+  padding-inline: 6px;
+}
+
+.div-inputwrap input[type="file"] {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 30px;
+  border: none;
+  outline: none;
+  border: 1px solid rgba(var(--clr-main), .5);
+  width: 100%;
+  background-color: transparent;
+  color: rgba(var(--clr-main), .8);
+  padding-inline: 6px;
+}
+
+.div-inputwrap input:focus {
+  border: none;
+  border-bottom: 1px solid rgba(var(--clr-main), .5);
+}
+
+.cancel {
+  display: flex;
+  align-self: self-start;
+  margin: 10px;
+}
+
+@keyframes slideUp {
+ from {
+   opacity: 0;
+   transform: translateY(-100%);
+ }
+ to {
+   opacity: 1;
+   transform: translateY(100%);
+ }
+}

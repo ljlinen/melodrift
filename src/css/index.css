@@ -3,6 +3,7 @@
 
   :root {
     /* note: color format rgba() gets added later when color variable is being used */
+   --clr-dark: 18, 18, 18;
    --clr-main: 140, 134, 134;
    --clr-icon: 95, 95, 95;
  }
@@ -88,13 +89,18 @@ img {
   width: 100%;
 }
 
+.icon {
+  width: clamp(calc(24px / 1.618), 4.23vw, 24px);
+  height: clamp(calc(24px / 1.618), 4.23vw, 24px);
+}
+
 /* Body Settings */
 .app {
   width: 100%;
 }
 body {
     width: 100%;
-    background-color: var(--clr-60);
+    background-color: rgba(var(--clr-dark));
     font-size: 1.6rem;
     font-family: mainfont;
     /*padding: 10px 20px;*/

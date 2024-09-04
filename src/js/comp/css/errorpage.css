@@ -5,6 +5,7 @@
   height: 100vh;
   background-size: cover;
   background-color: #212121;
+  opacity: 0;
   
   .icon {
     width: clamp(calc(24px / 1.618), 4.23vw, 24px);

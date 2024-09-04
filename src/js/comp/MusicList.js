@@ -1,28 +1,59 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import AudioPlayer from './AudioPlayer'
 import './css/musiclist.css'
+import upload from '../../asset/img/icon/upload.svg'
+import { Link } from 'react-router-dom'
 
 
 export default function MusicList( { MusicListData, listTitle} ) {
 
-  if(!MusicListData) {
-    return
-  }
+  const [pageActive, setPageActive] = useState(false)
 
-  const songs = MusicListData;
+  useEffect(() => {
+    setPageActive(true)
+
+    return () => {
+      setPageActive(false)
+    }
+  }, [])
 
   return (
-    <div className='music-list-div-main'>         
-      <div className="component-songs">
-        <h3>  { listTitle } </h3>
-        
-        {songs.map((item, i) => {
-          console.log(songs[i]);
-          
-          return <AudioPlayer key={i} SongData={songs[i]} />
-        })}
-
-      </div>
+    <div className='music-list-div-main'
+      style={{ opacity: pageActive ? 1 : 0 }}
+    >         
+      {MusicListData && <div className="component-MusicListData">
+        <h3>{listTitle}</h3>
+        {
+          MusicListData.length > 0 ? (
+            MusicListData.map((item, i) => (
+              <AudioPlayer key={i} i={i} SongInfo={item} />
+            ))
+          ) : (
+            <Link
+              to={{pathname: '/profile/:username/upload'}}
+              
+              style={
+                {
+                  padding: '7.33px',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  height: '61.33px',
+                  width: '100%',
+                  borderRadius: '5.83px',
+                  border: '0.67px solid rgba(var(--clr-main), 0.1)',
+                  overflow: 'hidden',
+                  alignItems: 'center',
+                  marginBlock: '10px',
+                  backgroundColor: 'rgba(var(--clr-main), 0.06)',
+                }
+              }
+              >
+                <img className='icon' src={upload} alt='upload' />
+                <p>upload music</p>
+            </Link>
+          )
+        }
+      </div>}
     </div>
   )
 }
