@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react'
 import './css/audiouploader.css'
 import cancel from '../../asset/img/icon/cancel.svg'
-import { baseFetch, baseUrl } from '../..'
+import { baseFetch } from '../..'
 import { useNavigate } from 'react-router-dom'
 import { ProfileContextAdmin } from './ArtistProfileAdmin'
 import FormDataInputField from './FormDataInputField'
