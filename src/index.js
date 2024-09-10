@@ -10,10 +10,9 @@ import LoginSignupPage from './js/comp/LoginSignupPage';
 import AudioUploader from './js/comp/AudioUploader';
 import MainAudioPlayer from './js/comp/MainAudioPlayer'
 
-export const baseUrl = process.env.BACKEND
+export const baseUrl = 'https://melodriftbackend.linendev.workers.dev'
 
 export const baseFetch = async({ route, method, body, headers }) => {
-console.log('api : ', baseUrl);
 
   try{
     const options = { method: method, body: body, headers: headers };
