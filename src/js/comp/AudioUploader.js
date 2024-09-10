@@ -145,7 +145,7 @@ const uploadSong = async() => {
           setFormDataFuncton={setFormData}
           minlength={0}
           style={{width: '40%'}}
-          accept='audio/mp3'
+          accept='audio/*'
           required
           onChange={(e) => {
             if(e.target.files)
