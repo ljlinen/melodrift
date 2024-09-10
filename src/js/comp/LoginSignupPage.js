@@ -12,7 +12,7 @@ export default function LoginSignupPage() {
     const [loginTabOpen, setLoginTabOpen] = useState(true)
     const [userProfilePhoto, setUserProfilePhoto] = useState()
     const [toast, setToast] = useState()
-    const [pageActive, setPageActive] = useState(false)
+    const [pageActive, setPageActive] = useState(true)
     const [usernameAvailableTitle, setUsernameAvailableTitle] = useState()
 
     const [infoMessage, setInfoMessage] = useState({
