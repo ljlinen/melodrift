@@ -3,25 +3,11 @@ import './css/dialog.css'
 
 export default function Dialog({ heading, message, negative, positive}) {
 
-  const [openOrClose, setOpenOrClose] = useState(false)
-
-  useEffect(() => {
-    setOpenOrClose(true);
-  }, [heading])
-
   return (
-    <div className='dialog-div-main'
-      style={{
-        display: openOrClose ? 'unset' : 'none',
-        height: openOrClose ? '100%' : 0,
-        width: openOrClose ? '100%' : 0,
-      }}>
+    <div className='dialog-div-main'>
         <dialog className='index-dialog'
-      style={{
-        height: openOrClose ? 'unset' : 0,
-        width: openOrClose ? '350px' : 0,
-        opacity: openOrClose ? 1 : 0,
-      }} open>
+        style={{width: '350px'}}
+        open>
           <h3>{heading}</h3>
           <h4>{message}</h4>
           <div className='dialog-div-buttons'
@@ -32,8 +18,6 @@ export default function Dialog({ heading, message, negative, positive}) {
                 if(typeof negative.callback == 'function') {
                   negative.callback()                  
                   }
-
-                setOpenOrClose(false)
               }} />
             }
             {
@@ -41,8 +25,6 @@ export default function Dialog({ heading, message, negative, positive}) {
                 if(typeof positive.callback == 'function') {
                 positive.callback()                  
                 }
-
-                setOpenOrClose(false)
               }} />
             }
           </div>

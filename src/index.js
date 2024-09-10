@@ -1,14 +1,48 @@
-import React from 'react';
+import React, { useState } from 'react';
 import './css/index.css';
 
 import ReactDOM from 'react-dom/client';
 import reportWebVitals from './reportWebVitals';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import ArtistProfile from './js/comp/ArtistProfile';
+import ArtistProfileAdmin from './js/comp/ArtistProfileAdmin';
 import LoginSignupPage from './js/comp/LoginSignupPage';
 import AudioUploader from './js/comp/AudioUploader';
+import MainAudioPlayer from './js/comp/MainAudioPlayer'
+import Dialog from './js/comp/Dialog';
 
-export const baseUrl = 'https://melodriftbackend.linendev.workers.dev';
+export const baseUrl = process.env.BACKEND
+
+export const baseFetch = async({ route, method, body, headers }) => {
+
+  try{
+    const options = { method: method, body: body, headers: headers };
+    const response = await fetch(baseUrl + route, options);
+    const responseObject = await response.json();
+
+    if(responseObject['success'] || responseObject['data']) {
+      console.log('fetch, success', responseObject);
+      return responseObject
+    } else {
+      console.log('fetch, fail', response.statusText);
+      throw response.statusText, response['message']
+    }
+
+  } catch (error) {
+    console.log(error);
+    throw error
+  }
+  
+}
+
+export const setDataObject = (setobject, key, value, minlength) => {
+
+  if(value.length <= minlength) {
+      setobject(prev => ({...prev, [key]: undefined}))
+  } else {
+      setobject(prev => ({...prev, [key]: value}))
+  }
+}
 
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
@@ -23,12 +57,21 @@ const router = createBrowserRouter([{
   element: <LoginSignupPage />
 },
 {
-  path: '/profile/:username',
-  element: <ArtistProfile />,
+  path: '/profile',
+  element: <ArtistProfileAdmin />,
   children: [{
-    path: '/profile/:username/upload',
+    path: '/profile/upload',
     element: <AudioUploader />,
+  },
+  {
+    path: '/profile/mainaudioplayer',
+    element: <MainAudioPlayer />,
   }],
+  errorElement: <h2>Profile Not Found</h2>
+},
+{
+  path: '/artist/:username',
+  element: <ArtistProfile />,
   errorElement: <h2>Artist Not Found</h2>
 },
 {

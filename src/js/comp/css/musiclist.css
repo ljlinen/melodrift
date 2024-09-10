@@ -1,10 +1,6 @@
-:root {
-    --clr-bg: 10, 10, 10;
-}
 
 .music-list-div-main {
     padding: clamp(20px, 5.55vw, 50px);
-    background-color: rgba(var(--clr-bg), .3);
     border-radius: 6px;
     transition: opacity .6s ease-in;
 }
@@ -13,4 +9,10 @@
     height: 24px;
     width: 24px;
     opacity: .5;
+}
+
+.component-MusicListData {
+    h3 {
+        margin-bottom: 15px;
+    }
 }
