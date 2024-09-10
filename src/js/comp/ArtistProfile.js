@@ -9,7 +9,7 @@ import followers from "../../asset/img/icon/followers.svg";
 import { Outlet, useLocation, useParams } from "react-router-dom";
 import MusicList from "./MusicList";
 import MainAudioPlayer from "./MainAudioPlayer"
-import { baseFetch, baseUrl } from "../..";
+import { baseFetch } from "../..";
 export const ProfileContext = createContext()
 
 export default function ArtistProfile() {
@@ -17,7 +17,7 @@ export default function ArtistProfile() {
   const [artistProfileData, setArtistProfileData] = useState();
   const [artistMusicData, setArtistMusicData] = useState();
   const [searching, setSearching] = useState();
-  const [error, setErrorMessage] = useState();
+  // const [error, setErrorMessage] = useState();
   const location = useLocation();
   const params = useParams()
   const username = params.username;
@@ -84,7 +84,7 @@ export default function ArtistProfile() {
         setArtistProfileData(null)
         setArtistMusicData(null)
     }
-  }, [params.username, refresh, error]);
+  }, [username, refresh]);
 
   return (
     artistProfileData && <ProfileContext.Provider value={{ username, setMainSong }}>

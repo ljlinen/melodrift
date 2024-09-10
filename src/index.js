@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import './css/index.css';
 
 import ReactDOM from 'react-dom/client';
@@ -9,7 +9,6 @@ import ArtistProfileAdmin from './js/comp/ArtistProfileAdmin';
 import LoginSignupPage from './js/comp/LoginSignupPage';
 import AudioUploader from './js/comp/AudioUploader';
 import MainAudioPlayer from './js/comp/MainAudioPlayer'
-import Dialog from './js/comp/Dialog';
 
 export const baseUrl = process.env.BACKEND
 
@@ -25,7 +24,7 @@ export const baseFetch = async({ route, method, body, headers }) => {
       return responseObject
     } else {
       console.log('fetch, fail', response.statusText);
-      throw response.statusText, response['message']
+      throw response['message']
     }
 
   } catch (error) {
