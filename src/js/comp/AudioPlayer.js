@@ -1,12 +1,11 @@
-import React, { useContext, useEffect, useRef, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import './css/audioplayer.css'
 import play from '../../asset/img/icon/play.svg'
 import like from '../../asset/img/icon/like.svg'
 import share from '../../asset/img/icon/share.svg'
-import { baseFetch, baseUrl } from '../..'
+import { baseFetch } from '../..'
 import { ProfileContext } from './ArtistProfile'
 import { ProfileContextAdmin } from './ArtistProfileAdmin'
-import { useNavigate } from 'react-router-dom'
 
 export default function AudioPlayer( { SongObj }) {
 

@@ -8,8 +8,7 @@ import cancel from "../../asset/img/icon/cancel.svg";
 import followers from "../../asset/img/icon/followers.svg";
 import { Outlet, useLocation } from "react-router-dom";
 import MusicList from "./MusicList";
-import MainAudioPlayer from "./MainAudioPlayer"
-import { baseUrl } from "../..";
+import MainAudioPlayer from "./MainAudioPlayer";
 
 export const ProfileContextAdmin = createContext()
 
@@ -18,7 +17,7 @@ export default function ArtistProfileAdmin() {
   const [artistProfileData, setArtistProfileData] = useState();
   const [artistMusicData, setArtistMusicData] = useState();
   const [searching, setSearching] = useState();
-  const [error, setErrorMessage] = useState();
+  // const [error, setErrorMessage] = useState();
   const [pageActive, setPageActive] = useState(false);
   const [username, setUsername] = useState();
   
@@ -60,7 +59,7 @@ export default function ArtistProfileAdmin() {
     return () => {
         setPageActive(false)
     }
-  }, [userObject, refresh, error]);
+  }, [userObject, refresh]);
 
   return (
     artistProfileData && <ProfileContextAdmin.Provider value={{username, setMainSongAdmin}}>

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import './css/dialog.css'
 
 export default function Dialog({ heading, message, negative, positive}) {

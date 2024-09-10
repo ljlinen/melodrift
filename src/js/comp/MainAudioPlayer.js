@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import './css/mainaudioplayer.css'
 import play from '../../asset/img/icon/play.svg'
 import pause from '../../asset/img/icon/pause.svg'
@@ -7,7 +7,6 @@ import like from '../../asset/img/icon/like.svg'
 import controlsP from '../../asset/img/icon/controlsP.svg'
 import controlsN from '../../asset/img/icon/controlsN.svg'
 import share from '../../asset/img/icon/share.svg'
-import { useLocation } from 'react-router-dom'
 import { baseFetch } from '../..'
 
 export default function AudioPlayer({ mainSong }) {
@@ -15,9 +14,9 @@ export default function AudioPlayer({ mainSong }) {
   const [file, setFile] = useState(0);
   const audioRef = useRef(null)
   const [isPlaying, setIsPlaying] = useState(false);
-  const [progress, setProgress] = useState(0);
-  const [currentTime, setCurrentTime] = useState(0);
-  const [duration, setDuration] = useState(0);
+  // const [progress, setProgress] = useState(0);
+  // const [currentTime, setCurrentTime] = useState(0);
+  // const [duration, setDuration] = useState(0);
   const [currentAudioId, setCurrentAudioId] = useState()
 
   useEffect(() => {
@@ -62,21 +61,21 @@ export default function AudioPlayer({ mainSong }) {
     
 
     
-  if(audioRef.current) { 
-    const audio = audioRef.current;
+  // if(audioRef.current) { 
+  //   const audio = audioRef.current;
 
-    const updateProgress = () => {
-      setCurrentTime(audio.currentTime);
-      setProgress((audio.currentTime / audio.duration) * 100);
-    };
+  //   // const updateProgress = () => {
+  //   //   setCurrentTime(audio.currentTime);
+  //   //   setProgress((audio.currentTime / audio.duration) * 100);
+  //   // };
 
-    const loadMetadata = () => {
-      setDuration(audio.duration);
-    };
+  //   // const loadMetadata = () => {
+  //   //   setDuration(audio.duration);
+  //   // };
 
-    audio.addEventListener('timeupdate', updateProgress);
-    audio.addEventListener('loadedmetadata', loadMetadata);
-  }
+  //   // audio.addEventListener('timeupdate', updateProgress);
+  //   // audio.addEventListener('loadedmetadata', loadMetadata);
+  // }
 
     return () => {
     //   if(audioRef.current) {
@@ -85,12 +84,12 @@ export default function AudioPlayer({ mainSong }) {
     //     audio.removeEventListener('loadedmetadata', loadMetadata);
     //   }
 
-      if(file) {
-        setFile(undefined)
-      }
+      // if(file) {
+      //   setFile(undefined)
+      // }
     };
 
-  }, [mainSong]);
+  }, [mainSong, file, currentAudioId]);
 
 
   const PlayPause = () => {
@@ -110,12 +109,12 @@ export default function AudioPlayer({ mainSong }) {
     setIsPlaying(true);
   };
 
-  const handleProgressClick = (e) => {
-    const width = e.target.clientWidth;
-    const clickX = e.nativeEvent.offsetX;
-    const newTime = (clickX / width) * duration; 
-    audioRef.current.currentTime = newTime;
-  };
+  // const handleProgressClick = (e) => {
+  //   const width = e.target.clientWidth;
+  //   const clickX = e.nativeEvent.offsetX;
+  //   const newTime = (clickX / width) * duration; 
+  //   audioRef.current.currentTime = newTime;
+  // };
 
 
   return (
@@ -141,9 +140,9 @@ export default function AudioPlayer({ mainSong }) {
 
        <div className='controls'>
         <div className='controls-wrap'>
-          <img className='controls-p icon' src={controlsP} />
-          <img className='controls-pause-play icon' onClick={PlayPause} src={ isPlaying ? pause : play } />
-          <img className='controls-n icon' src={controlsN} />
+          <img alt='previous' className='controls-p icon' src={controlsP} />
+          <img alt='pause-play' className='controls-pause-play icon' onClick={PlayPause} src={ isPlaying ? pause : play } />
+          <img alt='play' className='controls-n icon' src={controlsN} />
         </div>
         {/* <div className="progress-bar">
             <div className="progress" style={{ width: `${progress}%` }}>
