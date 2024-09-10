@@ -1,164 +1,157 @@
 import React, { useContext, useEffect, useState } from 'react'
 import './css/audiouploader.css'
 import cancel from '../../asset/img/icon/cancel.svg'
-import { baseUrl } from '../..'
+import { baseFetch, baseUrl } from '../..'
 import { useNavigate } from 'react-router-dom'
-import { UsernameContext } from './ArtistProfile'
+import { ProfileContextAdmin } from './ArtistProfileAdmin'
+import FormDataInputField from './FormDataInputField'
 
 export default function AudioUploader() {
   
-
   const [pageActive, setPageActive] = useState(false)
-  // const location = useLocation()
   const navigate = useNavigate()
   const formData = new FormData();
-  const username = useContext(UsernameContext)
-  
+  const { username } = useContext(ProfileContextAdmin)
 
-  const [uploadData, setUploadData] = useState({
-    title: undefined,
-    artists: undefined,
-    cover: 'https://i.pinimg.com/736x/c0/9b/3f/c09b3fcbc73790a6dc94eead8739bd7d.jpg',
-    genre: undefined,
-    year: undefined,
-    file: undefined,
-  })
 
   useEffect(() => {
-    
-    setPageActive(true)
 
+    setPageActive(true)
+    
     return () => {
         setPageActive(false)
     }
   }, [])
 
-  const setDataObject = (setobject, key, value, minlength) => {
+  const setFormData = (key, value, minlength) => {
         
     if(value.length <= minlength) {
-        setobject(prev => ({...prev, [key]: false}))
+      return false
     } else {
-        setobject(prev => ({...prev, [key]: value}))
+      formData.set(key, value)
+      return true
     }
 }
 
-const uploadSong = () => {
+const uploadSong = async() => {
   
-  formData.append('username', username)
-  formData.append('file', uploadData.file);
-  delete uploadData.file
-  formData.append('fileInfo', JSON.stringify(uploadData))
+  formData.set('cover', 'https://i.pinimg.com/736x/c0/9b/3f/c09b3fcbc73790a6dc94eead8739bd7d.jpg')
+  formData.set('username', username)
+  formData.forEach((value, key) => {
+    console.log(key, value);
+  });
 
-  fetch(baseUrl + '/upload/song', {
-      method: 'POST',
-      body: formData,
-  }).then((response) => {
-    console.log(response.statusText);
-      // setInfoMessage((prev) => ({...prev, infoCode: response.status}))
-      return response.text()
-  }).then((result) => {
-    console.log(result);
-    
-      if(result === 'true') {
-        console.log(result);
-        
-          // setLoginTabOpen(true)
-          // setInfoMessage((prev) => ({...prev, infoMessage: "Song Uploaded Successfully"}))
-      } else {
-        console.log(result);
-        
-          // setLoginTabOpen(false)
-          // setInfoMessage((prev) => ({...prev, infoMessage: result}))     
-      }
-  }).catch((error) => {
+
+  try{
+      const uploadedObject = await baseFetch({
+          route: '/upload/song',
+          method: 'POST',
+          body: formData
+      })
+        // navigate(0, {
+        //   refresh: true,
+        //   username: username
+        // })
+      
+        if(uploadedObject['success']) {
+          console.log('uploaded');
+          
+            // setInfoMessage((prev) => ({...prev, infoMessage: "Song Uploaded Successfully"}))
+        } else {
+          console.log('faild uploading');
+        }
+          
+  } catch(error) {
+      // setDialog({
+      //     heading: 'Error Logging In',
+      //     message: 'Check your network',
+      //     positive: {
+      //         value: 'Okay',
+      //         callback: undefined,
+      //     }
+      // });
       console.log(error); 
-  })
-  navigate(0, {
-    refresh: true,
-    username: username
-  })
+  }
 }
 
   return (
     <form className='au-div-main-audio-uploader'
+      onSubmit={(e) => {e.preventDefault()}}
       style={{opacity: pageActive ? 1 : 0}}
       // onSubmit={uploadSong}
     >
-      <img className='icon cancel' alt='close' src={cancel} onClick={() => {navigate(-1)}} />
       <div className='au-div-heading-and-btn'>
-        <h3>Song Info</h3>
-        <input className='save-button' type='button' value='Upload' onClick={uploadSong} />
+        <div>
+          <img className='icon cancel' alt='close' src={cancel} onClick={() => {navigate(-1)}} />
+          <h3>Song Info</h3>
+        </div>
+        <input className='default-button' type='button' value='Upload' onClick={uploadSong} />
       </div>
 
       <div className='au-div-upload-inputs'>
-        <div className='div-inputwrap'>
-                          <p>title</p>
-                          <input type='text' 
-                              style={{borderBottom: uploadData.title ? 'initial' : '1px solid red'}} 
-                              onChange={(e) => {
-                                      setDataObject(setUploadData, 'title', e.target.value, 3)
-                              }} 
-                          required/>
-        </div>
+        <FormDataInputField
+          inputTitle='title'
+          inputType='text'
+          formData={formData}
+          formDataKey='title'
+          setFormDataFuncton={setFormData}
+          minlength={0}
+        />
+
+        <FormDataInputField
+          inputTitle='artists'
+          inputType='text'
+          formData={formData}
+          formDataKey='artists'
+          setFormDataFuncton={setFormData}
+          minlength={0}
+          title='name of artists on the song, use ft or x to eperate each name'
+          required
+        />
 
         <div className='div-inputwrap'>
-                          <p>artists</p>
-                          <input type='text' 
-                              style={{borderBottom: uploadData.artists ? 'initial' : '1px solid red'}} 
-                              onChange={(e) => {
-                                      setDataObject(setUploadData, 'artists', e.target.value, 3)
-                              }} 
-                              title='name of artists on the song, use ft or x to eperate each name'
-                              required
-                              />
+          <p>genre</p>
+          <select
+              style={{
+                width: '40%'
+              }} 
+              onChange={(e) => {
+                      setFormData('genre', e.target.value, 0)
+              }}>
+            <option value='Hip-hop'>Hip-hop</option>
+            <option value='Amapiano'>Amapiano</option>
+            <option value='Private Piano'>Private Piano</option>
+            <option value='House'>House</option>
+            <option value='Deep House'>Deep House</option>
+            <option value='Other'>Other</option>
+          </select>
         </div>
+        
+        <FormDataInputField
+          inputTitle='year'
+          inputType='number'
+          formData={formData}
+          formDataKey='year'
+          setFormDataFuncton={setFormData}
+          minlength={3}
+          style={{width: '40%'}}
+        />
 
-        <div className='div-inputwrap'>
-                          <p>genre</p>
-                          <select
-                              style={{
-                                borderBottom: uploadData.year ? 'initial' : '1px solid red',
-                                width: '40%'
-                              }} 
-                              onChange={(e) => {
-                                      setDataObject(setUploadData, 'genre', e.target.value, 3)
-                              }} 
-                          >
-                            <option value='Hip-hop'>Hip-hop</option>
-                            <option value='Amapiano'>Amapiano</option>
-                            <option value='Private Piano'>Private Piano</option>
-                            <option value='House'>House</option>
-                            <option value='Deep House'>Deep House</option>
-                            <option value='Other'>Other</option>
-                          </select>
-        </div>
-
-        <div className='div-inputwrap'>
-                          <p>year</p>
-                          <input type='number'
-                              pattern='^0\d{9}$' 
-                              style={{
-                                borderBottom: uploadData.year ? 'initial' : '1px solid red',
-                                width: '40%'
-                              }} 
-                              onChange={(e) => {
-                                      setDataObject(setUploadData, 'year', e.target.value, 3)
-                              }} 
-                          />
-        </div>
-
-        <div className='div-inputwrap'>
-                          <p>upload song</p>
-                          <input type='file'
-                              accept='audio/mp3'
-                              style={{
-                                border: uploadData.file ? 'initial' : '1px solid red',
-                              }} 
-                              onChange={(e) => {
-                                      setDataObject(setUploadData, 'file', e.target.files[0], 3)
-                              }} 
-                          required/>
-        </div>
+        <FormDataInputField
+          inputTitle='upload song'
+          inputType='file'
+          formData={formData}
+          formDataKey='year'
+          setFormDataFuncton={setFormData}
+          minlength={0}
+          style={{width: '40%'}}
+          accept='audio/mp3'
+          required
+          onChange={(e) => {
+            if(e.target.files)
+              formData.append('file', e.target.files[0])
+          }}
+        />
       </div>
     </form>
   )

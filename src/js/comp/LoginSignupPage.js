@@ -1,37 +1,24 @@
 import React, { useEffect, useState } from 'react'
 import './css/loginsignuppage.css'
-import { baseUrl } from '../..'
+import { baseFetch, baseUrl, setDataObject } from '../..'
 import { useNavigate } from 'react-router-dom'
+import InputField from './InputField'
+import Dialog from './Dialog'
 
 export default function LoginSignupPage() {
-
-    const [loginTabOpen, setLoginTabOpen] = useState(true)
-    // const [usernameAvailable, setUsernameAvailable] = useState()
-    const [userProfilePhoto, setUserProfilePhoto] = useState()
     
     const navigate = useNavigate()
+
+    const [loginTabOpen, setLoginTabOpen] = useState(true)
+    const [userProfilePhoto, setUserProfilePhoto] = useState()
+    const [toast, setToast] = useState()
     const [pageActive, setPageActive] = useState(false)
+    const [usernameAvailableTitle, setUsernameAvailableTitle] = useState()
+
     const [infoMessage, setInfoMessage] = useState({
             infoCode: undefined,
             infoMessage: undefined,
         })
-
-    
-    // const [dialog, setDialog] = useState({
-
-    //     heading: undefined,
-    //     message: undefined,
-    
-    //     negative: {
-    //     value: undefined,
-    //     func: undefined,
-    //     },
-    
-    //     positive: {
-    //     value: undefined,
-    //     func: undefined,
-    //     }
-    // })
 
     const [loginData, setLoginData] = useState({
             username: undefined,
@@ -52,6 +39,15 @@ export default function LoginSignupPage() {
           }
 })
 
+const ShowToast = (heading, message) => {
+    console.log('toast before setToast', toast);
+    setToast({ heading, message });
+    setTimeout(() => {
+        setToast(undefined);
+        console.log('toast cleared');
+    }, 4000);
+}
+
 useEffect(() => {
     setPageActive(true)
 
@@ -60,45 +56,30 @@ useEffect(() => {
     }
 }, [])
 
-    const setDataObject = (setobject, key, value, minlength) => {
-        
-            if(value.length <= minlength) {
-                setobject(prev => ({...prev, [key]: false}))
+    const checkusernameAvailable = async() => {
+
+        try{
+            const booleanObject = await baseFetch({
+                route: '/account/signup/' + signupData.username,
+                method: 'GET',
+            })
+
+            console.log(booleanObject);
+            
+            
+            if(booleanObject['success']) {
+                setInfoMessage((prev) => ({...prev, infoMessage: booleanObject['message']}))
+                setUsernameAvailableTitle(booleanObject['message'])
             } else {
-                setobject(prev => ({...prev, [key]: value}))
+                ShowToast('Error Logging In', 'Check your network');
+                setInfoMessage((prev) => ({...prev, infoMessage: booleanObject['message']}));
+                setUsernameAvailableTitle(booleanObject['message'])
+                delete signupData.username;
             }
-        }
-
-
-    const checkEusernameAvailable = (desiredUsername) => {
-        
-        const data = {
-            "username": desiredUsername
-        }
-        
-        fetch(baseUrl + '/account/signup/available', {
-            method: 'PUT',
-            body: JSON.stringify(data),
-            headers: {
-                'Content-Type': 'application/json',
-            }
-
-        }).then((response) => {
-            if(response.status === 200) {
-                return response.text()
-            }
-        }).then((result) => {
-            if(result === 'true') {
-                // setUsernameAvailable(true)
-                setInfoMessage((prev) => ({...prev, infoMessage: undefined}))
-            } else {
-                // setUsernameAvailable(false);
-                setInfoMessage((prev) => ({...prev, infoMessage: 'Username already taken, pick a different one.'}))
-            }
-
-        }).catch((error) => {
+                
+        } catch(error) {
             console.log(error); 
-        })
+        }
     }
 
     const fetchUserProfilePhoto = () => {
@@ -107,52 +88,45 @@ useEffect(() => {
             method: 'GET',
         }).then((response) => {
             if(response.status === 200) {
-                return response.json()
+                return response.text()
+                // return response.json()
             }
         }).then((result) => {
+            console.log(result);
+            
             result['cover'] ? setUserProfilePhoto(result.cover) : setUserProfilePhoto(false);
         }).catch((error) => {
             console.log(error); 
         })
     }
 
-    const Login = () => {
+    const Login = async() => {   
         
-        
-        fetch(baseUrl + '/profile', {
-            method: 'PUT',
-            body: JSON.stringify(loginData),
-            headers: {
-                'Content-Type': 'application/json',
-            }
-
-        }).then((response) => {
-            if(response.status === 200) {
-                return response.json()
-            } else {
-                throw response.statusText
-            }
-        }).then((result) => {
-            if(result.hasOwnProperty('username')) {
-                console.log(result, 'pasing result');
-                setPageActive(false)
-                navigate('/profile/null', { state: { loggedInData: result } });
-            }
+        try{
+            const userObject = await baseFetch({
+                route: '/profile',
+                method: 'PUT',
+                body: JSON.stringify(loginData),
+                headers: {'Content-Type': 'application/json'}
+            })
             
-        }).catch((error) => {
-            // setDialog({
-            //     heading: 'Error Logging In',
-            //     message: 'Check your network',
-            //     positive: {
-            //         value: 'Okay',
-            //         callback: undefined,
-            // }});
+            if(userObject && userObject['data'] && userObject['data']['username']) {
+                setPageActive(false)
+                navigate('/profile', {
+                    state: { userObject: userObject['data'] }
+                });
+            } else if(userObject['message']) {
+                ShowToast('Error Logging In', userObject['message']);
+            }
+                
+        } catch(error) {
+            ShowToast('Error Logging In', 'check there');
             console.log(error); 
-        })
+        }
     }
 
     const SignUp = () => {
-        
+
         fetch(baseUrl + '/account/signup', {
             method: 'PUT',
             body: JSON.stringify(signupData),
@@ -181,20 +155,18 @@ useEffect(() => {
         <div className="loginsignup-div-main"
             style={{opacity: pageActive ? 1 : 0}}
         >
-        {/* {
-            dialog.heading && <Dialog
-                heading={dialog.heading}
-                message={dialog.message}
-                negative={dialog.negative}
-                positive={dialog.positive}
+            
+            { toast ? (
+                <Dialog
+                    heading={toast.heading}
+                    message={toast.message}
                 />
-        } */}
-
+            ) : null }
             <div className='login-div-main'>
                 <nav>
                     <div className='nav-div-heading'>
-                        <p>{ loginTabOpen ? 'Signup To' : 'Login To'}</p>
                         <p className='logo'>Melodrift</p>
+                        <p>{ loginTabOpen ? 'Login' : 'Signup'}</p>
                     </div>
 
                     <p className='p-button' onClick={() => {setLoginTabOpen(!loginTabOpen)}}>{loginTabOpen ? 'Signup' : 'Login'}</p>
@@ -210,26 +182,28 @@ useEffect(() => {
 
                     <p className='login-p-infomsg'>{ loginTabOpen && infoMessage.infoMessage ? infoMessage.infoMessage : undefined}</p>
 
-                    <div className='div-inputwrap'>
-                        <p>username</p>
-                        <input type='text' 
-                            style={{border: loginData.username ? 'initial' : '1px solid red'}} 
-                            onBlur={loginData.username ? fetchUserProfilePhoto : undefined} 
-                            onChange={(e) => {
-                                    setDataObject(setLoginData, 'username', e.target.value, 3)
-                            }} 
-                        />
-                    </div>
+                    <InputField
+                        inputTitle='username'
+                        inputType='text'
+                        object={loginData}
+                        objectkey='username'
+                        objectSetter={setLoginData}
+                        mainDataObjectSetter={setDataObject}
+                        minlength={3}
+                        onBlur={loginData.username ? fetchUserProfilePhoto : undefined}
+                        required
+                    />
 
-                    <div className='div-inputwrap'>
-                        <p>passsword</p>
-                        <input type='password' 
-                            style={{border: loginData.password ? 'initial' : '1px solid red'}} 
-                            onChange={(e) => {
-                                setDataObject(setLoginData, 'password', e.target.value, 5)
-                            }}
-                        />
-                    </div>
+                    <InputField
+                        inputTitle='password'
+                        inputType='password'
+                        object={loginData}
+                        objectkey='password'
+                        objectSetter={setLoginData}
+                        mainDataObjectSetter={setDataObject}
+                        minlength={5}
+                        required
+                    />
 
                     <input className='login-button' type='button' value='Login' 
                         disabled={(loginData.username && loginData.password) ? false : true}
@@ -244,104 +218,93 @@ useEffect(() => {
                 <div className='login-background'>
                     <div className='background-color' />
                     <div className='background-color-two' />
-                    {userProfilePhoto && <img className='background-image'  alt='background' 
+                    <img className='background-image'  alt='background' 
                         src={userProfilePhoto ? userProfilePhoto : undefined}
-                        // onError={() => set(false)}
                         style={{opacity: userProfilePhoto ? 1 : 0}}
-                        />}
-
+                    />
                 </div>
             </div>
 
     <div className='signup-div-main'>
         <div className='signup-div-inputswrapper' 
-                style={{
-                    minHeight: !loginTabOpen ? '90vh' : 0,
-                    opacity: !loginTabOpen ? '1' : 0,
-                    }}>
+                style={{minHeight: !loginTabOpen ? '90vh' : 0, opacity: !loginTabOpen ? '1' : 0}}>
+
             <p className='signup-p-infomsg'>{infoMessage.infoMessage}</p>
 
-            <div className='div-inputwrap'>
-                <p>username</p>
-                <input type='text'
-                    style={{border: signupData.username ? 'none' : '1px solid red'}} 
-                    value={loginTabOpen ? '' : null}
-                    onBlur={(e) => {checkEusernameAvailable(e.target.value)}} 
-                    onChange={(e) => {
-                        setDataObject(setSignupData, 'username', e.target.value, 3)
-                    }}
-                    />
-            </div>
+            <InputField
+                inputTitle='username'
+                inputType='text'
+                object={signupData}
+                objectkey='username'
+                objectSetter={setSignupData}
+                mainDataObjectSetter={setDataObject}
+                minlength={3}
+                onBlur={signupData.username ? checkusernameAvailable : undefined}
+                title={ usernameAvailableTitle ? usernameAvailableTitle : undefined }
+                required
+            />
 
-            <div className='div-inputwrap'>
-                <p>artist name / stage name</p>
-                <input type='text' 
-                    style={{border: signupData.name ? 'none' : '1px solid red'}}
-                    value={loginTabOpen ? '' : null}
-                    onChange={(e) => {setDataObject(setSignupData, 'name', e.target.value, 2)}}
-                />
-            </div>
+            <InputField
+                inputTitle='artist or stage name'
+                inputType='text'
+                object={signupData}
+                objectkey='name'
+                objectSetter={setSignupData}
+                mainDataObjectSetter={setDataObject}
+                minlength={2}
+                title='hiiii'
+                required
+            />
 
-            <div className='div-inputwrap'>
-                <p>country and province/state</p>
-                <input type='text'
-                    style={{border: signupData.location ? 'initial' : '1px solid red'}}
-                    onChange={(e) => {setDataObject(setSignupData, 'location', e.target.value, 9)}}
-                />
-            </div>
+            <InputField
+                inputTitle='country and province'
+                inputType='text'
+                object={signupData}
+                objectkey='location'
+                objectSetter={setSignupData}
+                mainDataObjectSetter={setDataObject}
+                minlength={6}
+            />
 
-            <div className='div-inputwrap'>
-                <p>email</p>
-                <input type='email'
-                    onChange={(e) =>{setDataObject(setSignupData, 'email', e.target.value, 3)}}
-                    style={{border: signupData.email ? 'initial' : '1px solid red'}}
-                />
-            </div>
+            <InputField
+                inputTitle='email'
+                inputType='email'
+                object={signupData}
+                objectkey='email'
+                objectSetter={setSignupData}
+                mainDataObjectSetter={setDataObject}
+                minlength={5}
+            />
 
-            <div className='div-inputwrap'>
-                <p>create passsword</p>
-                <input type='password'
-                    style={{border: signupData.password ? 'initial' : '1px solid red'}}
-                    onChange={(e) => {setDataObject(setSignupData, 'password', e.target.value, 5)}}
-                />
-            </div>
+            <InputField
+                inputTitle='create passsword'
+                inputType='password'
+                object={signupData}
+                objectkey='password'
+                objectSetter={setSignupData}
+                mainDataObjectSetter={setDataObject}
+                minlength={5}
+            />
+
             <input className='signup-button' type='button' value='Create Account' 
                 disabled={
-                    (
-                        signupData.username && 
-                        signupData.name &&
-                        signupData.email &&
-                        signupData.location &&
-                        signupData.password
-                    ) ? false : true
+                    Object.values(signupData).every(value => value) ? false : true
                 }
                 style={{
-                    backgroundColor:                     (
-                        signupData.username && 
-                        signupData.name &&
-                        signupData.email &&
-                        signupData.location &&
-                        signupData.password
-                    ) ? 'revert' : 'gray',
-                    color:                     (
-                        signupData.username && 
-                        signupData.name &&
-                        signupData.email &&
-                        signupData.location &&
-                        signupData.password
-                    ) ? 'black' : 'revert'
+                    backgroundColor: Object.values(signupData).every(value => value) ? 'revert' : 'gray',
+                    color: Object.values(signupData).every(value => value) ? 'black' : 'revert'
                 }}
                 onClick={SignUp}
             />
         </div>
     </div>
 
-            <div className='footer-div-main'>
-                <div>
-                    <h3>Melodrift</h3>
-                </div>
+        <div className='footer-div-main'>
+            <div>
+                <h3>Melodrift</h3>
             </div>
         </div>
+    </div>
       )
     }
     

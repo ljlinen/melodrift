@@ -1,17 +1,22 @@
   
+  /* root variables for specific component */
 
- .audioplayer-div-main-song {
+ .mainaudioplayer-div-main-song {
    padding: 7.33px;
    display: flex;
    height: 61.33px;
-   width: 100%;
    border-radius: 5.83px;
    border: 0.67px solid rgba(var(--clr-main), 0.1);
+   background-color: rgba(0, 0, 0, .3);
    overflow: hidden;
    align-items: center;
-   margin-block: 10px;
-    
-    
+   position: fixed;
+   bottom: 4px;
+   left: 4px;
+   right: 4px;
+   animation: translate-up .35s ease-in;
+ 
+ 
     .ap-div-cover {
       display: flex;
       position: relative;
@@ -31,7 +36,7 @@
       position: relative;
       filter: brightness(.5);
       object-fit: cover;
-      /* height: 100%; */
+      overflow: hidden;
     }
     
     .ap-div-cover .ap-img-playpauseicon {
@@ -47,25 +52,51 @@
     .ap-div-info {
       display: flex;
       flex-direction: column;
-      gap: 3px;
+      padding-block: 4px;
       margin-inline: 7px;
-      height: 100%;
-      justify-content: flex-start;
+      width: 50%;
       overflow: hidden;
+      justify-content: space-evenly;
+      height: 100%;
     }
 
     .ap-div-info {
-    .artist {
-      font-size: 1.4rem;
+      .artist {
+        font-size: 1.4rem;
+      }
+
+      .name {
+        display: inline-block;
+        font-size: 1.267rem;
+        max-height: 12.67px;
+        margin-top: 3px;
+        overflow: hidden;
+      }
     }
 
-    .name {
-      display: inline-block;
-      font-size: 1.267rem;
-      max-height: 12.67px;
-      overflow: hidden;
+    .controls {
+      display: flex;
+      flex-direction: column;
+      align-items: start;
+      justify-content: center;
+      align-items: center;
+      width: 100%;
+      height: 100%;
     }
+
+    .controls-wrap {
+        display: flex;
+        align-items: center;
+        width: 100%;
+        justify-content: space-between;
+
+        .icon {
+          width: 30px;
+          height: 30px;
+          opacity: 1;
+        }
     }
+
 
     /* @keyframes slideRigtInfinite {
     from {
@@ -77,17 +108,16 @@
     } */
 
     .ap-div-icons {
-    display: flex;
-    align-items: center;
-    flex: 1;
-    justify-content: flex-end;
+        padding: 0 4px 0 8px;
+        display: flex;
+        align-items: center;
     }
 
     .ap-div-icons .plays {
-    display: flex;
-    margin-right: 17px;
-    align-items: center;
-    gap: 2px;
+        display: flex;
+        margin-right: 17px;
+        align-items: center;
+        gap: 2px;
     
     img {
       height: 10.67px;
@@ -112,20 +142,35 @@
 
     
     .progress-bar {
-    display: none;
+    display: flex;
     margin-top: 6px;
-    width: 100%;
+    width: 95%;
+    padding-inline: 5px;
     height: 5px;
     padding: 1px;
     border-radius: 6px;
-    background-color: var(--clr-txt-500);
+    background-color: rgb(255, 255, 255, .2);
     position: relative;
     cursor: pointer;
     }
 
     .progress {
-    display: none;
+    display: flex;
     height: 100%;
-    background-color: var(--clr-60);
+    background-color: rgba((var(--clr-main), .5));
+    background-color: rgb(255, 255, 255);
     }
+}
+
+/* Keyframes */
+
+@keyframes translate-up {
+  from {
+    opacity: 0;
+    transform: translateY(30%);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }

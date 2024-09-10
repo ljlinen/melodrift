@@ -6,28 +6,30 @@ import plays from "../../asset/img/icon/play.svg";
 import search from "../../asset/img/icon/search.svg";
 import cancel from "../../asset/img/icon/cancel.svg";
 import followers from "../../asset/img/icon/followers.svg";
-import { Outlet, useLocation, useParams } from "react-router-dom";
+import { Outlet, useLocation } from "react-router-dom";
 import MusicList from "./MusicList";
 import MainAudioPlayer from "./MainAudioPlayer"
-import { baseFetch, baseUrl } from "../..";
-export const ProfileContext = createContext()
+import { baseUrl } from "../..";
 
-export default function ArtistProfile() {
-  // const params = useParams();
+export const ProfileContextAdmin = createContext()
+
+export default function ArtistProfileAdmin() {
+
   const [artistProfileData, setArtistProfileData] = useState();
   const [artistMusicData, setArtistMusicData] = useState();
   const [searching, setSearching] = useState();
   const [error, setErrorMessage] = useState();
-  const location = useLocation();
-  const params = useParams()
-  const username = params.username;
-  const { refresh } = location.state || {};
   const [pageActive, setPageActive] = useState(false);
-
-  const [mainSong, setMainSong] = useState({
+  const [username, setUsername] = useState();
+  
+  const [mainSong, setMainSongAdmin] = useState({
     SongData: undefined,
     SongObj: undefined
   })
+
+  const location = useLocation();
+
+  const { userObject, refresh } = location.state || {};
 
   // const [dialog, setDialog] = useState({
 
@@ -46,50 +48,23 @@ export default function ArtistProfile() {
   // })
 
   useEffect(() => {
-    setPageActive(true);
-    
-    const loadPage = async() => {
-
-      try{
-        const responseObject = await baseFetch({
-            route: '/artist/' + username,
-            method: 'GET',
-        })
-        
-        if(responseObject["success"] && responseObject['data']) {
-          const userObject = JSON.parse(responseObject['data'])
-          if(userObject['username'])
-            setPageActive(true);
-            setArtistProfileData(userObject);
-            setArtistMusicData(userObject['music']['all']);
-        }
-              
-      } catch(error) {
-          // setDialog({
-          //     heading: 'Error Logging In',
-          //     message: 'Check your network',
-          //     positive: {
-          //         value: 'Okay',
-          //         callback: undefined,
-          //     }
-          // });
-          console.log(error); 
-      }
+ 
+    if(userObject && userObject['username']) {
+      setPageActive(true);
+      setArtistProfileData(userObject);
+      setUsername(userObject['username']);
+      setArtistMusicData(userObject["music"]["all"]);
+      console.log('sername in context', userObject['username']);
     }
-
-    loadPage()
 
     return () => {
         setPageActive(false)
-        setArtistProfileData(null)
-        setArtistMusicData(null)
     }
-  }, [params.username, refresh, error]);
+  }, [userObject, refresh, error]);
 
   return (
-    artistProfileData && <ProfileContext.Provider value={{ username, setMainSong }}>
-    <div
-      className="profile-div-main-artist">
+    artistProfileData && <ProfileContextAdmin.Provider value={{username, setMainSongAdmin}}>
+    <div className="profile-div-main-artist">
       {/* {<Dialog 
         heading={dialog.heading}
         message={dialog.message}
@@ -98,9 +73,7 @@ export default function ArtistProfile() {
         />} */}
 
       {artistProfileData && (
-        <div className="wrap-info-about"
-        style={{ opacity: pageActive ? 1 : .5 }}
-        >
+        <div className="wrap-info-about" style={{ opacity: pageActive ? 1 : 0 }}>
           <nav>
             <p>Melodrift</p>
             <div className="nav-div-search">
@@ -167,12 +140,12 @@ export default function ArtistProfile() {
       )}
 
       {/* <MusicList MusicListData={artistMusicData} listTitle={'pinned song'} /> */}
-      <MusicList MusicListData={artistMusicData} listTitle={"all music"} admin={false} />
+      <MusicList MusicListData={artistMusicData} listTitle={"all music"} admin={true} />
       <Outlet />
       {
         mainSong && <MainAudioPlayer mainSong={mainSong} />
       }
     </div>
-    </ProfileContext.Provider>
+    </ProfileContextAdmin.Provider>
   );
 }
