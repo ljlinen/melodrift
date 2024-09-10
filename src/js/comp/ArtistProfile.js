@@ -22,7 +22,7 @@ export default function ArtistProfile() {
   const params = useParams()
   const username = params.username;
   const { refresh } = location.state || {};
-  const [pageActive, setPageActive] = useState(false);
+  const [pageActive, setPageActive] = useState(true);
 
   const [mainSong, setMainSong] = useState({
     SongData: undefined,
@@ -80,7 +80,7 @@ export default function ArtistProfile() {
     loadPage()
 
     return () => {
-        setPageActive(false)
+        setPageActive(true)
         setArtistProfileData(null)
         setArtistMusicData(null)
     }
