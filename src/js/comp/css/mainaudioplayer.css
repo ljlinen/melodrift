@@ -1,104 +1,103 @@
-  
-  /* root variables for specific component */
+/* root variables for specific component */
 
- .mainaudioplayer-div-main-song {
-   padding: 7.33px;
-   display: flex;
-   height: 61.33px;
-   border-radius: 5.83px;
-   border: 0.67px solid rgba(var(--clr-main), 0.1);
-   background-color: rgba(0, 0, 0, .3);
-   overflow: hidden;
-   align-items: center;
-   position: fixed;
-   bottom: 4px;
-   left: 4px;
-   right: 4px;
-   animation: translate-up .35s ease-in;
- 
- 
-    .ap-div-cover {
-      display: flex;
-      position: relative;
-      justify-content: center;
-      align-items: center;
-      max-width: 49.67px;
-      height: 49.67px;
-      border-radius: 3px;
+.mainaudioplayer-div-main-song {
+  padding: 7.33px;
+  display: flex;
+  height: 61.33px;
+  border-radius: 5.83px;
+  border: 0.67px solid rgba(var(--clr-main), 0.1);
+  background-color: rgba(0, 0, 0, 0.3);
+  z-index: 11;
+  overflow: hidden;
+  align-items: center;
+  position: fixed;
+  bottom: 4px;
+  left: 4px;
+  right: 4px;
+  transition: height 0.45s ease-out, background-color 0.45s ease-out;
+  animation: translate-up 0.35s ease-in;
+
+  .ap-div-cover {
+    display: flex;
+    position: relative;
+    justify-content: center;
+    align-items: center;
+    max-width: 49.67px;
+    height: 49.67px;
+    border-radius: 3px;
+    overflow: hidden;
+    transition: filter 0.3s ease-out;
+  }
+  .ap-div-cover:hover {
+    filter: contrast(0.6);
+  }
+
+  .ap-div-cover .ap-img-cover {
+    position: relative;
+    filter: brightness(0.5);
+    object-fit: cover;
+    overflow: hidden;
+  }
+
+  .ap-div-cover .ap-img-playpauseicon {
+    position: absolute;
+    width: 27.33px;
+    filter: brightness(1.5);
+    transition: transform 0.3s ease-out;
+  }
+  .ap-div-cover .ap-img-playpauseicon:hover {
+    transform: scale(1.1);
+  }
+
+  .ap-div-info {
+    display: flex;
+    flex-direction: column;
+    padding-block: 4px;
+    margin-inline: 7px;
+    width: 50%;
+    overflow: hidden;
+    justify-content: space-evenly;
+    height: 100%;
+  }
+
+  .ap-div-info {
+    .artist {
+      font-size: 1.4rem;
+    }
+
+    .name {
+      display: inline-block;
+      font-size: 1.267rem;
+      max-height: 12.67px;
+      margin-top: 3px;
       overflow: hidden;
-      transition: filter .3s ease-out;
     }
-    .ap-div-cover:hover {
-      filter: contrast(.6)
-    }
-    
-    .ap-div-cover .ap-img-cover {
-      position: relative;
-      filter: brightness(.5);
-      object-fit: cover;
-      overflow: hidden;
-    }
-    
-    .ap-div-cover .ap-img-playpauseicon {
-      position: absolute;
-      width: 27.33px;
-      filter: brightness(1.5);
-      transition: transform .3s ease-out;
-    }
-    .ap-div-cover .ap-img-playpauseicon:hover {
-      transform: scale(1.1);
-    }
-    
-    .ap-div-info {
-      display: flex;
-      flex-direction: column;
-      padding-block: 4px;
-      margin-inline: 7px;
-      width: 50%;
-      overflow: hidden;
-      justify-content: space-evenly;
-      height: 100%;
-    }
+  }
 
-    .ap-div-info {
-      .artist {
-        font-size: 1.4rem;
-      }
+  .controls {
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+  }
 
-      .name {
-        display: inline-block;
-        font-size: 1.267rem;
-        max-height: 12.67px;
-        margin-top: 3px;
-        overflow: hidden;
-      }
+  .controls-wrap {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    justify-content: space-between;
+
+    .icon {
+      width: 30px;
+      height: 30px;
+      opacity: 1;
     }
+  }
 
-    .controls {
-      display: flex;
-      flex-direction: column;
-      align-items: start;
-      justify-content: center;
-      align-items: center;
-      width: 100%;
-      height: 100%;
-    }
-
-    .controls-wrap {
-        display: flex;
-        align-items: center;
-        width: 100%;
-        justify-content: space-between;
-
-        .icon {
-          width: 30px;
-          height: 30px;
-          opacity: 1;
-        }
-    }
-
-
-    /* @keyframes slideRigtInfinite {
+  /* @keyframes slideRigtInfinite {
     from {
       transform: translateX(100%);
     }
@@ -107,18 +106,18 @@
     }
     } */
 
-    .ap-div-icons {
-        padding: 0 4px 0 8px;
-        display: flex;
-        align-items: center;
-    }
+  .ap-div-icons {
+    padding: 0 4px 0 8px;
+    display: flex;
+    align-items: center;
+  }
 
-    .ap-div-icons .plays {
-        display: flex;
-        margin-right: 17px;
-        align-items: center;
-        gap: 2px;
-    
+  .ap-div-icons .plays {
+    display: flex;
+    margin-right: 17px;
+    align-items: center;
+    gap: 2px;
+
     img {
       height: 10.67px;
       width: 10.67px;
@@ -127,9 +126,9 @@
       margin-top: unset;
       font-size: 10.67px;
     }
-    }
+  }
 
-    .ap-div-icons .like-share {
+  .ap-div-icons .like-share {
     display: flex;
     flex-direction: column;
     gap: 6px;
@@ -138,10 +137,9 @@
       height: 16.67px;
       width: 16.67px;
     }
-    }
+  }
 
-    
-    .progress-bar {
+  .progress-bar {
     display: flex;
     margin-top: 6px;
     width: 95%;
@@ -149,17 +147,17 @@
     height: 5px;
     padding: 1px;
     border-radius: 6px;
-    background-color: rgb(255, 255, 255, .2);
+    background-color: rgb(255, 255, 255, 0.2);
     position: relative;
     cursor: pointer;
-    }
+  }
 
-    .progress {
+  .progress {
     display: flex;
     height: 100%;
-    background-color: rgba((var(--clr-main), .5));
+    background-color: rgba((var(--clr-main), 0.5));
     background-color: rgb(255, 255, 255);
-    }
+  }
 }
 
 /* Keyframes */

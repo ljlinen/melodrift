@@ -98,6 +98,15 @@
         z-index: 1;
     }
 
+    .login-p-infomsg {
+      top: -30px;
+      position: relative;
+      font-size: 14px;
+      text-align: center;
+      max-width: 160px;
+      transition: .3s ease;
+    }
+
     .signup-button,
     .login-button,
     .p-button {

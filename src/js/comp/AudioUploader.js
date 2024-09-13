@@ -1,17 +1,22 @@
 import React, { useContext, useEffect, useState } from 'react'
 import './css/audiouploader.css'
 import cancel from '../../asset/img/icon/cancel.svg'
-import { baseFetch } from '../..'
+import { baseFetch, ShowInfoMessage } from '../..'
 import { useNavigate } from 'react-router-dom'
 import { ProfileContextAdmin } from './ArtistProfileAdmin'
 import FormDataInputField from './FormDataInputField'
+import Dialog from './Dialog'
+
 
 export default function AudioUploader() {
   
-  const [pageActive, setPageActive] = useState(false)
   const navigate = useNavigate()
-  const formData = new FormData();
   const { username } = useContext(ProfileContextAdmin)
+
+  const [pageActive, setPageActive] = useState(false)
+  const [infoMessage, setInfoMessage] = useState()
+
+  const formData = new FormData();
 
 
   useEffect(() => {
@@ -46,31 +51,20 @@ const uploadSong = async() => {
       const uploadedObject = await baseFetch({
           route: '/upload/song',
           method: 'POST',
-          body: formData
+          body: formData,
+          headers: {
+            'Authorization': localStorage.getItem('token')
+          }
       })
-        // navigate(0, {
-        //   refresh: true,
-        //   username: username
-        // })
       
-        if(uploadedObject['success']) {
-          console.log('uploaded');
-          
-            // setInfoMessage((prev) => ({...prev, infoMessage: "Song Uploaded Successfully"}))
-        } else {
-          console.log('faild uploading');
-        }
-          
+      if(uploadedObject['success']) {
+        ShowInfoMessage('Song Uploaded Successfully!', uploadedObject['message'], setInfoMessage);
+        navigate(0, { refresh: true });
+      }
+         
   } catch(error) {
-      // setDialog({
-      //     heading: 'Error Logging In',
-      //     message: 'Check your network',
-      //     positive: {
-      //         value: 'Okay',
-      //         callback: undefined,
-      //     }
-      // });
-      console.log(error); 
+    ShowInfoMessage('Failed Uploading', error, setInfoMessage);
+    console.log(error); 
   }
 }
 
@@ -80,6 +74,12 @@ const uploadSong = async() => {
       style={{opacity: pageActive ? 1 : 0}}
       // onSubmit={uploadSong}
     >
+    { infoMessage ? (
+        <Dialog
+            heading={infoMessage.heading}
+            message={infoMessage.message}
+        />
+    ) : null }
       <div className='au-div-heading-and-btn'>
         <div>
           <img className='icon cancel' alt='close' src={cancel} onClick={() => {navigate(-1)}} />

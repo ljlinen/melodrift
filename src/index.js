@@ -11,6 +11,9 @@ import AudioUploader from './js/comp/AudioUploader';
 import MainAudioPlayer from './js/comp/MainAudioPlayer'
 
 export const baseUrl = 'https://melodriftbackend.linendev.workers.dev'
+// export const baseUrl = 'http://localhost:8787'
+
+// Global Functons For Reusability
 
 export const baseFetch = async({ route, method, body, headers }) => {
 
@@ -23,8 +26,8 @@ export const baseFetch = async({ route, method, body, headers }) => {
       console.log('fetch, success', responseObject);
       return responseObject
     } else {
-      console.log('fetch, fail', response.statusText);
-      throw response['message']
+      console.log('fetch, fail', response.statusText, responseObject['message']);
+      throw responseObject['message']
     }
 
   } catch (error) {
@@ -43,6 +46,21 @@ export const setDataObject = (setobject, key, value, minlength) => {
   }
 }
 
+export const ShowInfoMessage = (heading, message, setInfoMessage, close) => {
+
+  setInfoMessage({ heading, message });
+
+  if(close) {
+    setTimeout(() => {
+        setInfoMessage(undefined);
+    }, 4000);
+  }
+}
+
+// end
+
+
+// Routes defining for the application
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 const router = createBrowserRouter([{
@@ -79,8 +97,9 @@ const router = createBrowserRouter([{
 }
 ])
 
-root.render(
+// end
 
+root.render(
   <React.StrictMode>
     <RouterProvider router={router} />
   </React.StrictMode>

@@ -9,7 +9,7 @@ export default function Dialog({ heading, message, negative, positive}) {
         style={{width: '350px'}}
         open>
           <h3>{heading}</h3>
-          <h4>{message}</h4>
+          <p>{message}</p>
           <div className='dialog-div-buttons'
             style={{justifyContent: positive && negative ? 'space-between' : 'end'}}
           >

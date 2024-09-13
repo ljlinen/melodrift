@@ -15,6 +15,9 @@ export default function AudioPlayer( { SongObj }) {
   const { setMainSongAdmin } = useContext(ProfileContextAdmin) || {}
   const setAsMain = async() => {
 
+    console.log('new songobj', SongObj);
+    
+
     if(SongObj) {
       if(setMainSong) {
         setMainSong((prev) => ({
