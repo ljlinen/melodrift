@@ -10,8 +10,8 @@ import LoginSignupPage from './js/comp/LoginSignupPage';
 import AudioUploader from './js/comp/AudioUploader';
 import MainAudioPlayer from './js/comp/MainAudioPlayer'
 
-// export const baseUrl = 'https://melodriftbackend.linendev.workers.dev'
-export const baseUrl = 'http://localhost:8787'
+export const baseUrl = 'https://melodriftbackend.linendev.workers.dev'
+// export const baseUrl = 'http://localhost:8787'
 
 // Global Functons For Reusability
 
