@@ -13,6 +13,7 @@ export default function LoginSignupPage() {
     const [userProfilePhoto, setUserProfilePhoto] = useState()
     const [infoMessage, setInfoMessage] = useState()
     const [pageActive, setPageActive] = useState(true)
+    // eslint-disable-next-line
     const [showDialog, setShowDialog] = useState()
     const [usernameAvailableTitle, setUsernameAvailableTitle] = useState()
 
