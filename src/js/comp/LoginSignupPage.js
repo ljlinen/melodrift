@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import './css/loginsignuppage.css'
-import { baseFetch, baseUrl, setDataObject } from '../..'
+import { baseFetch, baseUrl, setDataObject, ShowInfoMessage } from '../..'
 import { useNavigate } from 'react-router-dom'
 import InputField from './InputField'
 import Dialog from './Dialog'
@@ -11,14 +11,10 @@ export default function LoginSignupPage() {
 
     const [loginTabOpen, setLoginTabOpen] = useState(true)
     const [userProfilePhoto, setUserProfilePhoto] = useState()
-    const [toast, setToast] = useState()
+    const [infoMessage, setInfoMessage] = useState()
     const [pageActive, setPageActive] = useState(true)
+    const [showDialog, setShowDialog] = useState()
     const [usernameAvailableTitle, setUsernameAvailableTitle] = useState()
-
-    const [infoMessage, setInfoMessage] = useState({
-            infoCode: undefined,
-            infoMessage: undefined,
-        })
 
     const [loginData, setLoginData] = useState({
             username: undefined,
@@ -39,15 +35,6 @@ export default function LoginSignupPage() {
           }
 })
 
-const ShowToast = (heading, message) => {
-    console.log('toast before setToast', toast);
-    setToast({ heading, message });
-    setTimeout(() => {
-        setToast(undefined);
-        console.log('toast cleared');
-    }, 4000);
-}
-
 useEffect(() => {
     setPageActive(true)
 
@@ -63,22 +50,16 @@ useEffect(() => {
                 route: '/account/signup/' + signupData.username,
                 method: 'GET',
             })
-
-            console.log(booleanObject);
-            
-            
+       
             if(booleanObject['success']) {
-                setInfoMessage((prev) => ({...prev, infoMessage: booleanObject['message']}))
+                ShowInfoMessage(undefined, booleanObject['message'], setInfoMessage, false)
                 setUsernameAvailableTitle(booleanObject['message'])
-            } else {
-                ShowToast('Error Logging In', 'Check your network');
-                setInfoMessage((prev) => ({...prev, infoMessage: booleanObject['message']}));
-                setUsernameAvailableTitle(booleanObject['message'])
-                delete signupData.username;
             }
                 
-        } catch(error) {
-            console.log(error); 
+        } catch(errorMessage) {
+            ShowInfoMessage(undefined, errorMessage, setInfoMessage, false)
+            setUsernameAvailableTitle(errorMessage)
+            console.log(errorMessage); 
         }
     }
 
@@ -111,55 +92,49 @@ useEffect(() => {
             })
             
             if(userObject && userObject['data'] && userObject['data']['username']) {
+                localStorage.setItem('token', userObject['data']['token'])
                 setPageActive(false)
                 navigate('/profile', {
                     state: { userObject: userObject['data'] }
                 });
-            } else if(userObject['message']) {
-                ShowToast('Error Logging In', userObject['message']);
             }
                 
         } catch(error) {
-            ShowToast('Error Logging In', 'check there');
+            ShowInfoMessage('Error Logging In', error, setInfoMessage, true);
             console.log(error); 
         }
     }
 
-    const SignUp = () => {
+    const SignUp = async() => {
 
-        fetch(baseUrl + '/account/signup', {
-            method: 'PUT',
-            body: JSON.stringify(signupData),
-            headers: {
-                'Content-Type': 'application/json',
-            }
-
-        }).then((response) => {
-            setInfoMessage((prev) => ({...prev, infoCode: response.status}))
-            return response.text()
-        }).then((result) => {
-            if(result === 'true') {
+        try{
+            const userObject = await baseFetch({
+                route: '/account/signup',
+                method: 'PUT',
+                body: JSON.stringify(signupData),
+                headers: {'Content-Type': 'application/json'}
+            })
+            
+            if(userObject && userObject['success']) {
+                setInfoMessage(undefined, "Account created. Now Login using your details", setInfoMessage, false)
+                console.log(infoMessage);
+                
                 setLoginTabOpen(true)
-                setInfoMessage((prev) => ({...prev, infoMessage: "Account created. Now Login using your details"}))
-            } else {
-                setLoginTabOpen(false)
-                setInfoMessage((prev) => ({...prev, infoMessage: result}))     
             }
-        }).catch((error) => {
+                
+        } catch(error) {
+            ShowInfoMessage('Error Signing up', error, setInfoMessage, true);
             console.log(error); 
-        })
+        }
     }
 
 
     return (
-        <div className="loginsignup-div-main"
-            style={{opacity: pageActive ? 1 : 0}}
-        >
-            
-            { toast ? (
+        <div className="loginsignup-div-main" style={{opacity: pageActive ? 1 : 0}}>       
+            { showDialog ? (
                 <Dialog
-                    heading={toast.heading}
-                    message={toast.message}
+                    heading={infoMessage.heading}
+                    message={infoMessage.message}
                 />
             ) : null }
             <div className='login-div-main'>
@@ -169,7 +144,12 @@ useEffect(() => {
                         <p>{ loginTabOpen ? 'Login' : 'Signup'}</p>
                     </div>
 
-                    <p className='p-button' onClick={() => {setLoginTabOpen(!loginTabOpen)}}>{loginTabOpen ? 'Signup' : 'Login'}</p>
+                    <p className='p-button' onClick={() => {
+                        setLoginTabOpen(!loginTabOpen)
+                        loginTabOpen ? 
+                        ShowInfoMessage(undefined, 'lets create your account', setInfoMessage, false) :
+                        ShowInfoMessage(undefined, 'login to your account', setInfoMessage, false)
+                        }}>{loginTabOpen ? 'Signup' : 'Login'}</p>
                 </nav>
 
 
@@ -180,7 +160,14 @@ useEffect(() => {
                             opacity: loginTabOpen ? '1' : 0,
                         }}>
 
-                    <p className='login-p-infomsg'>{ loginTabOpen && infoMessage.infoMessage ? infoMessage.infoMessage : undefined}</p>
+                    {                    
+                        <p className='login-p-infomsg'>
+                            {
+                                infoMessage && loginTabOpen ? infoMessage.message : 
+                                'Login or click signup to create an account'
+                            }
+                        </p>
+                    }
 
                     <InputField
                         inputTitle='username'
@@ -228,8 +215,12 @@ useEffect(() => {
     <div className='signup-div-main'>
         <div className='signup-div-inputswrapper' 
                 style={{minHeight: !loginTabOpen ? '90vh' : 0, opacity: !loginTabOpen ? '1' : 0}}>
-
-            <p className='signup-p-infomsg'>{infoMessage.infoMessage}</p>
+            {
+                infoMessage && !loginTabOpen ?
+                (<p className='login-p-infomsg'>{ infoMessage.message }</p>)
+                : null
+            }
+            
 
             <InputField
                 inputTitle='username'
@@ -305,6 +296,6 @@ useEffect(() => {
             </div>
         </div>
     </div>
-      )
-    }
+    )
+}
     
