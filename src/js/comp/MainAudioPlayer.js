@@ -16,6 +16,7 @@ export default function AudioPlayer({ mainSong }) {
   const [isPlaying, setIsPlaying] = useState();
   const [Expanded, setExpanded] = useState();
   const [progress, setProgress] = useState(0);
+  // eslint-disable-next-line
   const [currentTime, setCurrentTime] = useState(0);
   // const [duration, setDuration] = useState(0);
   const [currentAudioId, setCurrentAudioId] = useState();
@@ -54,6 +55,7 @@ export default function AudioPlayer({ mainSong }) {
         };
       }
     }
+    // eslint-disable-next-line
   }, [mainSong, currentAudioId]);
 
   const PlayPause = async () => {
