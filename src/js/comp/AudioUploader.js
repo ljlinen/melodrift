@@ -53,17 +53,17 @@ const uploadSong = async() => {
           method: 'POST',
           body: formData,
           headers: {
-            'Authorization': localStorage.getItem('token')
+            'Authorization': 'Bearer ' + localStorage.getItem('token')
           }
       })
       
       if(uploadedObject['success']) {
-        ShowInfoMessage('Song Uploaded Successfully!', uploadedObject['message'], setInfoMessage);
+        ShowInfoMessage('Song Uploaded Successfully!', uploadedObject['message'], setInfoMessage, true);
         navigate(0, { refresh: true });
       }
          
   } catch(error) {
-    ShowInfoMessage('Failed Uploading', error, setInfoMessage);
+    ShowInfoMessage('Failed Uploading', error, setInfoMessage, true);
     console.log(error); 
   }
 }
