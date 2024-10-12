@@ -140,7 +140,7 @@ export const onSkip = (
   nextORprevious
 ) => {
   console.log(mainSongIndex, mainsongdispatch, dataLength, nextORprevious);
-  const index = 0 || mainSongIndex;
+  const index = mainSongIndex ?? 0;
   const max = dataLength - 1;
 
   switch (nextORprevious) {
