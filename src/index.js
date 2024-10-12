@@ -154,6 +154,7 @@ export const onSkip = (
         ? mainsongdispatch({ type: "SET_SONG", payload: { i: max } })
         : mainsongdispatch({ type: "SET_SONG", payload: { i: index - 1 } });
       break;
+    default:
   }
 };
 
