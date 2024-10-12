@@ -7,7 +7,6 @@ import { useNavigate, useParams } from "react-router-dom";
 import MainAudioPlayer from "../comp/MainAudioPlayer";
 import useArtistMusicListContext from "../hooks/useArtistMusicListContext";
 import useMainSongContext from "../hooks/useMainSongContext";
-import usePageActive from "../hooks/usePageActive";
 import useLoginContext from "../hooks/useLoginContext";
 import useIsLoggedIn from "../hooks/useIsLoggedIn";
 

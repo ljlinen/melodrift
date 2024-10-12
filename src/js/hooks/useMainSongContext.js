@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import { useContext } from 'react'
 import { MainSongContext } from '../context/MainSongContext'
 
 export default function useMainSongContext() {

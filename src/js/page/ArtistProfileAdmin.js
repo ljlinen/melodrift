@@ -4,7 +4,7 @@ import "../comp/css/artistprofile.css";
 import varified from "../../asset/img/icon/verified.svg";
 import plays from "../../asset/img/icon/play.svg";
 import like from "../../asset/img/icon/like.svg";
-import { Outlet, redirect, useLocation, useNavigate, useParams } from "react-router-dom";
+import { Outlet, useNavigate, useParams } from "react-router-dom";
 import MusicList from "../comp/MusicList";
 import MainAudioPlayer from "../comp/MainAudioPlayer";
 import useArtistMusicListContext from "../hooks/useArtistMusicListContext";
