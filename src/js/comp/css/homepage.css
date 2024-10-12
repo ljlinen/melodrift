@@ -1,0 +1,49 @@
+body {
+    transition: unset;
+}
+.homepage-div-main {
+    position: relative;
+    height: 100%;
+
+    .top-div .introducton {
+        padding: 20px;
+    }
+
+    .top-div {
+
+    }
+    .top-div .introducton h2 {
+        animation: paragraph .8s;
+    }
+    .top-div .introducton h1 {
+        margin-top: 80px;
+        animation: paragraph .8s;
+    }
+
+    .top-div .introducton p {
+        margin-top: 10px;
+        max-width: 170px;
+        animation: paragraph .8s;
+    }
+
+    .new-music {
+        padding-left: 20px;
+        transition: height 1.3s ease-in-out;
+    }
+
+    .bottom-div {
+        position: relative;
+        width: 100%;
+        min-height: 60%;
+        background-color: rgb(var(--clr-background-lighter));
+        border-radius: 20px 20px 0 0;
+    }
+
+    /* global classes */
+
+    .hidden {
+        opacity: 0;
+    }
+}
+
+/* amination classes */

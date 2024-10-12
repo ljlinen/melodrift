@@ -1,0 +1,38 @@
+.labellistgrid-main {
+    padding: 0 25px;;
+
+    h3 {
+        width: 100%;
+        text-align: right;
+        padding: 25px 0;
+    }
+
+    .labels-div {
+        padding: 15px 0;
+        display: grid;
+        row-gap: 6px;
+        grid-template-columns: 1fr 1fr 1fr;
+    }
+
+    .labels-div p {
+        text-transform: capitalize;
+        transition: .6s ease-in;
+        cursor: pointer;
+        transition: .3s ease-in-out;
+    }
+    .labels-div p:hover {
+        color: rgba(var(--clr-font));
+        transform: scale(1.03);
+    }
+}
+
+@keyframes paragraph {
+    from {
+        opacity: 0;
+        transform: translateY(50%);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}

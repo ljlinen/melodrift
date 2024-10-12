@@ -10,7 +10,7 @@
     transform: translate(-50%, -50%);
     border: none;
     transition: opacity .6s;
-    background-color: rgba(var(--clr-main), .06);
+    background-color: rgba(var(--clr-background), .06);
     padding: 20px;
     border-radius: 6px;
     gap: 10px;

@@ -27,7 +27,6 @@
     }
   
     nav p {
-        font-size: 17.33px;
         transition: filter .6s ease-in;
       }
 
@@ -99,12 +98,13 @@
     }
 
     .login-p-infomsg {
-      top: -30px;
+      padding-top: 25px;
       position: relative;
       font-size: 14px;
       text-align: center;
       max-width: 160px;
       transition: .3s ease;
+      line-height: 1.2;
     }
 
     .signup-button,
@@ -112,7 +112,7 @@
     .p-button {
         margin-top: 10px;
         font-family: main-bold;
-        border-radius: 5px;
+        border-radius: 26px;
         padding: 8px 18px;
         background-color: #fff;
         font-size: 14.33px;

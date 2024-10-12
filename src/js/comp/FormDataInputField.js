@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 
-export default function FormDataInputField({inputTitle, inputType, formData, formDataKey, setFormDataFuncton, minlength, style, ...props}) {
+export default function FormDataInputField({inputTitle, inputType, formData, formDataKey, setFormDataFuncton, minlength, style, children, ...props}) {
 
     const [valid, setValid] = useState(true)
     return (
@@ -13,6 +13,7 @@ export default function FormDataInputField({inputTitle, inputType, formData, for
                 }}
                 {...props}
             />
+            {children}
         </div>
     )
 }
