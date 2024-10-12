@@ -5,7 +5,7 @@
   flex-direction: column;
   position: relative;
   width: 100%;
-  height: 100vh;
+  min-height: 100vh;
   background-size: cover;
 
   nav {
@@ -20,7 +20,7 @@
   nav p {
     font-family: logo;
     font-size: 21.33px;
-    color: rgba(var(--clr-main), 1);
+    color: rgba(var(--clr-font), 1);
   }
   nav img {
     height: 29.67px;
@@ -51,15 +51,18 @@
   }
 
   .search-div-result-list {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
     height: 0;
     width: 100%;
-    background-color: rgba(0,0,0, .8);
-    border: 1px solid rgba(var(--clr-main), .5);
+    background-color: rgba(var(--clr-font), .4);
+    
     position: absolute;
     z-index: 5;
     transition: .6s;
     top: 34px;
-    border-radius: 3px;
+    border-radius: 10px;
     opacity: 0;
   }
 
@@ -86,6 +89,7 @@
 
   .wrap-info-about {
     display: flex;
+    width: 100%;
     flex-direction: column;
     min-height: 150px;
     position: relative;
@@ -93,6 +97,7 @@
     opacity: 0;
     transition: opacity .6s ease-in;
     padding-bottom: 20px;
+    z-index: 8;
   }
 
   .background {
@@ -141,6 +146,10 @@
   .wrap-info-stats .info {
     display: flex;
     flex-direction: column;
+
+    .location {
+      margin-top: 5px;
+    }
   }
   
   .wrap-info-stats .stats {
@@ -162,7 +171,7 @@
   }
   
   .wrap-info-stats .stats div :nth-child(2) {
-    margin: 4px 4px 0 2px;
+    margin: 2px 4px 0 2px;
   }
   
   .wrap-name-varified {

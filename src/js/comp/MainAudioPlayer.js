@@ -1,74 +1,94 @@
 import React, { useEffect, useRef, useState } from "react";
+import { baseFetch, baseUrl, handleShare, updateSong } from "../..";
+
 import "./css/mainaudioplayer.css";
 import play from "../../asset/img/icon/play.svg";
 import pause from "../../asset/img/icon/pause.svg";
 import like from "../../asset/img/icon/like.svg";
+import liked from "../../asset/img/icon/liked.svg";
 import backgroundVideo from "../../asset/video/bg.mp4";
 
 import controlsP from "../../asset/img/icon/controlsP.svg";
 import controlsN from "../../asset/img/icon/controlsN.svg";
 import share from "../../asset/img/icon/share.svg";
-import { baseUrl } from "../..";
+import up from "../../asset/img/icon/up.svg";
+import useFetchSongData from "../hooks/useFetchSongData";
+import useFetchSongFile from "../hooks/useFetchSongFile";
 
-export default function AudioPlayer({ mainSong }) {
-  const [file, setFile] = useState(0);
+export default function MainAudioPlayer({ id, onSkip, Expand}) {
+  
   const audioRef = useRef(null);
+  const backgroundVideoReff = useRef(null);
   const [isPlaying, setIsPlaying] = useState();
-  const [Expanded, setExpanded] = useState();
+  const [isLiked, setLiked] = useState(false);
+  const [Expanded, setExpanded] = useState(Expand);
   const [progress, setProgress] = useState(0);
   // eslint-disable-next-line
   const [currentTime, setCurrentTime] = useState(0);
   // const [duration, setDuration] = useState(0);
-  const [currentAudioId, setCurrentAudioId] = useState();
+  
+  const { SongData, componentActive } = useFetchSongData(id)
+  const { file, currentAudioId } = useFetchSongFile(id);
 
   useEffect(() => {
-    if (!mainSong["SongObj"]) return;
-
-    const name = mainSong["SongObj"]["id"];
-
-    const fetchSongFile = async () => {
-      if (!name || !audioRef.current) return;
-      setFile(null);
-      setIsPlaying(false);
-      audioRef.current.pause();
-      setFile(baseUrl + "/song/file/" + name); // Reset playback state
-      audioRef.current.load();
-      audioRef.current.play();
-      setIsPlaying(true);
-      setCurrentAudioId(name);
-      console.log("vs new song: ", name);
-    }; // Clear the current file source
-
-    if (currentAudioId === name) {
-      restart(); // Restart the current song
-    } else {
-      fetchSongFile();
-
-      if (audioRef.current) {
-        const audio = audioRef.current;
-        audio.ontimeupdate = () => {
-          setCurrentTime(audio.currentTime);
-          setProgress((audio.currentTime / audio.duration) * 100);
-        };
-        audio.onloadedmetadata = () => {
-          console.log("song loaded");
-        };
-      }
-    }
+    console.log('id is: ', id);
+    file && PlayPause();
     // eslint-disable-next-line
-  }, [mainSong, currentAudioId]);
+  }, [id]);
+
+  useEffect(() => {
+
+    
+    if(file && audioRef.current) {
+      const audio = audioRef.current;
+      audio.load();
+      audio.onended = () => {
+        onSkip('next')
+        PlayPause()
+      };
+      audio.ontimeupdate = () => {
+        setCurrentTime(audio.currentTime);
+        setProgress((audio.currentTime / audio.duration) * 100);
+      };
+      audio.onloadedmetadata = () => {
+        console.log("song loaded");
+        PlayPause();
+        SongData && updateSong(SongData['publisher'], 'plays', id)
+      };
+    }
+    
+
+    // eslint-disable-next-line
+  }, [file]);
 
   const PlayPause = async () => {
+    console.log('trying to play');
+    
     const audio = audioRef.current;
+    const video = backgroundVideoReff.current;
     if (audio) {
       if (isPlaying) {
         await audio.pause();
+        await video.pause();
         setIsPlaying(false);
       } else {
+        console.log('trying to play play play');
         await audio
           .play()
-          .then(() => setIsPlaying(true))
-          .catch((error) => console.error("Playback error:", error));
+          .then(() => {
+            console.log('should be playing');
+            setIsPlaying(true)
+          })
+          .catch((error) => {
+            console.log('never played');
+            console.error("Playback error:", error)
+            setIsPlaying(false)
+          });
+        await video
+          .play()
+          .catch((error) => {
+            console.error("Video Playback error:", error)
+          });
       }
     }
   };
@@ -95,20 +115,25 @@ export default function AudioPlayer({ mainSong }) {
 
   return (
     //  audio player component
-    mainSong &&
-    mainSong["SongData"] && (
+    (id && SongData) ? (
       <div
         className="mainaudioplayer-div-main-song"
-        onClick={() => {
-          setExpanded(!Expanded);
-        }}
         style={{
           height: Expanded ? "100%" : "61.33px",
-          backgroundColor: Expanded ? "rgba(0, 0, 0, 1)" : "rgba(0, 0, 0, .3)",
+          backgroundColor: Expanded ? "rgba(var(--clr-background))" : "rgba(0, 0, 0, .5)",
           flexDirection: Expanded ? "column" : "unset",
-          padding: Expanded ? "30px" : "revert",
+          padding: Expanded ? "25px" : "revert",
         }}
       >
+        <img className="expand-collaps-icon" src={up} 
+          alt="expand or collaps" 
+          style={{
+            transform: Expanded ? 'rotate(180deg)' : 'revert', 
+            marginBottom: Expanded ? 10 : 'revert'
+          }}
+          onClick={() => {
+            setExpanded(!Expanded);
+          }} />
         <audio ref={audioRef}>
           <source src={file} type="audio/mpeg" />
         </audio>
@@ -117,38 +142,66 @@ export default function AudioPlayer({ mainSong }) {
           className="ap-div-icons"
           style={{
             width: Expanded ? "100%" : "revert",
-            background: Expanded
-              ? `linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url(${backgroundVideo})`
-              : "",
-            backgroundSize: "cover",
-          }}
-        >
+            paddingBottom: Expanded ? 10 : 'revert'
+          }}>
+          <video ref={backgroundVideoReff} 
+            autoPlay 
+            muted 
+            loop
+            className="background-video"
+            style={{display: Expanded ? "unset" : "none"}}
+            onLoadedMetadata={() => backgroundVideoReff.current.playbackRate = '.5'}>
+            
+            <source src={backgroundVideo} type="video/mp4" />
+          </video>
           <div
             className="like-share"
             style={{
               width: Expanded ? "100%" : "revert",
-              flexDirection: Expanded ? "row" : "revert",
+              flexDirection: Expanded ? "row" : "column",
               justifyContent: Expanded ? "space-between" : "revert",
               marginTop: Expanded ? "50vh" : "revert",
             }}
           >
-            <img src={share} alt="share" />
-            <img src={like} alt="like" />
+            {
+              id && 
+              <img
+                src={share} alt="share" 
+                onClick={() => {
+                  handleShare(
+                    `Listen to ${SongData['publisher']} on Melodrift.`,
+                    ``, 
+                    'www.melodrift.pages.dev/song/' + id)
+                }}
+              />
+            }
+
+            {
+              id && 
+              <img
+                src={ isLiked ? liked : like } alt="like" 
+                onClick={async() => {
+                  if(isLiked) return;
+                  const liked = await updateSong(SongData['publisher'], 'likes', id)
+                  setLiked(liked);
+                }}
+              />
+            }
           </div>
         </div>
 
         <div
           className="ap-div-info"
           style={{
-            width: Expanded ? "100%" : "revert",
+            width: Expanded ? "100%" : "50%",
             height: Expanded ? "fit-content" : "revert",
-            paddingBlock: Expanded ? "30px" : "revert",
+            paddingBlock: Expanded ? "25px" : "revert",
             justifyContent: Expanded ? "start" : "revert",
             gap: Expanded ? 5 : "revert",
           }}
         >
-          <h4 className="artist">{mainSong.SongData.artists}</h4>
-          <p className="name">{mainSong.SongData.title}</p>
+          <h4 className="artist">{SongData.artists}</h4>
+          <p className="name">{SongData.title}</p>
         </div>
 
         <div
@@ -162,16 +215,22 @@ export default function AudioPlayer({ mainSong }) {
               <>
                 <img
                   alt="previous"
-                  className="controls-p icon"
+                  className="controls-p icon .clickable"
                   src={controlsP}
+                  onClick={() => {onSkip('previous')}}
                 />
                 <img
                   alt="pause-play"
-                  className="controls-pause-play icon"
+                  className="controls-pause-play icon .clickable"
                   onClick={PlayPause}
                   src={isPlaying ? pause : play}
                 />
-                <img alt="play" className="controls-n icon" src={controlsN} />
+                <img 
+                  alt="next" 
+                  className="controls-n icon .clickable" 
+                  src={controlsN}
+                  onClick={() => {onSkip('next')}}
+                />
               </>
             ) : (
               <>
@@ -187,11 +246,12 @@ export default function AudioPlayer({ mainSong }) {
                 opacity: !Expanded ? 0 : 1,
               }}
             >
-              <div className="progress" style={{ width: `${progress}%` }}></div>
+              <div className="progress" style={{ width: `${progress}%`, backgroundColor: 'white' }}>
+              </div>
             </div>
           ) : null}
         </div>
       </div>
-    )
+    ) : null
   );
 }

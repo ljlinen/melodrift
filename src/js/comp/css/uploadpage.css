@@ -1,0 +1,125 @@
+  
+  /* root variables for specific component */
+
+  .uploadpage-div-main {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    width: 100%;
+    border-radius: 6px;
+    background-color: rgba(var(--clr-background));
+    justify-content: space-between;
+
+    .div-header {
+      padding: 12px;
+
+      h1 {
+        margin-top: unset;
+      }
+
+      p {
+        margin-top: 4px;
+        opacity: .6;
+      }
+    }
+
+
+
+    .div-body {
+      display: flex;
+      flex-direction: column;
+      width: 100%;
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      background-color: rgba(255, 255, 255, 0.05);
+      border-radius: 12px;
+      padding: 20px 10px;
+      margin-inline: 10px;
+    }
+
+    form h3 {
+      width: 100%;
+      text-align: left;
+    }
+
+    form p {
+      width: 100%;
+      text-align: left;
+      margin-top: 4px;
+      opacity: .6;
+    }
+
+    form .input-wrap {
+      margin-top: 50px;
+    }
+
+    form .default-button {
+      margin-top: 30px;
+      min-width: 80px;
+      padding: 8px 3px;
+      border-radius: 26px;
+    }
+
+    .formElementSlideIn {
+      animation: formElementSlideIn 4s ease-in;
+    }
+
+    @keyframes formElementSlideOut {
+      from {
+        transform: translateX(50%);
+        opacity: 0;
+      }
+      to {
+        transform: translateX(0);
+        opacity: 1;
+      }
+    }
+
+    .formElementSlideOut {
+      animation: formElementSlideOut .9s ease-in;
+    }
+
+    @keyframes formElementSlideIn {
+      from {
+        transform: translateX(0);
+        opacity: 1;
+      }
+      to {
+        transform: translateX(-50%);
+        opacity: 0;
+      }
+    }
+
+
+    footer {
+      display: flex;
+      flex-direction: column;
+      width: 100%;
+      align-items: center;
+    }
+    .footer-loginsignup {
+      opacity: .6;
+      padding: 10px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .footer-loginsignup .row {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .footer-loginsignup .row .default-button {
+      min-width: 80px;
+      padding: 8px 3px;
+      border-radius: 26px;
+    }
+  }

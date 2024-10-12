@@ -1,0 +1,29 @@
+.loader {
+    width: 100%;
+    height: 1.5px;
+    display: inline-block;
+    position: relative;
+    overflow: hidden;
+  }
+  .loader::after {
+    content: '';  
+    width: 90%;
+    height: 1.5px;
+    background: rgba(var(--clr-font));
+    position: absolute;
+    top: 0;
+    left: 0;
+    box-sizing: border-box;
+    animation: hitZak 1.5s ease-in-out infinite alternate;
+  }
+
+  @keyframes hitZak {
+    0% {
+      left: -90%;
+      transform: translateX(-10%);
+    }
+    100% {
+      left: 180%;
+      transform: translateX(-90%);
+    }
+  }
