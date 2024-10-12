@@ -1,6 +1,5 @@
 import React, { useState } from 'react'
 import '../comp/css/uploadpage.css'
-import AudioUploader from '../comp/AudioUploader'
 import FormDataInputField from '../comp/FormDataInputField'
 import useFetchSongData from '../hooks/useFetchSongData';
 

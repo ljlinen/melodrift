@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import "../comp/css/loginsignuppage.css";
-import { baseFetch, baseUrl, setDataObject, ShowInfoMessage } from "../..";
+import { baseFetch, setDataObject, ShowInfoMessage } from "../..";
 import { useNavigate } from "react-router-dom";
 import InputField from "../comp/InputField";
 import Dialog from "../comp/Dialog";
@@ -44,6 +44,7 @@ export default function LoginSignupPage() {
 
   useEffect(() => {
     userLogin && navigate("/profile/:username");
+      // eslint-disable-next-line
   }, [userLogin]);
 
 

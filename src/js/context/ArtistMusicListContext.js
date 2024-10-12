@@ -15,26 +15,22 @@ export const ArtistMusicListReducer = (state, action) => {
           pinnedsong: null,
           artistmusiclist: state.artistmusiclist
         }
-        break;
     case 'SET_LIST':
         return {
           pinnedsong: state.pinnedsong,
           artistmusiclist: action.payload
         }
-        break;
     case 'CLEAR_LIST':
       return {
         pinnedsong: state.pinnedsong,
         artistmusiclist: []
       }
-      break;
     case 'ADD_SONG':
       console.log('adding song: ', action.payload)
       return {
         pinnedsong: state.pinnedsong,
         artistmusiclist: [...state.artistmusiclist, action.payload]
       }
-      break;
     case 'REMOVE_SONG':
       return {
         pinnedsong: state.pinnedsong,

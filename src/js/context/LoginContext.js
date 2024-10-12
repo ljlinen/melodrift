@@ -9,7 +9,6 @@ export const loginReducer = (state, action) => {
       return {
         userLogin: action.payload
       }
-      break;
     case 'LOGOUT':
       console.log('logged out');
       return {

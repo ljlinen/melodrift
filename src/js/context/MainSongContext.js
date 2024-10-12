@@ -10,7 +10,6 @@ export const MainSongReducer = (state, action) => {
         return {
           mainsong: {...state.mainsong, ...action.payload }
         }
-        break;
     case 'CLEAR_SONG':
       return {
         mainsong: null

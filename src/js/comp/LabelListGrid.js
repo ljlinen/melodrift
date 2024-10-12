@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import './css/labellistgrid.css'
 
 export default function LabelListGrid({labelListArr, labelTopic, labelsClickHandler}) {
