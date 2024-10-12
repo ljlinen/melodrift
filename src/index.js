@@ -15,8 +15,8 @@ import ViewDebugger from "./js/page/ViewDebugger";
 import { ArtistMusicListContextProvider } from "./js/context/ArtistMusicListContext";
 import { MainSongContextProvider } from "./js/context/MainSongContext";
 
-// export const baseUrl = 'https://melodriftbackend.linendev.workers.dev'
-export const baseUrl = "http://localhost:8787";
+export const baseUrl = 'https://melodriftbackend.linendev.workers.dev'
+// export const baseUrl = "http://localhost:8787";
 
 // Global Functons For Reusability
 
