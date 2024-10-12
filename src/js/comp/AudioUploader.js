@@ -1,9 +1,8 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./css/audiouploader.css";
 import cancel from "../../asset/img/icon/cancel.svg";
 import { baseFetch, ShowInfoMessage } from "../..";
 import { useNavigate } from "react-router-dom";
-import { ProfileContextAdmin } from "../page/ArtistProfileAdmin";
 import FormDataInputField from "./FormDataInputField";
 import Dialog from "./Dialog";
 import Loader from "./Loader";
@@ -41,6 +40,7 @@ export default function AudioUploader() {
     if(!userLogin || !userLogin["username"]) {
       navigate("/login");
     }
+    // eslint-disable-next-line
   }, [userLogin]);
 
 

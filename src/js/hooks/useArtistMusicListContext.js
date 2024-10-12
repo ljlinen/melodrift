@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import { useContext } from 'react'
 import { ArtistMusicListContext } from '../context/ArtistMusicListContext'
 
 export default function useArtistMusicListContext() {

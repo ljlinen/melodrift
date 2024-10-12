@@ -1,20 +1,16 @@
-import React, { createContext, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import "../comp/css/artistprofile.css";
 
 import varified from "../../asset/img/icon/verified.svg";
 import plays from "../../asset/img/icon/play.svg";
-import search from "../../asset/img/icon/search.svg";
-import cancel from "../../asset/img/icon/cancel.svg";
-import edit from "../../asset/img/icon/edit.svg";
 import like from "../../asset/img/icon/like.svg";
 import { Outlet, redirect, useLocation, useNavigate, useParams } from "react-router-dom";
 import MusicList from "../comp/MusicList";
 import MainAudioPlayer from "../comp/MainAudioPlayer";
 import useArtistMusicListContext from "../hooks/useArtistMusicListContext";
 import useLoginContext from "../hooks/useLoginContext";
-import { baseFetch, baseUrl, onSkip } from "../..";
+import { baseFetch, onSkip } from "../..";
 import useMainSongContext from "../hooks/useMainSongContext";
-import useProtectPage from "../hooks/useProtectPage";
 import useIsLoggedIn from "../hooks/useIsLoggedIn";
 
 export default function ArtistProfileAdmin() {
@@ -28,12 +24,10 @@ export default function ArtistProfileAdmin() {
   const { mainsong, mainsongdispatch } = useMainSongContext()
 
   const [artistProfileData, setArtistProfileData] = useState();
-  const [searching, setSearching] = useState();
+  // const [searching, setSearching] = useState();
   // const [error, setErrorMessage] = useState();
   const [pageActive, setPageActive] = useState(true);
   const [username, setUsername] = useState();
-
-  const location = useLocation();
 
   // useFetchSongData(mainSongAdmin['i'])
 
@@ -83,6 +77,7 @@ export default function ArtistProfileAdmin() {
     !params.username ? navigate('/login') : fetchProfile()
 
     console.log('udeeffect saw that it changed', params.username);
+      // eslint-disable-next-line
   }, [params.username]);
 
   useEffect(() => {
@@ -97,6 +92,7 @@ export default function ArtistProfileAdmin() {
     } else {
       navigate('/login')
     }
+      // eslint-disable-next-line
   }, [userLogin]);
 
   const onSkipLocal = (nextORprevious) => {

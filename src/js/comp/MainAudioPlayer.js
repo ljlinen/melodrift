@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import { baseFetch, baseUrl, handleShare, updateSong } from "../..";
+import { handleShare, updateSong } from "../..";
 
 import "./css/mainaudioplayer.css";
 import play from "../../asset/img/icon/play.svg";
@@ -27,8 +27,8 @@ export default function MainAudioPlayer({ id, onSkip, Expand}) {
   const [currentTime, setCurrentTime] = useState(0);
   // const [duration, setDuration] = useState(0);
   
-  const { SongData, componentActive } = useFetchSongData(id)
-  const { file, currentAudioId } = useFetchSongFile(id);
+  const { SongData } = useFetchSongData(id)
+  const { file } = useFetchSongFile(id);
 
   useEffect(() => {
     console.log('id is: ', id);
@@ -93,18 +93,18 @@ export default function MainAudioPlayer({ id, onSkip, Expand}) {
     }
   };
 
-  const restart = () => {
-    const audio = audioRef.current;
-    if (audio) {
-      audio.currentTime = 0;
-      if (!isPlaying) {
-        audio
-          .play()
-          .then(() => setIsPlaying(true))
-          .catch((error) => console.error("Playback error:", error));
-      }
-    }
-  };
+  // const restart = () => {
+  //   const audio = audioRef.current;
+  //   if (audio) {
+  //     audio.currentTime = 0;
+  //     if (!isPlaying) {
+  //       audio
+  //         .play()
+  //         .then(() => setIsPlaying(true))
+  //         .catch((error) => console.error("Playback error:", error));
+  //     }
+  //   }
+  // };
 
   // const handleProgressClick = (e) => {
   //   const width = e.target.clientWidth;

@@ -9,14 +9,11 @@ import LoginSignupPage from "./js/page/LoginSignupPage";
 import AudioUploader from "./js/comp/AudioUploader";
 import MainAudioPlayer from "./js/comp/MainAudioPlayer";
 import SongUpdateInfo from "./js/comp/UpdateSongForm";
-import SongPlayerPage from "./js/page/SongPlayerPage";
-import UploadPage from "./js/page/UploadPage";
 import HomePage from "./js/page/HomePage";
 import { LoginContextProvider } from "./js/context/LoginContext";
 import ViewDebugger from "./js/page/ViewDebugger";
 import { ArtistMusicListContextProvider } from "./js/context/ArtistMusicListContext";
 import { MainSongContextProvider } from "./js/context/MainSongContext";
-import useMainSongContext from "./js/hooks/useMainSongContext";
 
 // export const baseUrl = 'https://melodriftbackend.linendev.workers.dev'
 export const baseUrl = "http://localhost:8787";

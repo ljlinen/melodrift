@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useLocation } from 'react-router-dom';
 
 export default function usePageActive(routeStr) {
@@ -8,7 +8,7 @@ export default function usePageActive(routeStr) {
 
   useEffect(() => {
       setPageActive(location.pathname === routeStr);
-  }, [location.pathname]);
+  }, [location.pathname, routeStr]);
 
   return pageActive
 }

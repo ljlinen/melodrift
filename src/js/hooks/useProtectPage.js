@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import useLoginContext from './useLoginContext';
 
@@ -8,7 +8,7 @@ export default function useProtectPage() {
 
     useEffect(() => {
         !userLogin && navigate('/login')
-    }, [userLogin])
+    }, [userLogin, navigate])
 
     return userLogin 
 }

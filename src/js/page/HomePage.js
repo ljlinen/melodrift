@@ -3,19 +3,16 @@ import "../comp/css/homepage.css";
 import MusicList from "../comp/MusicList";
 import { baseFetch, onSkip } from "../..";
 import LabelListGrid from "../comp/LabelListGrid";
-import Footer from "../comp/Footer";
-import { Outlet, useLocation, useNavigate, useParams } from "react-router-dom";
-import useFechSongByParams from "../hooks/useFechSongByParams";
+import { useNavigate, useParams } from "react-router-dom";
 import MainAudioPlayer from "../comp/MainAudioPlayer";
 import useArtistMusicListContext from "../hooks/useArtistMusicListContext";
 import useMainSongContext from "../hooks/useMainSongContext";
 import usePageActive from "../hooks/usePageActive";
 import useLoginContext from "../hooks/useLoginContext";
-import useProtectPage from "../hooks/useProtectPage";
 import useIsLoggedIn from "../hooks/useIsLoggedIn";
 
 export default function HomePage() {
-  const visible = usePageActive('/')
+  // const visible = usePageActive('/')
   const { artistmusiclist, musiclistdispatch } = useArtistMusicListContext();
   const { mainsong, mainsongdispatch } = useMainSongContext()
   const { dispatch } = useLoginContext();
@@ -24,6 +21,7 @@ export default function HomePage() {
 
   const [chart, setChart] = useState("new-music/all-genres");
   const [chartName, setChartName] = useState("new-music/all-genres");
+  // eslint-disable-next-line
   const [expand, setExpand] = useState(false);
 
   // const artistMusicData = useFechSongByParams();
@@ -31,15 +29,18 @@ export default function HomePage() {
   const navigate = useNavigate()
 
   const labelsArray = ["all-genres","hip-hop","amapiano","private piano","house","deep house","soul","pop","other"];
+  // eslint-disable-next-line
   const labelsArraySecond = ["all-genres","hip-hop","amapiano","private piano","house","deep house","soul","pop","other"];
 
 
   useEffect(() => {
     mainsongdispatch({ type: 'SET_SONG', payload: { id: params.songid, i: 0 }});
+      // eslint-disable-next-line
   }, [params.songid]);
 
   useEffect(() => {
     console.log('music list or songid: ', artistmusiclist, mainsong);
+      // eslint-disable-next-line
   }, [mainsong, artistmusiclist])
 
   useEffect(() => {
@@ -69,7 +70,7 @@ export default function HomePage() {
         console.log(error);
       }
     })();
-    
+  // eslint-disable-next-line
   }, [chart, mainsong?.id]);
 
 
