@@ -6,6 +6,7 @@ import { baseUrl } from '../..';
 export default function ViewDebugger() {
 
   // Functions
+    // eslint-disable-next-line
   async function uploadFile(file) {
     const url = baseUrl + "/upload"; // Replace with your endpoint
 

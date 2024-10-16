@@ -16,8 +16,8 @@ import { ArtistMusicListContextProvider } from "./js/context/ArtistMusicListCont
 import { MainSongContextProvider } from "./js/context/MainSongContext";
 import UploadPage from "./js/page/UploadPage";
 
-// export const baseUrl = 'https://melodriftbackend.linendev.workers.dev'
-export const baseUrl = "http://localhost:8787";
+export const baseUrl = 'https://melodriftbackend.linendev.workers.dev'
+// export const baseUrl = "http://localhost:8787";
 
 // Global Functons For Reusability
 
