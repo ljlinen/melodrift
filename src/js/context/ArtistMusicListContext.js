@@ -3,8 +3,6 @@ import React, { createContext, useReducer } from 'react'
 export const ArtistMusicListContext = createContext();
 
 export const ArtistMusicListReducer = (state, action) => {
-  let index = 0;
-  
 
   switch (action.type) {
     case 'SET_PINNED_SONG':
