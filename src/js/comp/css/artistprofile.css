@@ -176,12 +176,14 @@
   
   .wrap-name-varified {
     display: flex;
+    gap: 3px;
     align-items: center;
   }
   
   .wrap-name-varified img {
     margin-top: calc(0.4rem * 1.618 * 1.618 * 1.618);
     opacity: .7;
+    margin-bottom: 2.5px;
   }
 
   .about {

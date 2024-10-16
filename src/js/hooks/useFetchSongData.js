@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { ImgStringToUrl, baseFetch } from '../..';
+import { baseFetch } from '../..';
   
 export default function useFetchSongData(id) {
 
@@ -18,8 +18,6 @@ export default function useFetchSongData(id) {
         });
 
         if (audioObject && audioObject["data"]) {
-          const imgStr = audioObject["data"]["cover"];
-          audioObject["data"]["cover"] = ImgStringToUrl(imgStr);
           setSongData(audioObject["data"]);
           setFetchedSongData(audioObject["data"]);
           setComponentActive(true);

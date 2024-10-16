@@ -1,39 +1,33 @@
 import React, { useEffect, useState } from "react";
-import "../comp/css/loginsignuppage.css";
 import { baseFetch, setDataObject, ShowInfoMessage } from "../..";
 import { useNavigate } from "react-router-dom";
+
 import InputField from "../comp/InputField";
 import Dialog from "../comp/Dialog";
 import useLoginContext from "../hooks/useLoginContext";
 import FormDataInputField from "../comp/FormDataInputField";
+import Footer from "../comp/Footer";
+import "../comp/css/loginsignuppage.css";
+import useFetchCoverFile from "../hooks/useFetchCoverFile";
 
 export default function LoginSignupPage() {
-  const { userLogin, dispatch} = useLoginContext();
+  const { userLogin, dispatch } = useLoginContext();
+  const [coverId, setCoverId] = useState(null);
+  const userProfilePhoto = useFetchCoverFile(coverId)
+
   const navigate = useNavigate();
 
   const [loginTabOpen, setLoginTabOpen] = useState(true);
-  const [userProfilePhoto, setUserProfilePhoto] = useState();
   const [songcover, setSongcover] = useState();
   const [infoMessage, setInfoMessage] = useState();
   const [pageActive, setPageActive] = useState(true);
   // eslint-disable-next-line
   const [showDialog, setShowDialog] = useState();
   const [usernameAvailableTitle, setUsernameAvailableTitle] = useState();
+  const [loginData, setLoginData] = useState({});
+  const [formData, setformData] = useState({});
 
-  const [loginData, setLoginData] = useState({
-    username: undefined,
-    password: undefined,
-  });
-
-  const [formData, setformData] = useState({
-    username: undefined,
-    name: undefined,
-    cover: null,
-    location: undefined,
-    email: undefined,
-    password: undefined,
-});
-
+  // UseEffects
   useEffect(() => {
     setPageActive(true);
 
@@ -44,19 +38,19 @@ export default function LoginSignupPage() {
 
   useEffect(() => {
     userLogin && navigate("/profile/:username");
-      // eslint-disable-next-line
+    // eslint-disable-next-line
   }, [userLogin]);
 
-
+  // Component-Specific Functions
   const setFormData = (key, value, minlength) => {
- 
-    if(value.length <= minlength) {
-      return false
+    if (value.length <= minlength) {
+      delete formData[key];
+      return false;
     } else {
-      setformData((prev) => ({...prev, [key]: value}))
-      return true
+      setformData((prev) => ({ ...prev, [key]: value }));
+      return true;
     }
-  }
+  };
 
   const checkusernameAvailable = async () => {
     try {
@@ -66,7 +60,6 @@ export default function LoginSignupPage() {
       });
 
       setUsernameAvailableTitle(booleanObject["message"]);
-
     } catch (errorMessage) {
       ShowInfoMessage(undefined, errorMessage, setInfoMessage, false);
       setUsernameAvailableTitle(errorMessage);
@@ -74,15 +67,17 @@ export default function LoginSignupPage() {
     }
   };
 
-  const fetchUserProfilePhoto = async() => {
+  const fetchUserProfilePhoto = async () => {
     try {
       const userObject = await baseFetch({
         route: "/artist/" + loginData.username,
-        method: "GET"
-      })
+        method: "GET",
+      });
 
-      userObject?.data?.cover && setUserProfilePhoto(userObject?.data?.cover);
-
+      if(!userObject?.data) return
+      const data = JSON.parse(userObject.data)
+    
+      data && setCoverId(data.cover);
     } catch (error) {
       console.log(error);
     }
@@ -99,8 +94,8 @@ export default function LoginSignupPage() {
 
       if (userObject && userObject["data"] && userObject["data"]["username"]) {
         localStorage.setItem("token", userObject["data"]["token"]);
-        
-        dispatch({type: 'LOGIN', payload: userObject["data"]})
+
+        dispatch({ type: "LOGIN", payload: userObject["data"] });
         setPageActive(false);
         navigate("/profile/:username");
       }
@@ -113,11 +108,11 @@ export default function LoginSignupPage() {
   const SignUp = async (e) => {
     e.preventDefault();
 
-    const finalFormData = new FormData()
+    const finalFormData = new FormData();
 
     for (let key in formData) {
       finalFormData.set(key, formData[key]);
-    };
+    }
 
     try {
       const userObject = await baseFetch({
@@ -143,8 +138,12 @@ export default function LoginSignupPage() {
     }
   };
 
+  // JSX
   return (
-    <div className="loginsignup-div-main" style={{ opacity: pageActive ? 1 : 0 }}>
+    <div
+      className="loginsignup-div-main"
+      style={{ opacity: pageActive ? 1 : 0 }}
+    >
       {showDialog ? (
         <Dialog heading={infoMessage.heading} message={infoMessage.message} />
       ) : null}
@@ -154,34 +153,31 @@ export default function LoginSignupPage() {
             <p className="logo">Melodrift</p>
             <p>{loginTabOpen ? "Login" : "Signup"}</p>
           </div>
-          {
-            !userLogin ?
-          <p
-            className="default-button"
-            onClick={() => {
-              setLoginTabOpen(!loginTabOpen);
-              loginTabOpen
-                ? ShowInfoMessage(
-                    undefined,
-                    "lets create your account",
-                    setInfoMessage,
-                    false
-                  )
-                : ShowInfoMessage(
-                    undefined,
-                    "login to your account",
-                    setInfoMessage,
-                    false
-                  );
-            }}
-          >
-            {loginTabOpen ? "Signup" : "Login"}
-          </p>
-          :
-          <p className="default-button">
-            Welcome {userLogin['username']}
-          </p>
-          }
+          {!userLogin ? (
+            <p
+              className="default-button"
+              onClick={() => {
+                setLoginTabOpen(!loginTabOpen);
+                loginTabOpen
+                  ? ShowInfoMessage(
+                      undefined,
+                      "lets create your account",
+                      setInfoMessage,
+                      false
+                    )
+                  : ShowInfoMessage(
+                      undefined,
+                      "login to your account",
+                      setInfoMessage,
+                      false
+                    );
+              }}
+            >
+              {loginTabOpen ? "Signup" : "Login"}
+            </p>
+          ) : (
+            <p className="default-button">Welcome {userLogin["username"]}</p>
+          )}
         </nav>
 
         <div
@@ -230,7 +226,7 @@ export default function LoginSignupPage() {
             style={{
               opacity:
                 loginData.username && loginData.password ? "initial" : ".4",
-                marginTop: 20
+              marginTop: 20,
             }}
             onClick={Login}
           />
@@ -249,17 +245,17 @@ export default function LoginSignupPage() {
       </div>
 
       <form className="signup-div-main" onSubmit={SignUp}>
-        <div className="signup-div-inputswrapper"
+        <div
+          className="signup-div-inputswrapper"
           style={{
             minHeight: !loginTabOpen ? "fit-content" : 0,
             opacity: !loginTabOpen ? "1" : 0,
             paddingBottom: 100,
           }}
         >
-          
           <div className="au-form-head">
             <h5>provide infomation about you</h5>
-            <p>you can skip profile photo. This infomation is editable later.</p>
+            <p>This infomation is editable later.</p>
           </div>
 
           <FormDataInputField
@@ -283,7 +279,7 @@ export default function LoginSignupPage() {
             minlength={2}
             required
           />
-    
+
           <FormDataInputField
             inputTitle="country and province"
             inputType="text"
@@ -291,6 +287,7 @@ export default function LoginSignupPage() {
             formDataKey="location"
             setFormDataFuncton={setFormData}
             minlength={5}
+            placeholder='example: (South Africa, MP)'
             required
           />
 
@@ -306,13 +303,18 @@ export default function LoginSignupPage() {
 
           <div className="au-form-head">
             <h5>profile photo</h5>
-            <p>provide only jpg format.</p>
+            <p>provide only jpg format (you can skip this).</p>
           </div>
 
-          <div className="cover-input-main" style={{marginBottom: 25, gap: 0 }}>
-            <div className="cover-input"
+          <div
+            className="cover-input-main"
+            style={{ marginBottom: 25, gap: 0 }}
+          >
+            <div
+              className="cover-input"
               style={{
-                backgroundImage: songcover ? `url(${songcover})` : undefined
+                backgroundImage: songcover ? `url(${songcover})` : undefined,
+                backgroundPosition: "center",
               }}
             >
               <FormDataInputField
@@ -322,52 +324,47 @@ export default function LoginSignupPage() {
                 formDataKey="cover"
                 setFormDataFuncton={setFormData}
                 minlength={0}
-                accept="image/*"
+                accept="image/jpg"
                 onChange={(e) => {
                   if (e.target.files && e.target.files[0]) {
                     var file = e.target.files[0];
-                    setFormData("cover", file, 0)
+                    setFormData("cover", file, 0);
                     const imageUrl = URL.createObjectURL(file); // Create a URL for the file
                     setSongcover(imageUrl);
                   }
                 }}
-              >
-              </FormDataInputField>
+              ></FormDataInputField>
+            </div>
+
+            <FormDataInputField
+              inputTitle="password"
+              inputType="password"
+              formData={formData}
+              formDataKey="password"
+              setFormDataFuncton={setFormData}
+              minlength={5}
+              required
+            />
+
+            <input
+              className="default-button"
+              type="submit"
+              value="Create Account"
+              disabled={
+                Object.values(formData).every((value) => value) ? false : true
+              }
+              style={{
+                opacity: Object.values(formData).every((value) => value)
+                  ? "initial"
+                  : ".4",
+                marginTop: 30,
+              }}
+            />
           </div>
-
-          <FormDataInputField
-            inputTitle="password"
-            inputType="password"
-            formData={formData}
-            formDataKey="password"
-            setFormDataFuncton={setFormData}
-            minlength={5}
-            required
-          />
-
-          <input
-            className="default-button"
-            type="submit"
-            value="Create Account"
-            disabled={
-              Object.values(formData).every((value) => value) ? false : true
-            }
-            style={{
-              opacity: Object.values(formData).every((value) => value)
-                ? "initial"
-                : ".4",
-              marginTop: 20
-            }}
-          />
-        </div>
         </div>
       </form>
 
-      <div className="footer-div-main">
-        <div>
-          <h3>Melodrift</h3>
-        </div>
-      </div>
+      <Footer />
     </div>
   );
 }

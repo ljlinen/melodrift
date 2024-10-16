@@ -14,15 +14,15 @@ export default function MusicList({
   style,
   columnOrRow,
 }) {
-  const [pageActive, setPageActive] = useState(false);
+  const [pageActive, setPageActive] = useState();
+
   const navigate = useNavigate();
 
   useEffect(() => {
-      setPageActive(false || (MusicListData && true));
-    return () => {
-      setPageActive(false);
-    };
-  }, [MusicListData]);
+    console.log('keys triggured', MusicListData);
+}, [MusicListData]);
+
+  // Functons
 
   return (
     <div className="music-list-div-main" style={{...style, paddingInline: !columnOrRow ? '20px' : null}}>
@@ -41,11 +41,13 @@ export default function MusicList({
               {MusicListData && MusicListData.length > 0 ? (
                 MusicListData.map((item, i) => (
                   <AudioPlayer
-                    key={i}
+                    refresh={item?.refresh && item.refresh}
                     i={i}
                     id={item["id"]}
                     item={item}
                     style={audioPlayerStyle}
+                    // updateKey={updateKey}
+                    key={item.key}
                   />
                 ))
               ) : (

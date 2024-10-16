@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react'
 import './css/audiouploader.css'
-import cancel from '../../asset/img/icon/cancel.svg'
 import { baseFetch, ShowInfoMessage } from '../..'
 import { useLocation, useNavigate } from 'react-router-dom'
 import FormDataInputField from './FormDataInputField'
@@ -18,7 +17,8 @@ export default function SongUpdateInfo() {
 
   const location = useLocation()
   const navigate = useNavigate()
-  const { musiclistdispatch } = useArtistMusicListContext()
+    // eslint-disable-next-line
+  const { musiclistdispatch, artistmusiclist } = useArtistMusicListContext()
 
   const [infoMessage, setInfoMessage] = useState()
   const [songcover, setSongcover] = useState()
@@ -32,6 +32,7 @@ export default function SongUpdateInfo() {
 
   useEffect(() => {
     id && setFormData('songId', id, 0);
+    // eslint-disable-next-line
   }, [id]);
 
   useEffect(() => {
@@ -41,12 +42,19 @@ export default function SongUpdateInfo() {
     // eslint-disable-next-line
   }, [userLogin]);
 
+  useEffect(() => {
+    console.log('formdata');
+    Object.entries(formData).forEach((item) => console.log(item[0], item[1]))
+    // eslint-disable-next-line
+  }, [formData]);
+
   
 // Component Specific Functions
 
   const setFormData = (key, value, minlength) => {
     console.log('setting, key val as: ', key, value);
     if(value.length <= minlength) {
+      delete formData[key]
       return false
     } else {
       setformData((prev) => ({...prev, [key]: value}))
@@ -78,7 +86,7 @@ export default function SongUpdateInfo() {
         
         if(uploadedObject['success']) {
           ShowInfoMessage('Song Updated Successfully!', uploadedObject['message'], setInfoMessage, true);
-          musiclistdispatch({type: 'ADD_SONG',  payload: uploadedObject['data']})
+          musiclistdispatch({type: 'UPDATE_SONG',  payload: {id}})
           setTimeout(() => {
             navigate('/profile/:username', {replace: true});
           }, 2000)
@@ -95,7 +103,7 @@ export default function SongUpdateInfo() {
   return (
     SongData && <form className='au-div-main-audio-uploader'
       onSubmit={(e) => {e.preventDefault()}}
-      style={{opacity: pageActive ? 1 : 0}}
+      style={{opacity: pageActive ? 1 : 0, paddingBottom: 100}}
       // onSubmit={uploadSong}
     >
     { infoMessage ? (
@@ -109,14 +117,7 @@ export default function SongUpdateInfo() {
       {
         !uploading ?
         <div className="au-div-heading-and-btn">
-            <img
-              className="icon cancel"
-              alt="close"
-              src={cancel}
-              onClick={() => {
-                navigate(-1);
-              }}
-            />
+            <input className='default-button' type='button' value="Close" alt="close" onClick={() => navigate(-1)} />
             <h3>Update Song Info</h3>
         </div>
         :
@@ -176,6 +177,7 @@ export default function SongUpdateInfo() {
             required
             defaultValue={SongData.genre}
           >
+
             {/* 
                 Database Functinality only accepts theese genres. 
                 Modification to these should also be made in the database;
@@ -191,88 +193,47 @@ export default function SongUpdateInfo() {
           </select>
         </div>
 
-
         <div className="au-form-head" style={{marginLeft: -50}}>
           <h5>upload new cover</h5>
           <p>you can upload without cover.</p>
         </div>
 
-        <div className="flex-columns">
-
+        <div className="cover-input-main">
+          <div className="cover-input"
+            style={{
+              backgroundImage: songcover ? `url(${songcover})` : undefined
+            }}
+          >
             <FormDataInputField
-              inputTitle="year"
-              inputType="number"
+              inputTitle="song cover image"
+              inputType="file"
               formData={formData}
-              formDataKey="year"
+              formDataKey="cover"
               setFormDataFuncton={setFormData}
-              minlength={3}
-              placeholder={SongData.year}
-            />
-
-          {/* <div>
-            <div className='audio-input'>
-              <p>choose mp3 file</p>
-              <FormDataInputField
-                  inputTitle="upload song"
-                  inputType="file"
-                    formData={formData}
-                  formDataKey="year"
-                    setFormDataFuncton={setFormData}
-                  minlength={0}
-                  accept="audio/*"
-                  required
-                    onChange={(e) => {
-                      if (e.target.files) setFormData("file", e.target.files[0])
-                    }}
-                  />
-            </div>
-
-            <ul className="note">
-              <li>audio type: mp3</li>
-              <li>image type: jpg</li>
-            </ul>
-          </div> */}
-
-          <div className="cover-input-main">
-            <div className="cover-input"
-              style={{
-                backgroundImage: songcover ? `url(${songcover})` : undefined
+              minlength={0}
+              accept="image/*"
+              onChange={(e) => {
+                if (e.target.files && e.target.files[0]) {
+                  var file = e.target.files[0];
+                  setFormData("cover", file, 0)
+                  const imageUrl = URL.createObjectURL(file); // Create a URL for the file
+                  setSongcover(imageUrl);
+                }
               }}
             >
-              <FormDataInputField
-                inputTitle="song cover image"
-                inputType="file"
-                formData={formData}
-                formDataKey="cover"
-                setFormDataFuncton={setFormData}
-                minlength={0}
-                accept="image/*"
-                onChange={(e) => {
-                  if (e.target.files && e.target.files[0]) {
-                    var file = e.target.files[0];
-                    setFormData("cover", file, 0)
-                    const imageUrl = URL.createObjectURL(file); // Create a URL for the file
-                    setSongcover(imageUrl);
-                  }
-                }}
-              >
-              </FormDataInputField>
-            </div>
+            </FormDataInputField>
+          </div>
 
-            <input className='default-button' type='submit' value='Update Info' 
-                onClick={updateSongInfo}
-            />
-            <div className='default-button btn-delete' type='button' value='delete song' 
-              style={{
-                  marginTop: 20, 
-                  background: 'red', 
-                  color: 'white', 
-                  opacity: .5
-              }}>
-          {/* <img className='icon cancel' alt='close' src={cancel} onClick={() => {navigate(-1)}} /> */}
-          <p>delete song</p>
-          </div>
-          </div>
+          <input className='default-button' type='submit' value='Update Info' 
+            disabled={0 >= Object.values(formData).length ? true : false}
+            style={{opacity: 0 >= Object.values(formData).length ? .3 : 1}}
+            onClick={updateSongInfo}
+          />
+          <input className='default-button btn-delete' type='button' value='Delete Song' 
+            style={{
+                background: 'rgba(var(--clr-background-lighter))', 
+                color: 'rgba(var(--clr-font))'
+            }} />
         </div>
       </div>
       :

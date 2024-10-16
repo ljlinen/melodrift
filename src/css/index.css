@@ -4,10 +4,10 @@
   :root {
     /* note: color format rgba() gets added later when color variable is being used */
    --clr-main: 26, 26, 26;
-   --clr-font: 0, 200, 255;
+   --clr-font: 255, 255, 255;
    --clr-icon: 95, 95, 95;
-   --clr-background: 0, 10, 20;
-   --clr-background-lighter: 18, 27, 37;
+   --clr-background: 14, 14, 14;
+   --clr-background-lighter: 26, 26, 26;
  }
  
 
@@ -106,6 +106,9 @@ a {
 }
 
 .default-button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
   font-family: main-bold;
   border-radius: 26px;
   padding: 6px 16px;
