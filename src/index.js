@@ -14,9 +14,10 @@ import { LoginContextProvider } from "./js/context/LoginContext";
 import ViewDebugger from "./js/page/ViewDebugger";
 import { ArtistMusicListContextProvider } from "./js/context/ArtistMusicListContext";
 import { MainSongContextProvider } from "./js/context/MainSongContext";
+import UploadPage from "./js/page/UploadPage";
 
-export const baseUrl = 'https://melodriftbackend.linendev.workers.dev'
-// export const baseUrl = "http://localhost:8787";
+// export const baseUrl = 'https://melodriftbackend.linendev.workers.dev'
+export const baseUrl = "http://localhost:8787";
 
 // Global Functons For Reusability
 
@@ -59,38 +60,6 @@ export const ShowInfoMessage = (heading, message, setInfoMessage, close) => {
       setInfoMessage(undefined);
     }, 4000);
   }
-};
-
-export const ImgStringToUrl = (imgStr) => {
-  try {
-    const coverImgBuffer = base64ToArrayBuffer(imgStr);
-    const coverImgFile = new Blob([coverImgBuffer], { type: "image/jpg" });
-    return URL.createObjectURL(coverImgFile);
-  } catch (error) {
-    console.log(error);
-  }
-};
-
-// Convert base64 string to ArrayBuffer
-export const base64ToArrayBuffer = (base64) => {
-  const binaryString = atob(base64);
-  const len = binaryString.length;
-  const bytes = new Uint8Array(len);
-  for (let i = 0; i < len; i++) {
-    bytes[i] = binaryString.charCodeAt(i);
-  }
-  return bytes.buffer;
-};
-
-// Convert ArrayBuffer to ReadableStream
-export const arrayBufferToReadableStream = (arrayBuffer) => {
-  return new ReadableStream({
-    start(controller) {
-      const uint8Array = new Uint8Array(arrayBuffer);
-      controller.enqueue(uint8Array);
-      controller.close();
-    },
-  });
 };
 
 export const updateSong = async (username, key, songId) => {
@@ -175,6 +144,10 @@ const router = createBrowserRouter([
   {
     path: "/login",
     element: <LoginSignupPage />,
+  },
+  {
+    path: "/upload",
+    element: <UploadPage />,
   },
   {
     path: "/profile/:username",

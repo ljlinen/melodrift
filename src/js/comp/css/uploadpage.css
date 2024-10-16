@@ -9,9 +9,9 @@
     border-radius: 6px;
     background-color: rgba(var(--clr-background));
     justify-content: space-between;
+    padding: 24px;
 
     .div-header {
-      padding: 12px;
 
       h1 {
         margin-top: unset;
@@ -37,8 +37,30 @@
       align-items: center;
       background-color: rgba(255, 255, 255, 0.05);
       border-radius: 12px;
-      padding: 20px 10px;
-      margin-inline: 10px;
+      padding: 24px;
+      max-width: 360px;
+      overflow-x: hidden;
+    }
+
+    form .not-current-wrap {
+      position: absolute;
+      width: 0;
+      opacity: 0;
+      transform: translateX(-100vw);
+      animation: formElementSlideOut .4s ease-in-out;
+      transition: opacity .6s ease-in-out;
+    }
+
+    form .current-wrap {
+      position: absolute;
+      width: 100%;
+      opacity: 1;
+      transition: opacity .6s ease-in-out;
+      animation: formElementSlideIn .4s ease-in-out;
+    }
+
+    form .au-form-head {
+      padding: 0;
     }
 
     form h3 {
@@ -53,15 +75,22 @@
       opacity: .6;
     }
 
-    form .input-wrap {
+    form .main-wrap {
+      width: 100%;
+      position: relative;
       margin-top: 50px;
     }
 
     form .default-button {
-      margin-top: 30px;
+      margin-top: 25%;
+      width: 100%;
       min-width: 80px;
       padding: 8px 3px;
       border-radius: 26px;
+    }
+
+    form .audio-input {
+      border-radius: 6px;
     }
 
     .formElementSlideIn {
@@ -85,12 +114,12 @@
 
     @keyframes formElementSlideIn {
       from {
-        transform: translateX(0);
-        opacity: 1;
+        transform: translateX(50%);
+        opacity: 0;
       }
       to {
-        transform: translateX(-50%);
-        opacity: 0;
+        transform: translateX(0);
+        opacity: 1;
       }
     }
 
@@ -120,6 +149,9 @@
     .footer-loginsignup .row .default-button {
       min-width: 80px;
       padding: 8px 3px;
+      background-color: transparent;
       border-radius: 26px;
+      border: 1px solid rgba(var(--clr-font));
+      color: rgba(var(--clr-font));
     }
   }

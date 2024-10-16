@@ -1,47 +1,31 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import "./css/audioplayer.css";
 import play from "../../asset/img/icon/play.svg";
 import share from "../../asset/img/icon/share.svg";
 import { handleShare } from "../..";
 import edit from "../../asset/img/icon/edit.svg";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import useFetchSongData from "../hooks/useFetchSongData";
 import useMainSongContext from "../hooks/useMainSongContext";
 import useIsLoggedIn from "../hooks/useIsLoggedIn";
-
-export default function AudioPlayer({ id, i, style, onClick, item }) {
+import useFetchCoverFile from "../hooks/useFetchCoverFile";
+  // eslint-disable-next-line
+export default function AudioPlayer({ id, i, style, onClick, refresh, updateKey }) {
   const { SongData, componentActive } = useFetchSongData(id);
+  const cover = useFetchCoverFile(SongData?.cover);
   const { mainsongdispatch } = useMainSongContext();
   const isLoggedIn = useIsLoggedIn()
 
-  // const [isLiked, setLiked] = useState(false);
-  const [FetchedSongData, setFetchedSongData] = useState();
-
   const navigate = useNavigate();
-  const location = useLocation()
-
-  // All Functions
   
-  useEffect(() => {
-    if(SongData) {
-      (location.pathname === '/profile/:username/updatesonginfo') && setFetchedSongData(null)
-      (location.pathname === '/profile/:username') && setFetchedSongData(SongData)
-    }
-    console.log(location.pathname);
-    
-  }, [SongData, location.pathname]);
-
-  // useEffect(() => {
-  //   SongData && setFetchedSongData(SongData)
-  // }, [SongData]);
 
   useEffect(() => {
-    console.log('new song data was set', FetchedSongData);
-  }, [FetchedSongData]);
-
+    console.log('should refresh ', refresh);
+    refresh && updateKey(id)
+      // eslint-disable-next-line
+  }, [refresh]);
 
   // All Functions
-
   const setAsMain = async () => {
     id && mainsongdispatch({ type: "SET_SONG", payload: { id, i } });
   };
@@ -56,14 +40,14 @@ export default function AudioPlayer({ id, i, style, onClick, item }) {
     //audio player component
     <div
       className={"audioplayer-div-main-song .clickable"}
-      onClick={null || onClick}
+      onClick={onClick ?? null}
       style={{ opacity: componentActive ? 1 : 0, ...style }}
     >
       <div className={isLoggedIn ? "ap-div-cover ap-div-cover-admin" : "ap-div-cover"}>
-        {FetchedSongData && FetchedSongData.cover && (
+        {SongData && cover && (
           <img
             className="ap-img-cover"
-            src={FetchedSongData.cover}
+            src={cover ?? null}
             alt="cover"
             style={{ 
               opacity: componentActive ? 1 : 0, 
@@ -99,14 +83,14 @@ export default function AudioPlayer({ id, i, style, onClick, item }) {
             className="ap-img-playpauseicon .clickable"
             src={play}
             alt="play-pause"
-            // onClick={setAsMain}
+            onClick={setAsMain}
           />
         )}
       </div>
 
       <div className="ap-div-info">
-        {FetchedSongData && <h4 className="artist">{FetchedSongData.title}</h4>}
-        {FetchedSongData && <p className="name">{FetchedSongData.artists}</p>}
+        {SongData && <h4 className="artist">{SongData.title}</h4>}
+        {SongData && <p className="name">{SongData.artists}</p>}
         {/* <div className="progress-bar">
             <div className="progress" style={{ width: `${progress}%` }}>
             </div>
@@ -116,7 +100,7 @@ export default function AudioPlayer({ id, i, style, onClick, item }) {
       <div className="ap-div-icons">
         <div className="plays">
           <img src={play} alt="play" />
-          {FetchedSongData && <p>{FetchedSongData.plays}</p>}
+          {SongData && <p>{SongData.plays}</p>}
         </div>
 
         <div className="like-share .clickable">

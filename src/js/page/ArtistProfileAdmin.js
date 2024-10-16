@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import "../comp/css/artistprofile.css";
 
-import varified from "../../asset/img/icon/verified.svg";
+import edit from "../../asset/img/icon/edit.svg";
 import plays from "../../asset/img/icon/play.svg";
 import like from "../../asset/img/icon/like.svg";
 import { Outlet, useNavigate, useParams } from "react-router-dom";
@@ -12,6 +12,7 @@ import useLoginContext from "../hooks/useLoginContext";
 import { baseFetch, onSkip } from "../..";
 import useMainSongContext from "../hooks/useMainSongContext";
 import useIsLoggedIn from "../hooks/useIsLoggedIn";
+import useFetchCoverFile from "../hooks/useFetchCoverFile";
 
 export default function ArtistProfileAdmin() {
   const navigate = useNavigate()
@@ -24,6 +25,7 @@ export default function ArtistProfileAdmin() {
   const { mainsong, mainsongdispatch } = useMainSongContext()
 
   const [artistProfileData, setArtistProfileData] = useState();
+  const cover = useFetchCoverFile(artistProfileData?.cover);
   // const [searching, setSearching] = useState();
   // const [error, setErrorMessage] = useState();
   const [pageActive, setPageActive] = useState(true);
@@ -65,7 +67,11 @@ export default function ArtistProfileAdmin() {
           if(userObject['username'])
             setPageActive(true);
             setArtistProfileData(userObject);
-            musiclistdispatch({ type: 'SET_LIST', payload: userObject['music']['all'] });
+            const array = []
+            userObject['music']['all'].forEach((item, i) => {
+              array.push({...item, 'key': `pos-${i}-ref-`})
+            })
+            musiclistdispatch({type: 'SET_LIST', payload: array })
         }
               
       } catch(error) {
@@ -81,12 +87,22 @@ export default function ArtistProfileAdmin() {
   }, [params.username]);
 
   useEffect(() => {
+    artistmusiclist && console.log('context musi list:', artistmusiclist);
+    
+      // eslint-disable-next-line
+  }, [artistmusiclist]);
+
+  useEffect(() => {
     if(userLogin && !username) {
       setArtistProfileData(userLogin);
       setUsername(userLogin["username"]);
       mainsongdispatch({ type: 'SET_SONG', payload: userLogin["username"]});
       console.log('music list setting was', userLogin["music"]["all"]);
-      musiclistdispatch({ type: 'SET_LIST', payload: userLogin["music"]["all"] });
+      const array = []
+      userLogin['music']['all'].forEach((item, i) => {
+        array.push({...item, 'key': `pos-${i}-ref-`})
+      })
+      musiclistdispatch({ type: 'SET_LIST', payload: array});
     } else if(!userLogin && username) {
       navigate('/profile/' + username)
     } else {
@@ -160,7 +176,7 @@ export default function ArtistProfileAdmin() {
                 <div className="info">
                   <div className="wrap-name-varified">
                     <h1 className="name">{artistProfileData.name}</h1>
-                    <img className="icon" src={varified} alt="verified" />
+                    <img className="icon" src={edit} alt="edit" />
                   </div>
                   <p className="location">{artistProfileData.location}</p>
                 </div>
@@ -187,11 +203,7 @@ export default function ArtistProfileAdmin() {
                 <div className="background-color-two" />
                 <img
                   alt="background"
-                  src={
-                    artistProfileData.cover
-                      ? artistProfileData.cover
-                      : undefined
-                  }
+                  src={cover ?? null}
                   style={{ opacity: artistProfileData.cover ? 1 : 0 }}
                   onError={(e) => {e.target.style.display = 'none'}}
                 />
@@ -216,7 +228,7 @@ export default function ArtistProfileAdmin() {
             errorMessage='No music available. Upload!'
             admin={isLoggedIn}
             style={{ opacity: pageActive ? 1 : 0 }}
-            childStyle={{height: '30vh', overflowY: 'scroll'}}
+            childStyle={{overflowY: 'scroll'}}
           />
 
           <Outlet />
