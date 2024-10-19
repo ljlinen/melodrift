@@ -32,7 +32,7 @@ export default function MusicList({
           <div
             style={{
               width: "100%",
-              overflowX: "scroll",
+              overflowX: "auto",
               scrollBehavior: "smooth",
               ...childStyle
             }}

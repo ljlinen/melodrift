@@ -14,7 +14,7 @@ export default function HomePage() {
   // const visible = usePageActive('/')
   const { artistmusiclist, musiclistdispatch } = useArtistMusicListContext();
   const { mainsong, mainsongdispatch } = useMainSongContext()
-  const { dispatch } = useLoginContext();
+  const { userLogin, dispatch } = useLoginContext();
   const isLoggedIn = useIsLoggedIn();
 
 
@@ -90,6 +90,7 @@ export default function HomePage() {
   const Logout = () => {
     mainsongdispatch({type: 'CLEAR_SONG'})
     musiclistdispatch({type: 'CLEAR_CONTEXT'})
+    dispatch({type: 'GUEST', payload: userLogin['username']})
     dispatch({type: 'LOGOUT'})
   }
 
@@ -110,9 +111,9 @@ export default function HomePage() {
           </div>
 
           <h1>Melodrift</h1>
-          <p>An audio hosting plartform for sharing audio with the world</p>
-        </div>
-        <div className="new-music" style={{ height: artistmusiclist ? 150 : 0 }}>
+          <p>An audio hosting plartform.</p>
+
+          <div className="new-music" style={{ height: artistmusiclist ? 150 : 0 }}>
           {
             artistmusiclist ?
               <MusicList
@@ -126,6 +127,19 @@ export default function HomePage() {
               />
             : null
           }
+        </div>
+        
+          <div className="about-us">
+            <nav>
+              {/* <h5>QuickLinks</h5> */}
+              <ul>
+                <li className="default-button">Upload</li>
+                <li>Reports</li>
+                <li>Terms and conditions</li>
+              </ul>
+            </nav>
+          </div>
+
         </div>
       </div>
 

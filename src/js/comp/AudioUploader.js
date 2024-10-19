@@ -7,6 +7,8 @@ import Dialog from "./Dialog";
 import Loader from "./Loader";
 import useLoginContext from "../hooks/useLoginContext";
 import useArtistMusicListContext from "../hooks/useArtistMusicListContext";
+import close from "../../asset/img/icon/close.svg";
+
 
 export default function AudioUploader() {
   const navigate = useNavigate();
@@ -116,14 +118,8 @@ export default function AudioUploader() {
       <div className="au-form-head">
         {!uploading ? (
           <div className="au-div-heading-and-btn">
-            <input
-              className="default-button"
-              type="button"
-              value="Close"
-              alt="close"
-              onClick={() => navigate(-1)}
-            />
-            <h3>Song Info</h3>
+            <h3>Upload Your Song</h3>
+            <img className='icon' src={close} alt='close' onClick={() => navigate(-1)} />
           </div>
         ) : (
           <div className="au-div-heading-and-btn">
@@ -138,8 +134,7 @@ export default function AudioUploader() {
             <p>
               cos why would a song be more than 10mb? are you uploading a
               mixtape or something?
-            </p>
-            <p>
+              <br></br>
               we donth du dath hear{" "}
               <span style={{ textDecoration: "underline" }}>
                 ( in king chatala's voice )
