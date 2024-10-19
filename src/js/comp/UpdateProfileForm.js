@@ -1,28 +1,24 @@
 import React, { useEffect, useState } from 'react'
 import './css/audiouploader.css'
 import './css/updateprofileinfo.css'
-import { baseFetch, ShowInfoMessage } from '../..'
+import { baseFetch } from '../..'
 import { useNavigate } from 'react-router-dom'
 import FormDataInputField from './FormDataInputField'
-import Dialog from './Dialog'
 import useLoginContext from '../hooks/useLoginContext'
-import useArtistMusicListContext from '../hooks/useArtistMusicListContext'
-import usePageActive from '../hooks/usePageActive'
 import close from "../../asset/img/icon/close.svg";
 
 
 export default function UpdateProfileForm() {
 
-  const pageActive = usePageActive("/profile/updateprofileinfo")
   const { userLogin, dispatch } = useLoginContext()
 
   const navigate = useNavigate()
-    // eslint-disable-next-line
 
-  const [infoMessage, setInfoMessage] = useState()
   const [songcover, setSongcover] = useState()
   const [formData, setformData] = useState({});
+      // eslint-disable-next-line
   const [uploading, setUploading] = useState();
+      // eslint-disable-next-line
   const [usernameAvailableTitle, setUsernameAvailableTitle] = useState();
 
 
@@ -56,20 +52,6 @@ export default function UpdateProfileForm() {
     }
   }
 
-  const checkusernameAvailable = async () => {
-    try {
-      const booleanObject = await baseFetch({
-        route: "/account/signup/" + formData.username,
-        method: "GET",
-      });
-
-      setUsernameAvailableTitle(booleanObject["message"]);
-    } catch (errorMessage) {
-      ShowInfoMessage(undefined, errorMessage, setInfoMessage, false);
-      setUsernameAvailableTitle(errorMessage);
-      console.log(errorMessage);
-    }
-  };
 
   const updateProfileInfo = async(e) => {
     e.preventDefault()
@@ -95,14 +77,14 @@ export default function UpdateProfileForm() {
 
         const dataObject = JSON.parse(updateObject?.data)
         
-        ShowInfoMessage('Profile Updated Successfully!', dataObject['message'], setInfoMessage, true);
+        // ShowInfoMessage('Profile Updated Successfully!', dataObject['message'], setInfoMessage, true);
         console.log('dispatching');
         dispatch({type: 'LOGIN',  payload: dataObject})
         navigate('/profile/:username', {replace: true});
 
     } catch(error) {
       setUploading(false)
-      ShowInfoMessage('Failed Updating Song', error, setInfoMessage, true);
+      // ShowInfoMessage('Failed Updating Song', error, setInfoMessage, true);
       console.log(error); 
     }
   }
