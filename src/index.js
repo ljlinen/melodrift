@@ -15,6 +15,7 @@ import ViewDebugger from "./js/page/ViewDebugger";
 import { ArtistMusicListContextProvider } from "./js/context/ArtistMusicListContext";
 import { MainSongContextProvider } from "./js/context/MainSongContext";
 import UploadPage from "./js/page/UploadPage";
+import UpdateProfileForm from "./js/comp/UpdateProfileForm";
 
 export const baseUrl = 'https://melodriftbackend.linendev.workers.dev'
 // export const baseUrl = "http://localhost:8787";
@@ -165,8 +166,11 @@ const router = createBrowserRouter([
         path: "updatesonginfo",
         element: <SongUpdateInfo />,
       },
+      {
+        path: "updateprofileinfo",
+        element: <UpdateProfileForm />,
+      },
     ],
-    errorElement: <h2>Route Not Found</h2>,
   },
   // {
   //   path: "/artist/:username",

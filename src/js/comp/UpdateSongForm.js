@@ -8,6 +8,8 @@ import useLoginContext from '../hooks/useLoginContext'
 import useArtistMusicListContext from '../hooks/useArtistMusicListContext'
 import usePageActive from '../hooks/usePageActive'
 import Loader from './Loader'
+import close from "../../asset/img/icon/close.svg";
+
 
 
 export default function SongUpdateInfo() {
@@ -117,8 +119,8 @@ export default function SongUpdateInfo() {
       {
         !uploading ?
         <div className="au-div-heading-and-btn">
-            <input className='default-button' type='button' value="Close" alt="close" onClick={() => navigate(-1)} />
             <h3>Update Song Info</h3>
+            <img className='icon' src={close} alt='close' onClick={() => navigate(-1)} />
         </div>
         :
         <div className="au-div-heading-and-btn">
@@ -131,8 +133,8 @@ export default function SongUpdateInfo() {
         !uploading ?
         <>
           <h5>Only song info and cover photo can be updated</h5>
-          <p>cos why would a song be updated complelety? are you trying to re-upload or something?</p>
-          <p>we donth du dath hear</p>
+          <p>cos why would a song be updated complelety? are you trying to re-upload or something?<br></br>
+          we donth du dath hear</p>
         </>
         :
         <>

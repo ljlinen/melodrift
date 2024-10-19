@@ -117,14 +117,7 @@ export default function MainAudioPlayer({ id, onSkip, Expand}) {
     //  audio player component
     (id && SongData) ? (
       <div
-        className="mainaudioplayer-div-main-song"
-        style={{
-          height: Expanded ? "100%" : "61.33px",
-          backgroundColor: Expanded ? "rgba(var(--clr-background))" : "rgba(0, 0, 0, .5)",
-          flexDirection: Expanded ? "column" : "unset",
-          padding: Expanded ? "25px" : "revert",
-        }}
-      >
+        className={Expanded ?  'mainaudioplayer-div-main-song mainaudioplayer-div-main-song-alt' : 'mainaudioplayer-div-main-song'}>
         <img className="expand-collaps-icon" src={up} 
           alt="expand or collaps" 
           style={{
@@ -154,15 +147,7 @@ export default function MainAudioPlayer({ id, onSkip, Expand}) {
             
             <source src={backgroundVideo} type="video/mp4" />
           </video>
-          <div
-            className="like-share"
-            style={{
-              width: Expanded ? "100%" : "revert",
-              flexDirection: Expanded ? "row" : "column",
-              justifyContent: Expanded ? "space-between" : "revert",
-              marginTop: Expanded ? "50vh" : "revert",
-            }}
-          >
+          <div className={Expanded ? 'like-share-alt' : 'like-share'}>
             {
               id && 
               <img
@@ -190,26 +175,12 @@ export default function MainAudioPlayer({ id, onSkip, Expand}) {
           </div>
         </div>
 
-        <div
-          className="ap-div-info"
-          style={{
-            width: Expanded ? "100%" : "50%",
-            height: Expanded ? "fit-content" : "revert",
-            paddingBlock: Expanded ? "25px" : "revert",
-            justifyContent: Expanded ? "start" : "revert",
-            gap: Expanded ? 5 : "revert",
-          }}
-        >
+        <div className={Expanded ? 'ap-div-info-alt' : 'ap-div-info'}>
           <h4 className="artist">{SongData.artists}</h4>
           <p className="name">{SongData.title}</p>
         </div>
 
-        <div
-          className="controls"
-          style={{
-            height: Expanded ? "fit-content" : "revert",
-          }}
-        >
+        <div className={Expanded ? 'controls controls-alt' : 'controls'}>
           <div className="controls-wrap">
             {file ? (
               <>

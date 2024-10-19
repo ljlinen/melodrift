@@ -7,12 +7,18 @@ export const loginReducer = (state, action) => {
   switch (action.type) {
     case 'LOGIN':
       return {
-        userLogin: action.payload
+        userLogin: action.payload,
+        userGuest: state.userGuest,
+      }
+    case 'GUEST':
+      return {
+        userLogin: state.userLogin,
+        userGuest: action.payload,
       }
     case 'LOGOUT':
-      console.log('logged out');
       return {
-        userLogin: null
+        userLogin: null,
+        userGuest: state.userLogin.username,
       }
     default:
       return state

@@ -15,21 +15,21 @@ import useIsLoggedIn from "../hooks/useIsLoggedIn";
 import useFetchCoverFile from "../hooks/useFetchCoverFile";
 
 export default function ArtistProfileAdmin() {
-  const navigate = useNavigate()
-  const params = useParams();
-  const isLoggedIn = useIsLoggedIn()
 
-  const { userLogin, dispatch } = useLoginContext()
-
+  const { userLogin, userGuest, dispatch } = useLoginContext()
   const { artistmusiclist, pinnedsong, musiclistdispatch } = useArtistMusicListContext();
   const { mainsong, mainsongdispatch } = useMainSongContext()
 
-  const [artistProfileData, setArtistProfileData] = useState();
-  const cover = useFetchCoverFile(artistProfileData?.cover);
+  const [pageActive, setPageActive] = useState(true);
+  const [userData, setUserData] = useState()
+
+  const params = useParams();
+  const isLoggedIn = useIsLoggedIn();
+  const cover = useFetchCoverFile(userData?.cover);
+  const navigate = useNavigate();
+
   // const [searching, setSearching] = useState();
   // const [error, setErrorMessage] = useState();
-  const [pageActive, setPageActive] = useState(true);
-  const [username, setUsername] = useState();
 
   // useFetchSongData(mainSongAdmin['i'])
 
@@ -49,29 +49,56 @@ export default function ArtistProfileAdmin() {
   //         }
   // })
 
+
+  useEffect(() => {
+  console.log('first Guest ', userGuest);
+  
+    if(userLogin?.username) {
+      // mainsongdispatch({ type: 'SET_SONG', payload: userLogin["username"]});
+      if(!artistmusiclist.length) {
+        const array = []
+        userLogin['music']['all'].forEach((item, i) => {
+          array.push({...item, 'key': `pos-${i}-ref-`})
+        })
+        musiclistdispatch({ type: 'SET_LIST', payload: array });
+      }
+    }
+      // eslint-disable-next-line
+  }, [userLogin]);
+
+  useEffect(() => {
+  
+    if(params.username && params.username !== ':username') {
+      dispatch({ type: 'GUEST', payload: params.username })
+    } else if(!userLogin && !userGuest) {
+      navigate('/login')
+    }
+      // eslint-disable-next-line
+  }, [params.username]);
+
   useEffect(() => {
     setPageActive(true);
     
     const fetchProfile = async() => {
-      console.log('did run again');
-      
-
       try{
         const responseObject = await baseFetch({
-            route: '/artist/' + username,
+            route: '/artist/' + userGuest,
             method: 'GET',
         })
         
         if(responseObject["success"] && responseObject['data']) {
           const userObject = JSON.parse(responseObject['data'])
           if(userObject['username'])
+            dispatch({type: 'GUEST', payload: userObject })
             setPageActive(true);
-            setArtistProfileData(userObject);
-            const array = []
-            userObject['music']['all'].forEach((item, i) => {
-              array.push({...item, 'key': `pos-${i}-ref-`})
-            })
-            musiclistdispatch({type: 'SET_LIST', payload: array })
+
+            if(!artistmusiclist.length) {
+              const array = []
+              userObject['music']['all'].forEach((item, i) => {
+                array.push({...item, 'key': `pos-${i}-ref-`})
+              })
+              musiclistdispatch({type: 'SET_LIST', payload: array })
+            }
         }
               
       } catch(error) {
@@ -80,51 +107,38 @@ export default function ArtistProfileAdmin() {
       }
     }
 
-    !params.username ? navigate('/login') : fetchProfile()
-
-    console.log('udeeffect saw that it changed', params.username);
+    if(userGuest && !userGuest?.username) fetchProfile();
+  
       // eslint-disable-next-line
-  }, [params.username]);
+  }, [userGuest]);
 
+  
   useEffect(() => {
-    artistmusiclist && console.log('context musi list:', artistmusiclist);
-    
-      // eslint-disable-next-line
-  }, [artistmusiclist]);
 
-  useEffect(() => {
-    if(userLogin && !username) {
-      setArtistProfileData(userLogin);
-      setUsername(userLogin["username"]);
-      mainsongdispatch({ type: 'SET_SONG', payload: userLogin["username"]});
-      console.log('music list setting was', userLogin["music"]["all"]);
-      const array = []
-      userLogin['music']['all'].forEach((item, i) => {
-        array.push({...item, 'key': `pos-${i}-ref-`})
-      })
-      musiclistdispatch({ type: 'SET_LIST', payload: array});
-    } else if(!userLogin && username) {
-      navigate('/profile/' + username)
-    } else {
-      navigate('/login')
+    if(userLogin?.username) {
+      setUserData(userLogin)
+    } else if(userGuest?.username) {
+      setUserData(userGuest)
     }
-      // eslint-disable-next-line
-  }, [userLogin]);
 
+  }, [userLogin, userGuest])
+
+
+  // Component Specific Fuctions
   const onSkipLocal = (nextORprevious) => {
     onSkip(mainsong['i'], mainsongdispatch, artistmusiclist.length, nextORprevious)
   }
 
   const Logout = () => {
-    mainsongdispatch({type: 'CLEAR_SONG'})
-    musiclistdispatch({type: 'CLEAR_CONTEXT'})
+    // mainsongdispatch({type: 'CLEAR_SONG'})
+    // musiclistdispatch({type: 'CLEAR_CONTEXT'})
     dispatch({type: 'LOGOUT'})
   }
 
 
   // JSX
   return (
-    artistProfileData && (<div className="profile-div-main-artist" onScroll={(e) => {console.log(e.target.style.scrollY)}}>
+    userData && (<div className="profile-div-main-artist" onScroll={(e) => {console.log(e.target.style.scrollY)}}>
           {/* {<Dialog 
         heading={dialog.heading}
         message={dialog.message}
@@ -133,7 +147,7 @@ export default function ArtistProfileAdmin() {
         />} */}
 
           {
-            artistProfileData && 
+            userData && 
             (<div
               className="wrap-info-about"
               style={{ opacity: pageActive ? 1 : 0 }}>
@@ -175,21 +189,21 @@ export default function ArtistProfileAdmin() {
               <div className="wrap-info-stats">
                 <div className="info">
                   <div className="wrap-name-varified">
-                    <h1 className="name">{artistProfileData.name}</h1>
-                    <img className="icon" src={edit} alt="edit" />
+                    <h1 className="name">{userData.name}</h1>
+                    {isLoggedIn && <img className="icon" src={edit} alt="edit" onClick={() => {navigate('updateprofileinfo')}} />}
                   </div>
-                  <p className="location">{artistProfileData.location}</p>
+                  <p className="location">{userData.location}</p>
                 </div>
 
                 <div className="stats">
                   <div>
                     <img className="icon" src={like} alt="likes" />
-                    <p>{artistProfileData.likes}</p>
+                    <p>{userData.likes}</p>
                   </div>
 
                   <div>
                     <img className="icon" src={plays} alt="plays" />
-                    <p>{artistProfileData.plays}</p>
+                    <p>{userData.plays}</p>
                   </div>
                 </div>
               </div>
@@ -204,7 +218,7 @@ export default function ArtistProfileAdmin() {
                 <img
                   alt="background"
                   src={cover ?? null}
-                  style={{ opacity: artistProfileData.cover ? 1 : 0 }}
+                  style={{ opacity: cover ? 1 : 0 }}
                   onError={(e) => {e.target.style.display = 'none'}}
                 />
               </div>
@@ -227,7 +241,7 @@ export default function ArtistProfileAdmin() {
             listTitle={"all music"}
             errorMessage='No music available. Upload!'
             admin={isLoggedIn}
-            style={{ opacity: pageActive ? 1 : 0 }}
+            style={{ opacity: pageActive ? 1 : 0, marginTop: 4}}
             childStyle={{overflowY: 'scroll'}}
           />
 

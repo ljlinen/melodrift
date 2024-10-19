@@ -183,8 +183,11 @@ export default function LoginSignupPage() {
         <div
           className="login-div-inputswrapper"
           style={{
-            minHeight: loginTabOpen ? "90vh" : 0,
+            minHeight: loginTabOpen ? "70vh" : 0,
             opacity: loginTabOpen ? "1" : 0,
+            padding: 24,
+            justifyContent: 'end',
+            paddingBottom: loginTabOpen ? 100 : 0,
           }}
         >
           {
@@ -245,12 +248,24 @@ export default function LoginSignupPage() {
       </div>
 
       <form className="signup-div-main" onSubmit={SignUp}>
+        {/* { 
+          loginTabOpen ? 
+          <div className="login-quicklinks">
+            <h5>Quicklinks</h5>
+            <ul>
+              <li>Home</li>
+              <li>Upload Your Music</li>
+              <li>Terms and Conditions</li>
+            </ul>
+          </div> : null
+        } */}
         <div
           className="signup-div-inputswrapper"
           style={{
             minHeight: !loginTabOpen ? "fit-content" : 0,
             opacity: !loginTabOpen ? "1" : 0,
-            paddingBottom: 100,
+            height: loginTabOpen && '20vh',
+            paddingBottom: !loginTabOpen && 100,
           }}
         >
           <div className="au-form-head">

@@ -145,7 +145,7 @@ a {
 body {
     width: 100%;
     height: 100vh;
-    background-color: rgba(var(--clr-background), 1);
+    background-color: rgba(var(--clr-background-lighter), 1);
     color: rgba(var(--clr-font), .8);
     font-size: 1.6rem;
     font-family: mainfont;

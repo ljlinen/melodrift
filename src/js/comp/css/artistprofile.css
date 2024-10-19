@@ -7,6 +7,7 @@
   width: 100%;
   min-height: 100vh;
   background-size: cover;
+  background-color: rgb(var(--clr-background));
 
   nav {
     display: flex;
@@ -97,6 +98,7 @@
     opacity: 0;
     transition: opacity .6s ease-in;
     padding-bottom: 20px;
+    border-radius: 0 0 20px 20px;
     z-index: 8;
   }
 
@@ -111,9 +113,8 @@
     width: 100%;
     height: 100%;
     position: absolute;
-    opacity: .4;
     z-index: 1;
-    background: linear-gradient(to bottom, rgba(0, 0, 0, 0.2) 0%, rgba(0, 0, 0, 0.5) 60%, rgba(0, 0, 0, 1) 100%);
+    background: linear-gradient(to bottom, rgba(var(--clr-background-lighter), 0.2) 0%, rgba(var(--clr-background-lighter), 0.5) 60%, rgba(var(--clr-background-lighter), 1) 100%);
   }
   .background .background-color-two {
     width: 100%;
@@ -124,8 +125,8 @@
   }
   .background img {
     position: absolute;
-    background-position: center;
-    object-position: center;
+    background-position: top;
+    object-position: top;
     object-fit: cover;
     width: 100%;
     height: 100%;
@@ -171,7 +172,8 @@
   }
   
   .wrap-info-stats .stats div :nth-child(2) {
-    margin: 2px 4px 0 2px;
+    margin: 2px 4px 2px 2px;
+    font-size: 14px;
   }
   
   .wrap-name-varified {
@@ -188,9 +190,8 @@
 
   .about {
     width: 100%;
-    margin-top: 50px;
+    margin-top: 100px;
     display: flex;
-    justify-content: end;
     z-index: 5;
     padding-inline: clamp(20px, 5.55vw, 50px);
   }
