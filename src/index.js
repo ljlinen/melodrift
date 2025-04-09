@@ -17,8 +17,8 @@ import { MainSongContextProvider } from "./js/context/MainSongContext";
 import UploadPage from "./js/page/UploadPage";
 import UpdateProfileForm from "./js/comp/UpdateProfileForm";
 
-export const baseUrl = 'https://melodriftbackend.linendev.workers.dev'
-// export const baseUrl = "http://localhost:8787";
+// export const baseUrl = 'https://melodriftbackend.linendev.workers.dev'
+export const baseUrl = "http://localhost:8787";
 
 // Global Functons For Reusability
 
@@ -75,6 +75,9 @@ export const updateSong = async (username, key, songId) => {
       route: "/update/song",
       method: "PUT",
       body: JSON.stringify(payload),
+      headers: {
+        'Authorization': 'Bearer ' + localStorage.getItem('token')
+      }
     });
 
     if (updatedObj["success"] && key === "likes") {
@@ -127,6 +130,12 @@ export const onSkip = (
     default:
   }
 };
+
+export function formatToK(num) {
+  if (Math.abs(num) < 1000) return num.toString();
+  return (num / 1000).toFixed(1).replace(/\.0$/, '') + 'k';
+}
+
 
 // end
 

@@ -42,13 +42,13 @@
 
 .upload-link {
   padding: 6px 10px;
-  margin-inline: 10px;
   display: flex;
-  border-radius: 8px;
+  border-radius: 6px;
   overflow: hidden;
   align-items: center;
   justify-content: center;
-  margin-block: 24px 10px;
+  margin-block: 20px;
+  margin-inline: 10px;
   border: 1px solid rgba(var(--clr-font), .3);
   gap: 3px;
   width: fit-content;

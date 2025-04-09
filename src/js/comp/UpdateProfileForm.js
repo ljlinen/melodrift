@@ -14,7 +14,7 @@ export default function UpdateProfileForm() {
 
   const navigate = useNavigate()
 
-  const [songcover, setSongcover] = useState()
+  const [profileImage, setProfileImage] = useState()
   const [formData, setformData] = useState({});
       // eslint-disable-next-line
   const [uploading, setUploading] = useState();
@@ -162,12 +162,12 @@ export default function UpdateProfileForm() {
         <div
           className="cover-input"
           style={{
-            backgroundImage: songcover ? `url(${songcover})` : undefined,
+            backgroundImage: profileImage ? `url(${profileImage})` : undefined,
             backgroundPosition: "center",
           }}
         >
           <FormDataInputField
-            inputTitle="song cover image"
+            inputTitle="profile image"
             inputType="file"
             formData={formData}
             formDataKey="cover"
@@ -179,7 +179,7 @@ export default function UpdateProfileForm() {
                 var file = e.target.files[0];
                 setFormData("cover", file, 0);
                 const imageUrl = URL.createObjectURL(file); // Create a URL for the file
-                setSongcover(imageUrl);
+                setProfileImage(imageUrl);
               }
             }}
           ></FormDataInputField>

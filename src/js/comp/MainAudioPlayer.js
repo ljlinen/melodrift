@@ -149,28 +149,27 @@ export default function MainAudioPlayer({ id, onSkip, Expand}) {
           </video>
           <div className={Expanded ? 'like-share-alt' : 'like-share'}>
             {
-              id && 
-              <img
-                src={share} alt="share" 
-                onClick={() => {
-                  handleShare(
-                    `Listen to ${SongData['publisher']} on Melodrift.`,
-                    ``, 
-                    'www.melodrift.pages.dev/song/' + id)
-                }}
-              />
-            }
-
-            {
-              id && 
-              <img
-                src={ isLiked ? liked : like } alt="like" 
-                onClick={async() => {
-                  if(isLiked) return;
-                  const liked = await updateSong(SongData['publisher'], 'likes', id)
-                  setLiked(liked);
-                }}
-              />
+              id ?
+              (<>
+                <img
+                  src={share} alt="share" 
+                  onClick={() => {
+                    handleShare(
+                      `Listen to ${SongData['publisher']} on Melodrift.`,
+                      ``, 
+                      'www.melodrift.pages.dev/song/' + id)
+                  }}
+                />
+                <img
+                  src={ isLiked ? liked : like } alt="like" 
+                  onClick={async() => {
+                    if(isLiked) return;
+                    const liked = await updateSong(SongData['publisher'], 'likes', id)
+                    setLiked(liked);
+                  }}
+                />
+              </>) :
+              null
             }
           </div>
         </div>

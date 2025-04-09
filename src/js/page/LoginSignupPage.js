@@ -191,11 +191,11 @@ export default function LoginSignupPage() {
           }}
         >
           {
-            <h5 className="login-p-infomsg">
+            <h6 className="login-p-infomsg">
               {infoMessage && loginTabOpen
                 ? infoMessage.message
                 : "Login or click signup to create an account"}
-            </h5>
+            </h6>
           }
 
           <InputField
@@ -229,7 +229,8 @@ export default function LoginSignupPage() {
             style={{
               opacity:
                 loginData.username && loginData.password ? "initial" : ".4",
-              marginTop: 20,
+              marginTop: 10,
+              minWidth: 100
             }}
             onClick={Login}
           />
