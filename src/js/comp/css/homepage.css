@@ -16,14 +16,14 @@ body {
         background-position: center;
         background-image: linear-gradient(140deg, rgba(var(--clr-background-lighter), 0.5), rgba(var(--clr-background-lighter))), url('../../../asset/img/pexels-rpnickson-2417862.jpg');
     }
-    .top-div .introducton h2 {
+    .top-div .introducton > h2 {
         animation: paragraph .8s;
     }
-    .top-div .introducton h1 {
+    .top-div .introducton > h1 {
         animation: paragraph .8s;
     }
 
-    .top-div .introducton p {
+    .top-div .introducton > p {
         margin-top: 10px;
         max-width: 150px;
         animation: paragraph .8s;

@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import "./css/audioplayer.css";
 import play from "../../asset/img/icon/play.svg";
 import share from "../../asset/img/icon/share.svg";
-import { handleShare } from "../..";
+import { formatToK, handleShare } from "../..";
 import edit from "../../asset/img/icon/edit.svg";
 import { useNavigate } from "react-router-dom";
 import useFetchSongData from "../hooks/useFetchSongData";
@@ -100,7 +100,7 @@ export default function AudioPlayer({ id, i, style, onClick, refresh, updateKey 
       <div className="ap-div-icons">
         <div className="plays">
           <img src={play} alt="play" />
-          {SongData && <p>{SongData.plays}</p>}
+          {SongData && <p>{formatToK(SongData.plays)}</p>}
         </div>
 
         <div className="like-share .clickable">

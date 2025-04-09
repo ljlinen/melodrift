@@ -17,4 +17,8 @@
         margin-right: 24px;
         margin-top: 30px;
     }
+
+    .signup-div-inputswrapper .div-inputwrap {
+        margin-top: 9px;
+    }
 }

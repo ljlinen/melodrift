@@ -4,39 +4,32 @@ import "./css/musiclist.css";
 import upload from "../../asset/img/icon/upload.svg";
 import { useNavigate } from "react-router-dom";
 
-export default function MusicList({
-  MusicListData,
-  listTitle,
-  errorMessage,
-  admin,
-  audioPlayerStyle,
-  childStyle,
-  style,
-  columnOrRow,
+export default function MusicList({MusicListData, listTitle, errorMessage, admin, audioPlayerStyle, childStyle, style, columnOrRow,
 }) {
+  /**
+   * @param MusicListData array. format [{id: 'songid'}]
+   */
+  
   const [pageActive, setPageActive] = useState();
 
   const navigate = useNavigate();
 
   useEffect(() => {
-    console.log('keys triggured', MusicListData);
+    console.log('type of data music list is given', MusicListData);
 }, [MusicListData]);
 
   // Functons
 
   return (
     <div className="music-list-div-main" style={{...style, paddingInline: !columnOrRow ? '20px' : null}}>
-      {MusicListData && (
         <div className="component-MusicListData">
           <h3 style={{opacity: listTitle.includes('false') ? 0 : 1}}>{listTitle.includes('false') ? '...' : listTitle}</h3>
-          <div
-            style={{
-              width: "100%",
-              overflowX: "auto",
-              scrollBehavior: "smooth",
-              ...childStyle
-            }}
-          >
+          <div style={{
+                width: "100%",
+                overflowX: "auto",
+                scrollBehavior: "smooth",
+                ...childStyle
+          }}>
             <div className={`audioplayers-wrap ${columnOrRow ? columnOrRow : 'column'}`}>
               {MusicListData && MusicListData.length > 0 ? (
                 MusicListData.map((item, i) => (
@@ -47,7 +40,7 @@ export default function MusicList({
                     item={item}
                     style={audioPlayerStyle}
                     // updateKey={updateKey}
-                    key={item.key}
+                    key={i}
                   />
                 ))
               ) : (
@@ -71,7 +64,6 @@ export default function MusicList({
             </div>
           )}
         </div>
-      )}
     </div>
   );
 }

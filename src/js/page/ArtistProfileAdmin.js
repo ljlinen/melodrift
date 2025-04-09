@@ -9,7 +9,7 @@ import MusicList from "../comp/MusicList";
 import MainAudioPlayer from "../comp/MainAudioPlayer";
 import useArtistMusicListContext from "../hooks/useArtistMusicListContext";
 import useLoginContext from "../hooks/useLoginContext";
-import { baseFetch, onSkip } from "../..";
+import { baseFetch, formatToK, onSkip } from "../..";
 import useMainSongContext from "../hooks/useMainSongContext";
 import useIsLoggedIn from "../hooks/useIsLoggedIn";
 import useFetchCoverFile from "../hooks/useFetchCoverFile";
@@ -198,12 +198,12 @@ export default function ArtistProfileAdmin() {
                 <div className="stats">
                   <div>
                     <img className="icon" src={like} alt="likes" />
-                    <p>{userData.likes}</p>
+                    <p>{formatToK(userData.likes)}</p>
                   </div>
 
                   <div>
                     <img className="icon" src={plays} alt="plays" />
-                    <p>{userData.plays}</p>
+                    <p>{formatToK(userData.plays)}</p>
                   </div>
                 </div>
               </div>

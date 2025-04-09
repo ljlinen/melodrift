@@ -126,11 +126,11 @@
     }
 
     .login-p-infomsg {
-      padding-top: 25px;
+      padding-block: 25px;
       position: relative;
       font-size: 14px;
       text-align: center;
-      max-width: 160px;
+      max-width: 280px;
       transition: .3s ease;
       line-height: 1.2;
     }

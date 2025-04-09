@@ -38,30 +38,28 @@ export default function HomePage() {
   }, [params.songid]);
 
   useEffect(() => {
-    console.log('music list or songid: ', artistmusiclist, mainsong);
+      console.log('music list context from homepage: ', artistmusiclist);
       // eslint-disable-next-line
-  }, [mainsong, artistmusiclist])
+  }, [artistmusiclist])
 
   useEffect(() => {
 
     (async () => {
       
       try {
-        const chartObj = await baseFetch({
+        const responseObject = await baseFetch({
           route: "/global/" + chart,
           method: "GET",
         });
 
-        if(chartObj["data"]) {
-          // const newList = chartObj["data"].map((item) => (item = { id: item }))
-
+        if(responseObject["data"]) {
+          const responseList = responseObject['data']
+          const newList = responseList.map((item, i) => item = {id: item, key: `pos-${i}-ref-`})
           if(mainsong?.id) {
-            console.log('mainsong exists');
-            
-            chartObj['data'].splice(0, 1, { id: mainsong.id })
+            responseList.splice(0, 1, { id: mainsong.id })
             setExpand(true)
           }
-          musiclistdispatch({ type: 'SET_LIST', payload: chartObj['data'] });
+          musiclistdispatch({ type: 'SET_LIST', payload: newList});
         } else {
           musiclistdispatch({ type: 'SET_LIST', payload: []});
         }
@@ -111,7 +109,7 @@ export default function HomePage() {
           </div>
 
           <h1>Melodrift</h1>
-          <p>An audio hosting plartform.</p>
+          <p>Audio hosting plartform.</p>
 
           <div className="new-music" style={{ height: artistmusiclist ? 150 : 0 }}>
           {
@@ -122,7 +120,7 @@ export default function HomePage() {
                 errorMessage='no song is charting yet.'
                 admin={false}
                 style={{padding: "clamp(20px, 5.55vw, 50px) 0 0 0"}}
-                audioPlayerStyle={{ width: "clamp(150px, 55vw, 200px)" }}
+                audioPlayerStyle={{ width: "clamp(150px, 55vw, 200px)", backgroundColor: 'rgb(var(--clr-background-lighter))', backdropFilter: 'blur(3px)'}}
                 columnOrRow='row'
               />
             : null
