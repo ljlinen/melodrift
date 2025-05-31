@@ -334,13 +334,13 @@ export default function LoginSignupPage() {
               }}
             >
               <FormDataInputField
-                inputTitle="song cover image"
+                inputTitle="profile image"
                 inputType="file"
                 formData={formData}
                 formDataKey="cover"
                 setFormDataFuncton={setFormData}
                 minlength={0}
-                accept="image/jpg"
+                accept="image/*"
                 onChange={(e) => {
                   if (e.target.files && e.target.files[0]) {
                     var file = e.target.files[0];
