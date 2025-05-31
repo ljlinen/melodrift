@@ -116,17 +116,15 @@ export default function AudioUploader() {
       ) : null}
 
       <div className="au-form-head">
-        {!uploading ? (
-          <div className="au-div-heading-and-btn">
-            <h3>Upload Your Song</h3>
-            <img className='icon' src={close} alt='close' onClick={() => navigate(-1)} />
-          </div>
-        ) : (
-          <div className="au-div-heading-and-btn">
-            <Loader load={uploading} style={{ width: "30%" }} />
-            <h3>Uploading...</h3>
-          </div>
-        )}
+        {
+          !uploading ?
+          (
+            <div className="au-div-heading-and-btn">
+              <h3>Upload Your Song</h3>
+              <img className='icon' src={close} alt='close' onClick={() => navigate(-1)} />
+            </div>
+          ) : null
+        }
 
         {!uploading ? (
           <>
@@ -137,7 +135,7 @@ export default function AudioUploader() {
               <br></br>
               we donth du dath hear{" "}
               <span style={{ textDecoration: "underline" }}>
-                ( in king chatala's voice )
+                ( in king chatala&apos;s voice )
               </span>
             </p>
           </>

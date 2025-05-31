@@ -17,8 +17,8 @@ import { MainSongContextProvider } from "./js/context/MainSongContext";
 import UploadPage from "./js/page/UploadPage";
 import UpdateProfileForm from "./js/comp/UpdateProfileForm";
 
-// export const baseUrl = 'https://melodriftbackend.linendev.workers.dev'
-export const baseUrl = "http://localhost:8787";
+export const production = true;
+export const baseUrl = production ? "https://melodriftbackend.linendev.workers.dev" : "http://localhost:8787";
 
 // Global Functons For Reusability
 
