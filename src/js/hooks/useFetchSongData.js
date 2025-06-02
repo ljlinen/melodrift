@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { baseFetch } from '../..';
+import { baseFetch } from '../../main';
   
 export default function useFetchSongData(id) {
 

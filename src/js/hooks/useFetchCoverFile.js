@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { baseUrl } from '../..';
+import { baseUrl } from '../../main';
   
 export default function useFetchCoverFile(id) {
 
